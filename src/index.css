@@ -1,0 +1,267 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'); */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Brand primary and secondary colors */
+    --primary: 207 82% 33%;
+    /* #0F5B98 */
+    --primary-foreground: 0 0% 100%;
+    /* #FFFFFF */
+    --primary-light: 201 84% 39%;
+    /* #107FB9 */
+    --primary-hover: 212 81% 27%;
+    /* #0D417C */
+
+    --secondary: 34 77% 47%;
+    /* #D3831B */
+    --secondary-foreground: 0 0% 100%;
+    /* #FFFFFF */
+    --secondary-light: 40 78% 50%;
+    /* #E4A31D */
+    --secondary-hover: 25 83% 42%;
+    /* #C35B12 */
+
+    --muted: 210 40% 96.1%;
+    /* light gray for backgrounds */
+    --muted-foreground: 215 16% 47%;
+    --accent: 34 77% 47%;
+    /* use secondary as accent */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 207 82% 33%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 11%;
+
+    --chart-1: 207 82% 33%;
+    /* primary */
+    --chart-2: 34 77% 47%;
+    /* secondary */
+    --chart-3: 201 84% 39%;
+    /* primary-light */
+    --chart-4: 40 78% 50%;
+    /* secondary-light */
+    --chart-5: 212 81% 27%;
+    /* primary-hover */
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 217 20% 30%;
+    --sidebar-primary: 207 82% 33%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 34 77% 47%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 207 82% 33%;
+
+    /* Custom gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(207 82% 33%) 0%, hsl(212 81% 27%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(207 82% 33%), hsl(201 84% 39%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 40% 98%) 100%);
+
+    /* Custom shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(207 82% 33% / 0.08);
+    --shadow-medium: 0 4px 16px -4px hsl(207 82% 33% / 0.12);
+    --shadow-strong: 0 8px 32px -8px hsl(207 82% 33% / 0.18);
+
+    /* Animation variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    --background: 217 52% 10%;
+    --foreground: 0 0% 100%;
+    --card: 217 52% 14%;
+    --card-foreground: 0 0% 100%;
+    --popover: 217 52% 14%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 207 82% 33%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 201 84% 39%;
+    --primary-hover: 212 81% 27%;
+
+    --secondary: 34 77% 47%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 40 78% 50%;
+    --secondary-hover: 25 83% 42%;
+
+    --muted: 217 20% 20%;
+    --muted-foreground: 217 10% 60%;
+    --accent: 34 77% 47%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 217 20% 30%;
+    --input: 217 20% 30%;
+    --ring: 207 82% 33%;
+
+    --chart-1: 207 82% 33%;
+    --chart-2: 34 77% 47%;
+    --chart-3: 201 84% 39%;
+    --chart-4: 40 78% 50%;
+    --chart-5: 212 81% 27%;
+
+    --sidebar-background: 217 52% 14%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 207 82% 33%;
+    --sidebar-accent: 34 77% 47%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 217 20% 30%;
+    --sidebar-ring: 207 82% 33%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    /* font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .card-gradient {
+    background: var(--gradient-card);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-medium {
+    box-shadow: var(--shadow-medium);
+  }
+
+  .shadow-strong {
+    box-shadow: var(--shadow-strong);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-hover text-primary-foreground font-semibold py-3 px-6 rounded-xl transition-smooth shadow-medium hover:shadow-strong;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary-hover text-secondary-foreground font-semibold py-3 px-6 rounded-xl transition-smooth shadow-soft hover:shadow-medium;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+}
+
+.split {
+  display: flex;
+  flex: 1;
+  height: 100%;
+}
+
+.gutter {
+  background-color: hsl(var(--border));
+  /* replaced #e5e7eb with theme border color */
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+  cursor: row-resize;
+}
+
+/* PWA Install Prompt Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
