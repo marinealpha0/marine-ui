@@ -1,5 +1,6 @@
 import React from "react";
 import { Ship, Check } from "lucide-react";
+import AuthMapOverlay from "@/components/auth/AuthMapOverlay";
 
 const AuthLayout = ({ children, title, subtitle }) => {
   return (
@@ -8,6 +9,9 @@ const AuthLayout = ({ children, title, subtitle }) => {
       <div className="hidden flex-col justify-between bg-navy p-10 text-navy-foreground grid-noise lg:flex select-none relative overflow-hidden">
         {/* Subtle top-right blue ambient glow */}
         <div className="absolute -top-24 -right-24 size-96 rounded-full bg-cyan/10 blur-3xl pointer-events-none" />
+
+        {/* Tactical Nautical Radar Map Design Overlay Background */}
+        <AuthMapOverlay />
 
         {/* Brand Header */}
         <div className="flex items-center gap-2.5 relative z-10">

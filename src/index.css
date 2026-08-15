@@ -353,3 +353,56 @@ input:-webkit-autofill:active {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Maritime Radar Map Overlay Animations */
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes radar-pulse-expand {
+  0% { r: 6px; opacity: 0.8; stroke-width: 2px; }
+  100% { r: 36px; opacity: 0; stroke-width: 0.5px; }
+}
+
+@keyframes blip-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes reticle-spin-reverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.65; transform: scale(1.05); }
+}
+
+.animate-radar-sweep {
+  animation: radar-sweep 8s linear infinite;
+  transform-origin: 300px 300px;
+}
+
+.animate-radar-pulse {
+  animation: radar-pulse-expand 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  transform-origin: center;
+}
+
+.animate-blip-float-1 {
+  animation: blip-float 4s ease-in-out infinite;
+}
+
+.animate-blip-float-2 {
+  animation: blip-float 5s ease-in-out 1.5s infinite;
+}
+
+.animate-reticle-reverse {
+  animation: reticle-spin-reverse 20s linear infinite;
+  transform-origin: 300px 300px;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 6s ease-in-out infinite;
+}
