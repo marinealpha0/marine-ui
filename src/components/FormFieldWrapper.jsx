@@ -29,7 +29,6 @@ import { Label } from "@/components/ui/label"
 import { DatePicker } from "@/components/ui/date-picker"
 import { compressImageIfNeeded } from "@/utils/imageCompression"
 
-
 export function FormFieldWrapper({
     name,
     label,
@@ -41,6 +40,10 @@ export function FormFieldWrapper({
     loading = false,
     required = false,
     className,
+    inputClassName,
+    variant = "floating", // "floating" | "top" | "outlined"
+    labelPosition, // "floating" | "top"
+    outline = false,
     rows = 3,
     splitBy = "\n",
     icon: Icon,
@@ -49,15 +52,26 @@ export function FormFieldWrapper({
     const { control } = useFormContext()
     const [showPassword, setShowPassword] = useState(false)
 
+    // Determine if label should float or sit on top (default to floating label)
+    const effectiveLabelPosition = labelPosition || (variant === "top" ? "top" : "floating")
+    const isFloating = effectiveLabelPosition === "floating"
+
     const renderControl = (field) => {
         const commonProps = {
-            placeholder,
+            placeholder: isFloating ? " " : (placeholder || label || ""),
             disabled: disabled || loading,
             ...field,
         }
 
-        const inputClasses =
-            "border border-input bg-background rounded-md h-10 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-primary focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+        const baseInputClasses = outline || variant === "outlined"
+            ? "border border-input bg-surface rounded-md h-10 px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-input focus:ring-0 focus:ring-offset-0 transition-colors duration-200"
+            : "border border-input bg-surface rounded-md h-10 px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-input focus:ring-0 focus:ring-offset-0 transition-colors duration-200"
+
+        const inputClasses = cn(
+            baseInputClasses,
+            isFloating && "peer placeholder:text-transparent",
+            inputClassName
+        )
 
         const isScannerInput = ["textarea", "textarea-list", "select", "multi-select", "checkbox", "radio", "file", "image", "date", "date-picker"].includes(type)
 
@@ -66,18 +80,8 @@ export function FormFieldWrapper({
                 <div className="relative">
                     <Input
                         {...commonProps}
-                        placeholder=" "
-                        className={cn(inputClasses, "pr-10 peer placeholder:text-transparent")}
+                        className={cn(inputClasses, "pr-10")}
                     />
-                    <Label
-                        className={cn(
-                            "absolute left-3 top-0 z-10 origin-[0] -translate-y-1/2 scale-75 transform bg-background px-2 text-sm text-muted-foreground duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary pointer-events-none peer-[:-webkit-autofill]:top-0 peer-[:-webkit-autofill]:-translate-y-1/2 peer-[:-webkit-autofill]:scale-75 rounded-sm truncate max-w-[calc(100%-2.5rem)]",
-                            Icon && "left-9"
-                        )}
-                    >
-                        {label || placeholder}
-                        {required && <span className="ml-0.5 text-destructive">*</span>}
-                    </Label>
                     <div className="absolute right-3 top-3 h-4 w-4">
                         <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                     </div>
@@ -85,9 +89,24 @@ export function FormFieldWrapper({
             )
         }
 
-        // Handle Password Type specifically for toggle
         const isPasswordType = type === "password"
         const currentType = isPasswordType && showPassword ? "text" : type
+
+        const renderFloatingLabel = () => {
+            const labelText = label || placeholder
+            if (!isFloating || !labelText) return null
+            return (
+                <Label
+                    className={cn(
+                        "floating-label",
+                        Icon && "floating-label-icon"
+                    )}
+                >
+                    {labelText}
+                    {required && <span className="ml-0.5 text-destructive">*</span>}
+                </Label>
+            )
+        }
 
         switch (type) {
             case "textarea":
@@ -96,17 +115,9 @@ export function FormFieldWrapper({
                         <Textarea
                             {...commonProps}
                             rows={rows}
-                            placeholder=" "
-                            className={cn(inputClasses, "h-auto min-h-[100px] py-2 peer placeholder:text-transparent")}
+                            className={cn(inputClasses, "h-auto min-h-[100px] py-2")}
                         />
-                        <Label
-                            className={cn(
-                                "absolute left-3 top-0 z-10 origin-[0] -translate-y-1/2 scale-75 transform bg-background px-2 text-sm text-muted-foreground duration-200 peer-placeholder-shown:top-6 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary pointer-events-none peer-[:-webkit-autofill]:top-0 peer-[:-webkit-autofill]:-translate-y-1/2 peer-[:-webkit-autofill]:scale-75 rounded-sm truncate max-w-[calc(100%-2.5rem)]"
-                            )}
-                        >
-                            {label || placeholder}
-                            {required && <span className="ml-0.5 text-destructive">*</span>}
-                        </Label>
+                        {renderFloatingLabel()}
                     </div>
                 )
 
@@ -118,17 +129,9 @@ export function FormFieldWrapper({
                             value={Array.isArray(field.value) ? field.value.join("\n") : field.value || ""}
                             onChange={(e) => field.onChange(e.target.value.split(splitBy))}
                             rows={rows}
-                            placeholder=" "
-                            className={cn(inputClasses, "h-auto min-h-[100px] py-2 peer placeholder:text-transparent")}
+                            className={cn(inputClasses, "h-auto min-h-[100px] py-2")}
                         />
-                        <Label
-                            className={cn(
-                                "absolute left-3 top-0 z-10 origin-[0] -translate-y-1/2 scale-75 transform bg-background px-2 text-sm text-muted-foreground duration-200 peer-placeholder-shown:top-6 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary pointer-events-none peer-[:-webkit-autofill]:top-0 peer-[:-webkit-autofill]:-translate-y-1/2 peer-[:-webkit-autofill]:scale-75 rounded-sm truncate max-w-[calc(100%-2.5rem)]"
-                            )}
-                        >
-                            {label || placeholder}
-                            {required && <span className="ml-0.5 text-destructive">*</span>}
-                        </Label>
+                        {renderFloatingLabel()}
                     </div>
                 )
 
@@ -143,7 +146,7 @@ export function FormFieldWrapper({
                             open={loading ? false : undefined}
                         >
                             <SelectTrigger className={inputClasses} loading={loading}>
-                                <SelectValue placeholder="" />
+                                <SelectValue placeholder={placeholder || "Select an option"} />
                             </SelectTrigger>
                             <SelectContent>
                                 {options && options.length > 0 ? (
@@ -159,15 +162,7 @@ export function FormFieldWrapper({
                                 )}
                             </SelectContent>
                         </Select>
-                        <Label
-                            className={cn(
-                                "absolute left-3 top-0 z-10 origin-[0] -translate-y-1/2 scale-75 transform bg-background px-2 text-sm text-muted-foreground duration-200 pointer-events-none rounded-sm truncate max-w-[calc(100%-2.5rem)]",
-                                !field.value && "top-1/2 scale-100"
-                            )}
-                        >
-                            {label || placeholder}
-                            {required && <span className="ml-0.5 text-destructive">*</span>}
-                        </Label>
+                        {renderFloatingLabel()}
                     </div>
                 )
 
@@ -178,20 +173,12 @@ export function FormFieldWrapper({
                             options={options}
                             value={field.value}
                             onChange={field.onChange}
-                            placeholder=""
+                            placeholder={placeholder || "Select options"}
                             disabled={disabled || loading}
                             loading={loading}
                             onOpenChange={onOpenChange}
                         />
-                        <Label
-                            className={cn(
-                                "absolute left-3 top-0 z-10 origin-[0] -translate-y-1/2 scale-75 transform bg-background px-2 text-sm text-muted-foreground duration-200 pointer-events-none rounded-sm truncate max-w-[calc(100%-2.5rem)]",
-                                (!field.value || field.value.length === 0) && "top-1/2 scale-100"
-                            )}
-                        >
-                            {label || placeholder}
-                            {required && <span className="ml-0.5 text-destructive">*</span>}
-                        </Label>
+                        {renderFloatingLabel()}
                     </div>
                 )
 
@@ -309,7 +296,6 @@ export function FormFieldWrapper({
                                         field.onChange(finalFile)
                                     }
                                 }}
-
                             />
                         </div>
                     </div>
@@ -332,24 +318,15 @@ export function FormFieldWrapper({
                                 }
                             }}
                             disabled={disabled || loading}
-                            placeholder=""
+                            placeholder={placeholder || "Select date"}
                             variant="ghost"
                             className={cn(inputClasses, className)}
                         />
-                        <Label
-                            className={cn(
-                                "absolute left-3 top-0 z-10 origin-[0] -translate-y-1/2 scale-75 transform bg-background px-2 text-sm text-muted-foreground duration-200 pointer-events-none rounded-sm truncate max-w-[calc(100%-2.5rem)]",
-                                !field.value && "top-1/2 scale-100"
-                            )}
-                        >
-                            {label || placeholder}
-                            {required && <span className="ml-0.5 text-destructive">*</span>}
-                        </Label>
+                        {renderFloatingLabel()}
                     </div>
                 )
 
             default:
-                // Text, password, email, tel, etc.
                 return (
                     <div className="relative">
                         {Icon && (
@@ -358,7 +335,6 @@ export function FormFieldWrapper({
                         <Input
                             {...commonProps}
                             type={currentType}
-                            placeholder=" "
                             onClick={(e) => {
                                 if (type === "date" && e.currentTarget.showPicker) {
                                     e.currentTarget.showPicker()
@@ -368,30 +344,21 @@ export function FormFieldWrapper({
                                 inputClasses,
                                 Icon && "pl-10",
                                 isPasswordType && "pr-10",
-                                type === "date" && "[&::-webkit-calendar-picker-indicator]:hidden",
-                                "peer placeholder:text-transparent"
+                                type === "date" && "[&::-webkit-calendar-picker-indicator]:hidden"
                             )}
                         />
-                        <Label
-                            className={cn(
-                                "absolute left-2 top-0 z-10 origin-[0] -translate-y-1/2 scale-75 transform bg-background px-2 text-sm text-muted-foreground duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary pointer-events-none peer-[:-webkit-autofill]:top-0 peer-[:-webkit-autofill]:-translate-y-1/2 peer-[:-webkit-autofill]:scale-75 rounded-sm truncate max-w-[calc(100%-2.5rem)]",
-                                Icon && "left-9"
-                            )}
-                        >
-                            {label || placeholder}
-                            {required && <span className="ml-0.5 text-destructive">*</span>}
-                        </Label>
+                        {renderFloatingLabel()}
                         {isPasswordType && (
                             <button
                                 type="button"
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors"
                                 onClick={() => setShowPassword((prev) => !prev)}
                                 aria-label={showPassword ? "Hide password" : "Show password"}
                             >
                                 {showPassword ? (
-                                    <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                    <EyeOff className="h-4 w-4" />
                                 ) : (
-                                    <Eye className="h-4 w-4 text-muted-foreground" />
+                                    <Eye className="h-4 w-4" />
                                 )}
                             </button>
                         )}
@@ -400,17 +367,17 @@ export function FormFieldWrapper({
         }
     }
 
+    const fieldLabel = label || placeholder
+
     return (
         <FormField
             control={control}
             name={name}
             render={({ field }) => (
-                <FormItem
-                    className={cn("w-full space-y-1.5", className)}
-                >
-                    {label && ["checkbox", "radio", "file", "image"].includes(type) && (
-                        <FormLabel className="text-sm font-medium text-foreground">
-                            {label}
+                <FormItem className={cn("w-full space-y-1.5", className)}>
+                    {!isFloating && fieldLabel && !["checkbox", "radio"].includes(type) && (
+                        <FormLabel className="text-sm font-medium text-foreground block">
+                            {fieldLabel}
                             {required && (
                                 <span className="ml-0.5 text-destructive">*</span>
                             )}

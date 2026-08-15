@@ -1,72 +1,61 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Mail, Clock } from "@/assets/icons";
 import AuthLayout from "@/layouts/AuthLayout";
-import { UI_TEXT } from "@/constant";
 
 const ContactAdmin = () => {
-  const navigate = useNavigate();
-
   return (
-    <AuthLayout title={UI_TEXT.AUTH.CONTACT_ADMIN.TITLE}>
-      <span className="text-sm text-gray-600 mb-4 block text-center mx-auto pb-9">
-        {UI_TEXT.AUTH.CONTACT_ADMIN.INSTRUCTION}
-      </span>
-
-      <div className="flex flex-col gap-4 sm:gap-5">
+    <AuthLayout
+      title="Contact administrator"
+      subtitle="Reach out to support or your system administrator for assistance."
+    >
+      <div className="space-y-4">
         {/* Support Email Field */}
-        <div className="relative">
-          <Mail
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            size={20}
-          />
-          <input
-            type="email"
-            value="admin@udyogvriksh.com"
-            readOnly
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none text-gray-700 text-sm font-medium"
-          />
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-foreground block">
+            Support email
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground size-4.5" />
+            <input
+              type="email"
+              value="admin@udyogvriksh.com"
+              readOnly
+              className="w-full rounded-md border border-input bg-surface-sunken pl-10 pr-3 py-2 text-sm text-foreground focus:outline-none"
+            />
+          </div>
         </div>
 
         {/* Support Hours Field */}
-        <div className="relative">
-          <Clock
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            size={20}
-          />
-          <input
-            type="text"
-            value="Mon – Fri, 9:00 AM – 6:00 PM IST"
-            readOnly
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none text-gray-700 text-sm"
-          />
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-foreground block">
+            Operating hours
+          </label>
+          <div className="relative">
+            <Clock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground size-4.5" />
+            <input
+              type="text"
+              value="Mon – Fri, 9:00 AM – 6:00 PM IST"
+              readOnly
+              className="w-full rounded-md border border-input bg-surface-sunken pl-10 pr-3 py-2 text-sm text-foreground focus:outline-none"
+            />
+          </div>
         </div>
 
-        {/* Send Email Button */}
+        {/* Send Email Action Button */}
         <a
-          href="mailto:admin@udyogvriksh.com"
-          className="w-full py-3 font-semibold text-white bg-gradient-to-r from-primary to-secondary rounded-lg shadow-md flex items-center justify-center gap-2 hover:opacity-90 active:opacity-95 transition-opacity mt-2"
+          href="mailto:support@oceanicmarine.com"
+          className="w-full rounded-md bg-[#0B1728] px-3 py-2.5 text-center text-sm font-medium text-white hover:bg-[#0B1728]/90 transition-colors cursor-pointer shadow-sm flex items-center justify-center gap-2"
         >
-          <Mail size={18} />
-          {UI_TEXT.AUTH.CONTACT_ADMIN.BTN_SEND_SUPPORT_EMAIL}
+          <Mail size={16} />
+          Send support email
         </a>
       </div>
 
-      {/* Security Info Divider */}
-      <div className="flex items-center my-4">
-        <div className="flex-grow border-t border-gray-300" />
-        <span className="mx-3 text-gray-500 text-sm">{UI_TEXT.AUTH.LOGIN.SECURITY_FEATURES}</span>
-        <div className="flex-grow border-t border-gray-300" />
-      </div>
-
-      <div className="flex justify-end items-center flex-wrap gap-2 mt-2">
-        <button
-          type="button"
-          onClick={() => navigate("/login")}
-          className="text-xs text-gray-500 hover:text-primary transition-colors cursor-pointer hover:underline"
-        >
-          {UI_TEXT.AUTH.CONTACT_ADMIN.LINK_BACK_TO_SIGN_IN}
-        </button>
+      <div className="pt-2">
+        <Link to="/login" className="block text-center text-sm text-ocean hover:underline font-medium">
+          Back to sign in
+        </Link>
       </div>
     </AuthLayout>
   );

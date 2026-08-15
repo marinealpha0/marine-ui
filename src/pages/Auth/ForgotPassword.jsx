@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Mail, Lock } from "@/assets/icons";
+import { useNavigate, Link } from "react-router-dom";
+import { Mail } from "@/assets/icons";
 import AuthLayout from "@/layouts/AuthLayout";
 import { toast } from "sonner";
-import { MESSAGES, UI_TEXT, VALIDATION_MESSAGES } from '@/constant';
+import { MESSAGES } from '@/constant';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormFieldWrapper } from "@/components/FormFieldWrapper";
@@ -40,83 +40,40 @@ const ForgotPassword = () => {
   };
 
   return (
-    <AuthLayout title={UI_TEXT.AUTH.FORGOT_PASSWORD.TITLE}>
-      {loading && (
-        <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10 rounded-xl">
-          <span className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-        </div>
-      )}
-
-      <span className="text-sm text-gray-600 mb-6 block text-center mx-auto">
-        {UI_TEXT.AUTH.FORGOT_PASSWORD.INSTRUCTION}
-      </span>
-
-      <div className="flex justify-center items-center my-4">
-        <div className="relative flex items-center justify-center">
-          {/* Pulsing radar glow ring */}
-          <div className="absolute h-20 w-20 rounded-full bg-primary/10 animate-ping opacity-60" />
-          <div className="absolute h-24 w-24 rounded-full bg-secondary/5 animate-pulse" />
-
-          {/* Main outer circle */}
-          <div className="relative flex items-center justify-center h-20 w-20 rounded-full bg-gradient-to-br from-primary/10 to-secondary/20 border border-primary/20 shadow-md shadow-primary/5">
-            {/* Inner white circle */}
-            <div className="flex items-center justify-center h-14 w-14 rounded-full bg-white shadow-inner border border-gray-100">
-              <Lock
-                className="h-6 w-6 text-primary animate-bounce"
-                style={{ animationDuration: '2.5s' }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <AuthLayout
+      title="Reset your password"
+      subtitle="We will email a secure reset link to your work address."
+    >
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 sm:gap-5"
-        >
-          {/* Email input field */}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormFieldWrapper
             control={form.control}
             name="email"
             type="email"
-            placeholder="Email Address"
+            placeholder="Work email"
             icon={Mail}
             disabled={loading}
-            className="h-[60px]"
+            outline={true}
           />
 
-          {/* Submit Action Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 font-semibold text-white bg-gradient-to-r from-primary to-secondary rounded-lg shadow-md flex items-center justify-center disabled:opacity-50 mt-auto"
+            className="w-full rounded-md bg-[#0B1728] px-3 py-2.5 text-center text-sm font-medium text-white hover:bg-[#0B1728]/90 focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60 transition-colors cursor-pointer shadow-sm flex items-center justify-center gap-2 mt-2"
           >
             {loading ? (
-              <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span className="size-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
-              UI_TEXT.AUTH.FORGOT_PASSWORD.BTN_SUBMIT
+              "Send reset link"
             )}
           </button>
         </form>
       </Form>
 
-      {/* Security Info Divider */}
-      <div className="flex items-center my-4">
-        <div className="flex-grow border-t border-gray-300" />
-        <span className="mx-3 text-gray-500 text-sm">{UI_TEXT.AUTH.LOGIN.SECURITY_FEATURES}</span>
-        <div className="flex-grow border-t border-gray-300" />
-      </div>
-
-      {/* Back to Sign In footer */}
-      <div className="flex justify-end items-center flex-wrap gap-2 mt-2">
-        <button
-          type="button"
-          onClick={() => navigate("/login")}
-          className="text-xs text-gray-500 hover:text-primary transition-colors cursor-pointer hover:underline"
-        >
-          {UI_TEXT.AUTH.FORGOT_PASSWORD.LINK_BACK_TO_SIGN_IN}
-        </button>
+      <div className="pt-2">
+        <Link to="/login" className="block text-center text-sm text-ocean hover:underline font-medium">
+          Back to sign in
+        </Link>
       </div>
     </AuthLayout>
   );
