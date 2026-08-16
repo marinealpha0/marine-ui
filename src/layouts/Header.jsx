@@ -4,6 +4,7 @@ import {
   Bell, ChevronDown, Globe, Search, Ship, Building2, User, Settings, LogOut
 } from "lucide-react";
 import { useAuthStore } from "@/store";
+import { NotificationPanel } from "@/components/notifications/NotificationPanel";
 
 export const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -63,13 +64,14 @@ export const Header = () => {
           </kbd>
         </div>
 
-        {/* Notification Bell */}
-        <button className="relative grid size-8 place-items-center rounded-lg border border-border bg-background hover:bg-secondary text-foreground transition-colors">
-          <Bell className="size-4" />
-          <span className="absolute -top-1 -right-1 grid size-4 place-items-center rounded-full bg-critical text-white text-[9px] font-bold">
-            4
-          </span>
-        </button>
+        {/* Notification Bell & Panel */}
+        <NotificationPanel
+          trigger={
+            <button className="relative grid size-8 place-items-center rounded-lg border border-border bg-background hover:bg-secondary text-foreground transition-colors">
+              <Bell className="size-4" />
+            </button>
+          }
+        />
 
         {/* User Profile Pill */}
         <div className="relative">

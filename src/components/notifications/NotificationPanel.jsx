@@ -131,9 +131,12 @@ export const NotificationPanel = ({ trigger }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    // Prevent body scroll when notification panel is open
+    // Prevent body scroll when notification panel is open (mobile only)
     useEffect(() => {
-        document.body.style.overflow = isOpen ? "hidden" : "unset";
+        const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+        if (isMobile) {
+            document.body.style.overflow = isOpen ? "hidden" : "unset";
+        }
         return () => { document.body.style.overflow = "unset"; };
     }, [isOpen]);
 
@@ -264,10 +267,10 @@ export const NotificationPanel = ({ trigger }) => {
     return (
         <div className="relative inline-flex">
             {/* Trigger (your custom bell) */}
-            <div className="relative inline-flex items-center bell-trigger" onClick={() => setIsOpen(!isOpen)}>
+            <div className="relative inline-flex items-center bell-trigger cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
                 {trigger}
                 {unreadCount > 0 && (
-                    <div className="absolute -top-0.5 -right-2 flex h-5 w-auto min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-white pointer-events-none">
+                    <div className="absolute -top-1 -right-1 grid size-4 min-w-[16px] px-1 place-items-center rounded-full bg-critical text-white text-[9px] font-bold ring-2 ring-background pointer-events-none">
                         {unreadCount > 99 ? '99+' : unreadCount}
                     </div>
                 )}
@@ -367,7 +370,7 @@ export const NotificationPanel = ({ trigger }) => {
                             <div className="flex justify-center py-12">
                                 <Loader2 className="w-6 h-6 animate-spin text-sky-500" />
                             </div>
-                        ) : isError ? (
+                        ) : isError && filteredNotifications.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 text-center px-4">
                                 <p className="text-sm text-red-500 mb-2 font-medium">Failed to load notifications</p>
                                 <button

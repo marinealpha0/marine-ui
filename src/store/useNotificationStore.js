@@ -1,10 +1,53 @@
 import { create } from "zustand";
 import { formatNotificationData } from "@/constant";
 
+const INITIAL_DEMO_NOTIFICATIONS = [
+    {
+        _id: "notif-1",
+        title: "Overdue Work Orders Alert",
+        message: "8 work orders are overdue on MV Atlantic Pioneer (Oldest 42 days · Main Engine).",
+        category: "admin",
+        icon: "Bell",
+        isRead: false,
+        path: "/app/work-orders",
+        createdAt: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
+    },
+    {
+        _id: "notif-2",
+        title: "Critical Equipment Defect",
+        message: "No.2 Aux Engine & Boiler feed pump reported critical failure on MV Atlantic Pioneer.",
+        category: "admin",
+        icon: "Shield",
+        isRead: false,
+        path: "/app/equipment",
+        createdAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+    },
+    {
+        _id: "notif-3",
+        title: "Statutory Certificate Expiring",
+        message: "3 certificates (IOPP, Load Line, Safety Equipment) expiring within 30 days on MT Ocean Star.",
+        category: "admin",
+        icon: "Calendar",
+        isRead: false,
+        path: "/app/certificates",
+        createdAt: new Date(Date.now() - 1000 * 60 * 300).toISOString(),
+    },
+    {
+        _id: "notif-4",
+        title: "Requisition Pending Approval",
+        message: "PR-2026-3391 for Main Engine Spares submitted for shore manager approval.",
+        category: "jobs",
+        icon: "Briefcase",
+        isRead: false,
+        path: "/app/requisitions",
+        createdAt: new Date(Date.now() - 1000 * 60 * 600).toISOString(),
+    },
+].map(formatNotificationData);
+
 export const useNotificationStore = create((set, get) => ({
-    notifications: [],
-    unreadCount: 0,
-    totalRecords: 0,
+    notifications: INITIAL_DEMO_NOTIFICATIONS,
+    unreadCount: INITIAL_DEMO_NOTIFICATIONS.filter((n) => !n.isRead).length,
+    totalRecords: INITIAL_DEMO_NOTIFICATIONS.length,
 
     // Set/initialize all notifications (e.g. from API)
     setNotifications: (notifications, unreadCount, totalRecords) => {
