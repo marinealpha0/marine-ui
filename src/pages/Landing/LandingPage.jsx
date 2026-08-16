@@ -38,17 +38,17 @@ const problems = [
 
 export default function Landing() {
   return (
-    <div className="min-h-dvh bg-background text-foreground antialiased selection:bg-cyan selection:text-navy">
-      {/* Navigation Header matching image exact */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0B1728] text-white backdrop-blur">
+    <div className="min-h-dvh bg-[#070F1B] text-foreground antialiased selection:bg-cyan selection:text-navy">
+      {/* Navigation Header */}
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0B1728]/90 text-white backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           {/* Logo + Navigation Links */}
           <div className="flex items-center gap-8 md:gap-10">
             <Link to="/" className="flex items-center gap-2.5 group">
-              <span className="grid size-8 place-items-center rounded-lg bg-[#14324D] border border-cyan/20 text-cyan group-hover:scale-105 transition-transform">
-                <Anchor className="size-4.5" />
+              <span className="grid size-9 place-items-center rounded-lg bg-cyan/15 border border-cyan/30 text-cyan group-hover:scale-105 transition-transform shadow-sm">
+                <Anchor className="size-5" />
               </span>
-              <span className="font-display font-bold text-lg tracking-tight text-white">
+              <span className="font-display font-bold text-xl tracking-tight text-white">
                 Nauticore
               </span>
             </Link>
@@ -70,7 +70,7 @@ export default function Landing() {
           </div>
 
           {/* Right Action Controls */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5">
             <Link
               to="/login"
               className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
@@ -79,7 +79,7 @@ export default function Landing() {
             </Link>
             <Link
               to="/select-organization"
-              className="rounded-lg bg-[#38BDF8] px-4 py-2 text-sm font-semibold text-[#0B1728] hover:bg-[#38BDF8]/90 transition-colors shadow-sm"
+              className="rounded-lg bg-cyan px-4 py-2 text-sm font-semibold text-[#0B1728] hover:bg-cyan/90 transition-colors shadow-sm"
             >
               Explore platform
             </Link>
@@ -87,84 +87,142 @@ export default function Landing() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section id="platform" className="relative overflow-hidden bg-[#0B1728] text-navy-foreground">
-        <div className="absolute inset-0 grid-noise opacity-60 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(14,165,233,0.25),transparent_60%)] pointer-events-none" />
-        <div className="relative mx-auto max-w-7xl px-6 py-20 lg:py-28">
-          <p className="text-xs font-semibold tracking-[0.2em] text-cyan uppercase">
-            Marine engineering management
-          </p>
-          <h1 className="mt-5 max-w-3xl font-display text-4xl leading-[1.08] font-bold sm:text-5xl lg:text-6xl tracking-tight">
-            Manage your fleet. Maintain your vessels. Stay compliant. Operate with confidence.
-          </h1>
-          <p className="mt-6 max-w-2xl text-base text-navy-muted sm:text-lg leading-relaxed">
-            A modern marine engineering management platform built for vessel operators, ship management
-            companies and maritime engineering teams.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3.5">
-            <Link
-              to="/login"
-              className="rounded-md bg-cyan px-6 py-3 text-sm font-bold text-[#0B1728] hover:bg-cyan/90 transition-all shadow-md"
-            >
-              Book a demo
-            </Link>
-            <Link
-              to="/select-organization"
-              className="rounded-md border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
-            >
-              Explore platform
-            </Link>
-          </div>
+      {/* STUNNING 2-COLUMN HERO SECTION MATCHING SCREENSHOT EXACTLY */}
+      <section id="platform" className="relative overflow-hidden bg-[#070F1B] pt-12 pb-20 lg:pt-16 lg:pb-28 text-white">
+        {/* Background Tactical Radar Grid Noise & Ambient Gradient Glows */}
+        <div className="absolute inset-0 grid-noise opacity-40 pointer-events-none" />
+        <div className="absolute -top-32 -left-32 size-[500px] rounded-full bg-cyan/15 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 right-0 size-[500px] rounded-full bg-ocean/20 blur-3xl pointer-events-none" />
 
-          <div className="mt-14 rounded-xl border border-white/10 bg-white/5 p-3.5 backdrop-blur shadow-2xl">
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                ["Fleet health", "87%"],
-                ["Certificate compliance", "98%"],
-                ["Overdue work orders", "118"],
-                ["Open deviations", "3"],
-              ].map(([l, v]) => (
-                <div key={l} className="rounded-lg border border-white/10 bg-[#0B1728]/70 p-4">
-                  <p className="text-xs text-navy-muted font-medium">{l}</p>
-                  <p className="mt-2 font-display text-2xl font-bold tracking-tight text-white">{v}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-3 grid gap-3 lg:grid-cols-3">
-              <div className="rounded-lg border border-white/10 bg-[#0B1728]/70 p-4 lg:col-span-2">
-                <div className="flex justify-between items-center">
-                  <p className="text-xs text-navy-muted font-medium">Fleet positions</p>
-                  <span className="text-[11px] text-cyan font-mono">12 Vessels Active</span>
-                </div>
-                <div className="mt-4 flex h-32 items-end gap-2">
-                  {[42, 61, 55, 78, 66, 84, 72, 90, 68, 76, 88, 94].map((h, i) => (
-                    <span
-                      key={i}
-                      className="flex-1 rounded-t bg-gradient-to-t from-ocean/40 to-cyan hover:opacity-100 transition-opacity"
-                      style={{ height: `${h}%` }}
-                    />
-                  ))}
-                </div>
+        <div className="relative mx-auto max-w-7xl px-6">
+          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+
+            {/* LEFT COLUMN: BADGE, HEADLINE, DESCRIPTION & BUTTONS */}
+            <div className="lg:col-span-6 space-y-6">
+              {/* Pill Badge */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-3.5 py-1.5 text-xs font-medium text-cyan backdrop-blur-md shadow-sm">
+                <Anchor className="size-3.5" />
+                <span>Built for ship management &amp; vessel operators</span>
               </div>
-              <div className="rounded-lg border border-white/10 bg-[#0B1728]/70 p-4">
-                <p className="text-xs text-navy-muted font-medium">Critical alerts</p>
-                <ul className="mt-3.5 space-y-2.5 text-sm">
-                  <li className="flex items-center gap-2.5 text-white/90">
-                    <span className="size-2 shrink-0 rounded-full bg-critical animate-pulse" />
-                    8 overdue work orders
-                  </li>
-                  <li className="flex items-center gap-2.5 text-white/90">
-                    <span className="size-2 shrink-0 rounded-full bg-warning" />
-                    3 certificates expiring
-                  </li>
-                  <li className="flex items-center gap-2.5 text-white/90">
-                    <span className="size-2 shrink-0 rounded-full bg-warning" />
-                    146 spares below minimum
-                  </li>
-                </ul>
+
+              {/* Bold Gradient Headline matching exact text from image */}
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
+                Manage your fleet.<br />
+                Maintain your vessels.<br />
+                <span className="bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-400 bg-clip-text text-transparent">
+                  Operate with confidence.
+                </span>
+              </h1>
+
+              {/* Subheading Copy matching exact text */}
+              <p className="max-w-xl text-base sm:text-lg text-slate-300 leading-relaxed">
+                A modern marine engineering management platform for vessel operators, ship management companies and maritime engineering teams &mdash; maintenance, procurement, compliance and QHSE in one command center.
+              </p>
+
+              {/* CTA Action Buttons */}
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <Link
+                  to="/login"
+                  className="rounded-lg bg-[#2DD4BF] px-6 py-3.5 text-sm font-bold text-[#0B1728] hover:bg-[#2DD4BF]/90 transition-all shadow-lg shadow-teal-500/20"
+                >
+                  Book a demo
+                </Link>
+                <Link
+                  to="/select-organization"
+                  className="rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/10 transition-colors backdrop-blur-sm"
+                >
+                  Explore platform
+                </Link>
               </div>
             </div>
+
+            {/* RIGHT COLUMN: HIGH-TECH COMMAND CENTER WINDOW MOCKUP */}
+            <div className="lg:col-span-6">
+              <div className="relative rounded-2xl border border-cyan/20 bg-[#0F2338]/90 p-5 backdrop-blur-xl shadow-2xl shadow-cyan/10">
+
+                {/* Mac Window Title Bar */}
+                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+                  <div className="flex items-center gap-2">
+                    <span className="size-3 rounded-full bg-red-500/80 inline-block" />
+                    <span className="size-3 rounded-full bg-yellow-500/80 inline-block" />
+                    <span className="size-3 rounded-full bg-emerald-500/80 inline-block" />
+                  </div>
+                  <div className="text-xs font-mono font-medium text-slate-400 flex items-center gap-2">
+                    <span>Fleet operational overview — Oceanic Marine Group</span>
+                  </div>
+                  <div className="size-4" /> {/* Spacer */}
+                </div>
+
+                {/* Top Stat Cards Row (3 Columns) */}
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  {/* Stat 1: Vessels */}
+                  <div className="rounded-xl border border-white/10 bg-[#0B1728]/80 p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">VESSELS</p>
+                    <p className="mt-1.5 font-display text-3xl font-extrabold text-white">24</p>
+                  </div>
+                  {/* Stat 2: Operational */}
+                  <div className="rounded-xl border border-white/10 bg-[#0B1728]/80 p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">OPERATIONAL</p>
+                    <p className="mt-1.5 font-display text-3xl font-extrabold text-emerald-400">21</p>
+                  </div>
+                  {/* Stat 3: Critical */}
+                  <div className="rounded-xl border border-white/10 bg-[#0B1728]/80 p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">CRITICAL</p>
+                    <p className="mt-1.5 font-display text-3xl font-extrabold text-red-500">1</p>
+                  </div>
+                </div>
+
+                {/* Bottom Split Row (Chart + Critical Attention Table) */}
+                <div className="grid gap-3 md:grid-cols-2">
+                  {/* Left: Maintenance completion vs plan Bar Chart */}
+                  <div className="rounded-xl border border-white/10 bg-[#0B1728]/80 p-4 flex flex-col justify-between">
+                    <p className="text-xs font-medium text-slate-300">Maintenance completion vs plan</p>
+
+                    {/* Animated Bar Chart Bars */}
+                    <div className="mt-5 flex h-28 items-end gap-2 px-1">
+                      {[45, 62, 55, 78, 68, 88, 72].map((height, idx) => (
+                        <div key={idx} className="flex-1 flex flex-col items-center gap-1 group">
+                          <span
+                            className="w-full rounded-t bg-gradient-to-t from-teal-500/40 via-teal-400 to-cyan-400 group-hover:brightness-125 transition-all duration-300"
+                            style={{ height: `${height}%` }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right: Critical Attention Items List */}
+                  <div className="rounded-xl border border-white/10 bg-[#0B1728]/80 p-4">
+                    <p className="text-xs font-medium text-slate-300 mb-3">Critical attention</p>
+
+                    <div className="space-y-2 text-xs">
+                      {/* Row 1 */}
+                      <div className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 border border-white/5">
+                        <span className="text-slate-300 font-medium">Overdue work orders</span>
+                        <span className="font-bold text-red-400 font-mono">118</span>
+                      </div>
+                      {/* Row 2 */}
+                      <div className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 border border-white/5">
+                        <span className="text-slate-300 font-medium">Certificates expiring</span>
+                        <span className="font-bold text-amber-400 font-mono">4</span>
+                      </div>
+                      {/* Row 3 */}
+                      <div className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 border border-white/5">
+                        <span className="text-slate-300 font-medium">Spares below minimum</span>
+                        <span className="font-bold text-amber-400 font-mono">8</span>
+                      </div>
+                      {/* Row 4 */}
+                      <div className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 border border-white/5">
+                        <span className="text-slate-300 font-medium">Open deviations</span>
+                        <span className="font-bold text-cyan-400 font-mono">4</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
