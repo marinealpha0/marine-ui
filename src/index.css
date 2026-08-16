@@ -1,5 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'); */
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -405,4 +404,30 @@ input:-webkit-autofill:active {
 
 .animate-glow-pulse {
   animation: glow-pulse 6s ease-in-out infinite;
+}
+
+/* Nauticore 3D Landing & Editorial Styling */
+.font-display {
+  font-family: "Manrope", sans-serif;
+}
+
+.font-mono {
+  font-family: "DM Mono", monospace;
+}
+
+::selection {
+  background: #d9f56c;
+  color: #000;
+}
+
+/* Accessibility & Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

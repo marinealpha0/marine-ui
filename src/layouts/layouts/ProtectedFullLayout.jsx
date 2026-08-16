@@ -1,10 +1,27 @@
+import React from "react";
 import { Outlet } from "react-router-dom";
+import { Sidebar } from "@/layouts/Sidebar";
+import { Header } from "@/layouts/Header";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
 export function ProtectedFullLayout() {
   return (
-    <main className="w-full min-h-screen">
-      <Outlet />
-    </main>
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
+        {/* Module & Submodule Shadcn Sidebar */}
+        <Sidebar />
+
+        {/* Main Content Inset Container */}
+        <SidebarInset className="flex flex-1 flex-col h-screen min-w-0 overflow-hidden bg-background">
+          {/* Header Bar */}
+          <Header />
+
+          {/* Page Outlet */}
+          <main className="flex-1 overflow-y-auto min-w-0">
+            <Outlet />
+          </main>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
 }
-

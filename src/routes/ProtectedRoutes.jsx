@@ -10,8 +10,10 @@ const NotFound = lazy(() => import("@/pages/General/NotFound/NotFound"));
 
 export const ProtectedRoutes = (
   <Route element={<ProtectedRoute />}>
-    {/* Dashboard / Home */}
+    {/* Dashboard / Home Overview */}
     <Route path="/" element={<Dashboard />} />
+    <Route path="app" element={<Dashboard />} />
+    <Route path="overview" element={<Dashboard />} />
 
     {/* General settings & profile */}
     <Route path="settings" element={<Settings />} />
