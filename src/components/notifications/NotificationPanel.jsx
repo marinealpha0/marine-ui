@@ -1,457 +1,357 @@
-// NotificationPanel.jsx
+// NotificationPanel.jsx - Classic & Clean Side Sheet Drawer
 import React, { useState, useRef, useEffect } from "react";
-import {
-    Bell, Briefcase, BookOpen, MessageSquare, Calendar, ChevronLeft, CheckCheck, Loader2,
-    CreditCard, BusinessIcon, Users, CommentIcon, User, UserCog, Shield
-} from "@/assets/icons";
-import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getNotifications, markAllNotificationsAsRead, markNotificationAsRead } from "@/api";
 import { useNavigate } from "react-router-dom";
+import {
+  Bell, Check, X, CheckCheck, Wrench, ShoppingCart, ShieldAlert, ShieldCheck,
+  Calendar, Ship, ArrowRight, CheckCircle2, XCircle
+} from "lucide-react";
+import { toast } from "sonner";
 import { useNotificationStore } from "@/store";
-import { formatNotificationTime, formatDisplayDateTime, formatDisplayTime, getTimelineDateLabel } from "@/utils/dateUtils";
-
-
-const ICON_MAP = {
-    Bell,
-    Briefcase,
-    BookOpen,
-    MessageSquare,
-    Calendar,
-    CreditCard,
-    BusinessIcon,
-    Users,
-    CommentIcon,
-    User,
-    UserCog,
-    Shield
-};
+import { formatDisplayDateTime, formatDisplayTime, getTimelineDateLabel } from "@/utils/dateUtils";
 
 export const NotificationPanel = ({ trigger }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState("all");
-    const panelRef = useRef();
-    const observerTarget = useRef(null);
-    const queryClient = useQueryClient();
-    const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("all"); // "all" | "approvals" | "unread"
+  const panelRef = useRef(null);
+  const navigate = useNavigate();
 
-    const notifications = useNotificationStore((state) => state.notifications);
-    const unreadCount = useNotificationStore((state) => state.unreadCount);
-    const totalRecords = useNotificationStore((state) => state.totalRecords);
+  const notifications = useNotificationStore((state) => state.notifications);
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const approveNotification = useNotificationStore((state) => state.approveNotification);
+  const declineNotification = useNotificationStore((state) => state.declineNotification);
+  const markAsRead = useNotificationStore((state) => state.markAsRead);
+  const markAllAsRead = useNotificationStore((state) => state.markAllAsRead);
+  const deleteNotification = useNotificationStore((state) => state.deleteNotification);
 
-    const getProperDateTime = (timestamp) => {
-        if (!timestamp) return "";
-        const dateLabel = getTimelineDateLabel(timestamp);
-        const timeLabel = formatDisplayTime(timestamp);
-        if (dateLabel === "Today" || dateLabel === "Yesterday") {
-            return `${dateLabel} at ${timeLabel}`;
-        }
-        return formatDisplayDateTime(timestamp);
-    };
+  const pendingActionCount = notifications.filter(
+    (n) => n.requiresAction && n.actionStatus === "pending"
+  ).length;
 
-    const mergeNotifications = useNotificationStore((state) => state.mergeNotifications);
-    const markAsRead = useNotificationStore((state) => state.markAsRead);
-    const markAllAsRead = useNotificationStore((state) => state.markAllAsRead);
+  const totalCount = notifications.length;
 
-    const markAllMutation = useMutation({
-        mutationFn: markAllNotificationsAsRead,
-        meta: { skipToast: true },
-        onSuccess: () => {
-            queryClient.invalidateQueries(['admin_notifications']);
-            markAllAsRead();
-        }
-    });
+  const getProperDateTime = (timestamp) => {
+    if (!timestamp) return "";
+    const dateLabel = getTimelineDateLabel(timestamp);
+    const timeLabel = formatDisplayTime(timestamp);
+    if (dateLabel === "Today" || dateLabel === "Yesterday") {
+      return `${dateLabel} ${timeLabel}`;
+    }
+    return formatDisplayDateTime(timestamp);
+  };
 
-    const markReadMutation = useMutation({
-        mutationFn: markNotificationAsRead,
-        meta: { skipToast: true },
-        onMutate: async (notificationId) => {
-            await queryClient.cancelQueries(['admin_notifications']);
-            const previousNotifications = queryClient.getQueryData(['admin_notifications']);
-
-            // Optimistically update Zustand store
-            markAsRead(notificationId);
-
-            queryClient.setQueryData(['admin_notifications'], (old) => {
-                if (!old) return old;
-
-                let notificationFound = false;
-
-                const newPages = old.pages.map((page) => {
-                    const newNotifications = page.data.notifications.map((note) => {
-                        if (note._id === notificationId && !note.isRead) {
-                            notificationFound = true;
-                            return { ...note, isRead: true };
-                        }
-                        return note;
-                    });
-
-                    return {
-                        ...page,
-                        data: { ...page.data, notifications: newNotifications }
-                    };
-                });
-
-                if (notificationFound && newPages.length > 0) {
-                    const firstPage = newPages[0];
-                    if (firstPage.data.unreadCount > 0) {
-                        newPages[0] = {
-                            ...firstPage,
-                            data: {
-                                ...firstPage.data,
-                                unreadCount: firstPage.data.unreadCount - 1
-                            }
-                        };
-                    }
-                }
-
-                return { ...old, pages: newPages };
-            });
-
-            return { previousNotifications };
-        },
-        onError: (err, newTodo, context) => {
-            if (context?.previousNotifications) {
-                queryClient.setQueryData(['admin_notifications'], context.previousNotifications);
-                queryClient.invalidateQueries(['admin_notifications']);
-            }
-        }
-    });
-
-    // Close on outside click
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (panelRef.current && !panelRef.current.contains(event.target)) {
-                // If clicking the bell icon itself, let the onClick handler toggle it
-                if (!event.target.closest(".bell-trigger")) {
-                    setIsOpen(false);
-                }
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    // Prevent body scroll when notification panel is open (mobile only)
-    useEffect(() => {
-        const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-        if (isMobile) {
-            document.body.style.overflow = isOpen ? "hidden" : "unset";
-        }
-        return () => { document.body.style.overflow = "unset"; };
-    }, [isOpen]);
-
-    const {
-        data,
-        fetchNextPage,
-        hasNextPage,
-        isFetchingNextPage,
-        isLoading,
-        isError
-    } = useInfiniteQuery({
-        queryKey: ["admin_notifications"],
-        meta: { skipGlobalError: true },
-        queryFn: async ({ pageParam = 1 }) => {
-            const response = await getNotifications({ page: pageParam, limit: 10 });
-            if (!response.status) {
-                throw new Error(response.errorMsg || "Failed to fetch notifications");
-            }
-            return response.data;
-        },
-        getNextPageParam: (lastPage, allPages) => {
-            const notifications = lastPage?.data?.notifications || [];
-            if (notifications.length < 10) return undefined;
-            return allPages.length + 1;
-        },
-        staleTime: Infinity,
-        refetchOnMount: false,
-        refetchOnWindowFocus: false
-    });
-
-    // Infinite scroll observer
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && hasNextPage) {
-                    fetchNextPage();
-                }
-            },
-            { threshold: 1.0, root: panelRef.current }
-        );
-
-        if (observerTarget.current) {
-            observer.observe(observerTarget.current);
-        }
-
-        return () => {
-            if (observerTarget.current) {
-                observer.unobserve(observerTarget.current);
-            }
-        };
-    }, [hasNextPage, fetchNextPage, isOpen]);
-
-    // Sync React Query data to Zustand store
-    useEffect(() => {
-        if (data) {
-            const allFetched = data.pages.flatMap((page) => page?.data?.notifications || []);
-            const backendUnreadCount = data.pages[0]?.data?.unreadCount;
-            const backendTotalRecords = data.pages[0]?.data?.totalRecords;
-            mergeNotifications(allFetched, backendUnreadCount, backendTotalRecords);
-        }
-    }, [data, mergeNotifications]);
-
-    const allNotifications = notifications;
-    const filteredNotifications = activeTab === "unread"
-        ? allNotifications.filter((note) => !note.isRead)
-        : allNotifications;
-
-    const getIconDetails = (note) => {
-
-        let IconComponent = Bell;
-        if (note.icon && ICON_MAP[note.icon]) {
-            IconComponent = ICON_MAP[note.icon];
-        } else {
-            // Legacy/fallback category logic in case note.icon is not populated
-            switch (note.category) {
-                case "courses": IconComponent = BookOpen; break;
-                case "jobs": IconComponent = Briefcase; break;
-                case "discussions": IconComponent = MessageSquare; break;
-                case "admin": IconComponent = Bell; break;
-                case "events": IconComponent = Calendar; break;
-                default: IconComponent = Bell; break;
-            }
-        }
-
-        // Use common style for all notification icons: a premium gradient box with brand coloring
-        const color = "text-sky-600 dark:text-sky-400";
-        const bg = "bg-gradient-to-b from-white to-sky-50/40 dark:from-slate-800 dark:to-sky-950/20";
-
-        return { icon: IconComponent, color, bg };
-
-    };
-
-    const handleNotificationClick = (note) => {
-        if (!note.isRead) {
-            markReadMutation.mutate(note._id);
-        }
-
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && isOpen) {
         setIsOpen(false);
-
-        // Dynamic route path navigation from Zustand/Config
-        if (note.path) {
-            navigate(note.path);
-            return;
-        }
-
-        // Fallback to legacy navigation logic
-        const { category, data } = note;
-        if (!data) return;
-
-        switch (category) {
-            case 'discussions':
-                const discussionId = data.discussionId || data.id || data._id;
-                if (discussionId) {
-                    navigate(`/discussions?discussionId=${discussionId}`);
-                }
-                break;
-            case 'jobs':
-                navigate(`/posts`);
-                break;
-            case 'courses':
-                navigate(`/course-videos`);
-                break;
-            default:
-                break;
-        }
+      }
     };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
-    return (
-        <div className="relative inline-flex">
-            {/* Trigger (your custom bell) */}
-            <div className="relative inline-flex items-center bell-trigger cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
-                {trigger}
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  const filteredNotifications = notifications.filter((note) => {
+    if (activeTab === "unread" && note.isRead) return false;
+    if (activeTab === "approvals" && (!note.requiresAction || note.actionStatus !== "pending")) {
+      return false;
+    }
+    return true;
+  });
+
+  const handleApprove = (e, note) => {
+    e.stopPropagation();
+    approveNotification(note._id);
+    toast.success(`Approved: ${note.title}`);
+  };
+
+  const handleDecline = (e, note) => {
+    e.stopPropagation();
+    declineNotification(note._id);
+    toast.error(`Declined: ${note.title}`);
+  };
+
+  const handleMarkAllRead = (e) => {
+    e.stopPropagation();
+    markAllAsRead();
+    toast.success("All notifications marked as read");
+  };
+
+  const handleCardClick = (note) => {
+    if (!note.isRead) {
+      markAsRead(note._id);
+    }
+    if (note.path) {
+      setIsOpen(false);
+      navigate(note.path);
+    }
+  };
+
+  const getPriorityDot = (priority) => {
+    switch (priority) {
+      case "critical":
+        return <span className="size-2 rounded-full bg-critical shrink-0" title="Critical" />;
+      case "high":
+        return <span className="size-2 rounded-full bg-warning shrink-0" title="High Priority" />;
+      case "medium":
+        return <span className="size-2 rounded-full bg-ocean shrink-0" title="Medium Priority" />;
+      default:
+        return <span className="size-2 rounded-full bg-muted-foreground/50 shrink-0" title="Normal" />;
+    }
+  };
+
+  const getIcon = (actionType) => {
+    switch (actionType) {
+      case "Work Order":
+        return <Wrench className="size-4 text-ocean" />;
+      case "Procurement":
+        return <ShoppingCart className="size-4 text-ocean" />;
+      case "Vessel Deviation":
+        return <ShieldAlert className="size-4 text-critical" />;
+      case "Permit To Work":
+        return <ShieldCheck className="size-4 text-emerald-600 dark:text-emerald-400" />;
+      case "Compliance":
+        return <Calendar className="size-4 text-ocean" />;
+      default:
+        return <Bell className="size-4 text-ocean" />;
+    }
+  };
+
+  return (
+    <div className="relative inline-flex">
+      {/* Trigger Bell */}
+      <div
+        className="relative inline-flex items-center bell-trigger cursor-pointer"
+        onClick={() => setIsOpen(true)}
+      >
+        {trigger}
+        {(unreadCount > 0 || pendingActionCount > 0) && (
+          <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-critical text-white text-[9px] font-bold ring-2 ring-background pointer-events-none">
+            {pendingActionCount > 0 ? `${pendingActionCount}` : unreadCount > 99 ? "99+" : unreadCount}
+          </span>
+        )}
+      </div>
+
+      {/* Classic Slide-over Sheet */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          {/* Subtle Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+            onClick={() => setIsOpen(false)}
+          />
+
+          {/* Sheet Drawer */}
+          <div
+            ref={panelRef}
+            className="relative z-50 flex h-full w-full sm:w-[440px] flex-col bg-surface text-foreground shadow-xl border-l border-border animate-in slide-in-from-right duration-250 select-none"
+          >
+            {/* Header */}
+            <div className="px-5 py-4 border-b border-border bg-surface sticky top-0 z-20 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <h3 className="text-base font-semibold text-foreground tracking-tight">
+                  Notifications
+                </h3>
                 {unreadCount > 0 && (
-                    <div className="absolute -top-1 -right-1 grid size-4 min-w-[16px] px-1 place-items-center rounded-full bg-critical text-white text-[9px] font-bold ring-2 ring-background pointer-events-none">
-                        {unreadCount > 99 ? '99+' : unreadCount}
-                    </div>
+                  <span className="px-2 py-0.5 rounded-full bg-ocean/10 text-ocean text-xs font-medium">
+                    {unreadCount} new
+                  </span>
                 )}
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleMarkAllRead}
+                  disabled={unreadCount === 0}
+                  className="text-xs font-medium text-ocean hover:underline disabled:opacity-40 disabled:no-underline transition-colors flex items-center gap-1"
+                >
+                  <CheckCheck className="size-3.5" />
+                  Mark all read
+                </button>
+
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
             </div>
 
-            {/* Notification Panel */}
-            {isOpen && (
-                <div
-                    ref={panelRef}
-                    className="
-                        fixed inset-0 z-[100] w-full h-full bg-slate-50 flex flex-col 
-                        md:absolute md:inset-auto md:top-full md:right-0 md:mt-2.5 md:w-[380px] md:h-auto md:max-h-[460px] 
-                        md:bg-white md:rounded-t-lg md:rounded-b-2xl md:overflow-visible md:shadow-2xl md:border-2 md:border-slate-200 
-                        dark:bg-gray-900 dark:md:border-gray-700 animate-in fade-in zoom-in-95 duration-200
-                    "
-                    style={{
-                        scrollbarWidth: 'none',
-                        msOverflowStyle: 'none',
-                    }}
+            {/* Segmented Tabs */}
+            <div className="px-5 py-2.5 border-b border-border bg-background/50 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setActiveTab("all")}
+                  className={`px-3 py-1 rounded-md font-medium transition-colors ${
+                    activeTab === "all"
+                      ? "bg-surface text-foreground font-semibold shadow-xs border border-border"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
-                    {/* Pointer caret arrow (Desktop only) */}
-                    <div className="hidden md:block absolute -top-[9px] right-[12px] w-3.5 h-3.5 rotate-45 bg-white border-t-2 border-l-2 border-slate-200 dark:bg-gray-900 dark:border-gray-700 z-20" />
+                  All ({totalCount})
+                </button>
 
-                    {/* Header */}
-                    <div className="px-4 py-4 md:py-3.5 border-b border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 sticky top-0 z-10 flex justify-between items-center shrink-0 rounded-t-lg">
-                        <div className="flex items-center gap-2">
-                            <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 tracking-tight">
-                                Notifications
-                            </h3>
-                        </div>
-                        
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                markAllMutation.mutate();
-                            }}
-                            disabled={markAllMutation.isPending || unreadCount === 0}
-                            className="text-xs font-bold text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 disabled:opacity-40 disabled:pointer-events-none transition-colors flex items-center gap-1 active:scale-95"
-                        >
-                            <CheckCheck className="w-3.5 h-3.5" />
-                            Mark all read
-                        </button>
-                    </div>
+                <button
+                  onClick={() => setActiveTab("approvals")}
+                  className={`px-3 py-1 rounded-md font-medium transition-colors flex items-center gap-1.5 ${
+                    activeTab === "approvals"
+                      ? "bg-surface text-foreground font-semibold shadow-xs border border-border"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <span>Approvals</span>
+                  {pendingActionCount > 0 && (
+                    <span className="px-1.5 py-0.2 rounded-full bg-critical text-white text-[10px] font-bold">
+                      {pendingActionCount}
+                    </span>
+                  )}
+                </button>
 
-                    {/* Tabs */}
-                    <div className="flex items-center gap-4 px-4 pt-2 border-b border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 shrink-0">
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setActiveTab("all");
-                            }}
-                            className={`flex items-center gap-1.5 pb-2 text-xs font-bold border-b-2 transition-all duration-200 ${
-                                activeTab === "all"
-                                    ? "text-slate-900 dark:text-white border-slate-900 dark:border-white font-extrabold"
-                                    : "text-slate-400 dark:text-gray-500 border-transparent hover:text-slate-600 dark:hover:text-gray-400"
-                            }`}
-                        >
-                            <span>All</span>
-                            {totalRecords > 0 && (
-                                <span className={`px-1.5 py-0.5 text-[10px] font-bold rounded transition-colors ${
-                                    activeTab === "all"
-                                        ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                                        : "bg-slate-100 text-slate-600 dark:bg-gray-800 dark:text-gray-400"
-                                }`}>
-                                    {totalRecords}
-                                </span>
-                            )}
-                        </button>
+                <button
+                  onClick={() => setActiveTab("unread")}
+                  className={`px-3 py-1 rounded-md font-medium transition-colors ${
+                    activeTab === "unread"
+                      ? "bg-surface text-foreground font-semibold shadow-xs border border-border"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Unread ({unreadCount})
+                </button>
+              </div>
+            </div>
 
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setActiveTab("unread");
-                            }}
-                            className={`flex items-center gap-1.5 pb-2 text-xs font-bold border-b-2 transition-all duration-200 ${
-                                activeTab === "unread"
-                                    ? "text-slate-900 dark:text-white border-slate-900 dark:border-white font-extrabold"
-                                    : "text-slate-400 dark:text-gray-500 border-transparent hover:text-slate-600 dark:hover:text-gray-400"
-                            }`}
-                        >
-                            <span>Unread</span>
-                            {unreadCount > 0 && (
-                                <span className={`px-1.5 py-0.5 text-[10px] font-bold rounded transition-colors ${
-                                    activeTab === "unread"
-                                        ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                                        : "bg-slate-100 text-slate-600 dark:bg-gray-800 dark:text-gray-400"
-                                }`}>
-                                    {unreadCount}
-                                </span>
-                            )}
-                        </button>
-                    </div>
-
-                    {/* List */}
-                    <div className="flex-1 overflow-y-auto p-3 md:p-0 scrollbar-hide">
-                        {isLoading ? (
-                            <div className="flex justify-center py-12">
-                                <Loader2 className="w-6 h-6 animate-spin text-sky-500" />
-                            </div>
-                        ) : isError && filteredNotifications.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-12 text-center px-4">
-                                <p className="text-sm text-red-500 mb-2 font-medium">Failed to load notifications</p>
-                                <button
-                                    onClick={() => fetchNextPage({ pageParam: 1 })}
-                                    className="text-xs text-sky-600 hover:underline font-bold"
-                                >
-                                    Try Again
-                                </button>
-                            </div>
-                        ) : filteredNotifications.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-16 text-center text-slate-400 dark:text-gray-500 px-6">
-                                <div className="w-12 h-12 rounded-full bg-slate-50 dark:bg-gray-800 text-slate-400 dark:text-gray-500 flex items-center justify-center mb-3 shadow-sm ring-4 ring-slate-100 dark:ring-gray-800/50">
-                                    <Bell className="w-6 h-6" />
-                                </div>
-                                <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">
-                                    {activeTab === "unread" ? "No unread notifications" : "No notifications"}
-                                </h4>
-                                <p className="text-[11px] text-slate-400 dark:text-gray-400">
-                                    {activeTab === "unread" ? "You're all caught up!" : "We will notify you when something updates."}
-                                </p>
-                            </div>
-                        ) : (
-                            <ul className="flex flex-col">
-                                {filteredNotifications.map((note, index) => {
-                                    const { icon: Icon, color, bg } = getIconDetails(note);
-                                    return (
-                                        <React.Fragment key={note._id}>
-                                            <li
-                                                className={`
-                                                    relative flex gap-3 p-3.5 cursor-pointer transition-all duration-200
-                                                    ${!note.isRead
-                                                        ? 'bg-secondary/[0.03] dark:bg-secondary/[0.05] hover:bg-secondary/[0.10] dark:hover:bg-secondary/[0.10]'
-                                                        : 'bg-transparent hover:bg-slate-50 dark:hover:bg-gray-800/40'
-                                                    }
-                                                `}
-                                                onClick={() => handleNotificationClick(note)}
-                                            >
-                                                {/* Icon with rounded square container, proper border, and unread dot overlay */}
-                                                <div className="relative shrink-0 select-none">
-                                                    <div className={`w-10 h-10 rounded-xl border-2 border-slate-200 dark:border-gray-800 ${bg} flex items-center justify-center shadow-sm`}>
-                                                        <Icon className={`w-5 h-5 ${color}`} />
-                                                    </div>
-                                                    {!note.isRead && (
-                                                        <span className="absolute -bottom-0.5 -right-0.5 block h-2.5 w-2.5 rounded-full bg-sky-500 ring-2 ring-white dark:ring-gray-900" />
-                                                    )}
-                                                </div>
-
-                                                {/* Content */}
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="flex items-baseline justify-between gap-2 mb-0.5">
-                                                        <p className={`text-xs ${!note.isRead ? 'font-bold text-slate-800 dark:text-slate-100' : 'font-semibold text-slate-600 dark:text-slate-400'} leading-snug line-clamp-1`}>
-                                                            {note.title}
-                                                        </p>
-                                                        <span className="text-[10px] text-slate-400 dark:text-gray-500 font-medium whitespace-nowrap">
-                                                            {getProperDateTime(note.createdAt)}
-                                                        </span>
-                                                    </div>
-                                                    <p className={`text-[11px] leading-relaxed line-clamp-2 ${!note.isRead ? 'text-slate-700 font-medium dark:text-slate-300' : 'text-slate-500 dark:text-slate-500'}`}>
-                                                        {note.message}
-                                                    </p>
-                                                </div>
-                                            </li>
-                                            {index < filteredNotifications.length - 1 && (
-                                                <div className="mx-4 border-b border-slate-200 dark:border-gray-700" />
-                                            )}
-                                        </React.Fragment>
-                                    );
-                                })}
-
-                                {/* Sentinel for Infinite Scroll */}
-                                <div ref={observerTarget} className="h-4 flex justify-center items-center">
-                                    {isFetchingNextPage && <Loader2 className="w-4 h-4 animate-spin text-gray-400" />}
-                                </div>
-                            </ul>
-                        )}
-
-                        {/* Mobile Bottom Spacer for reachability */}
-                        <div className="h-6 md:hidden"></div>
-                    </div>
+            {/* Notification Items List */}
+            <div className="flex-1 overflow-y-auto divide-y divide-border/60 scrollbar-hide">
+              {filteredNotifications.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-24 text-center px-4">
+                  <div className="size-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground mb-3">
+                    <Bell className="size-5" />
+                  </div>
+                  <p className="text-sm font-medium text-foreground mb-1">
+                    {activeTab === "approvals"
+                      ? "No pending approvals"
+                      : activeTab === "unread"
+                      ? "No unread notifications"
+                      : "No notifications"}
+                  </p>
+                  <p className="text-xs text-muted-foreground max-w-xs">
+                    You're all caught up! New requests and alerts will appear here.
+                  </p>
                 </div>
-            )}
+              ) : (
+                filteredNotifications.map((note) => {
+                  const isPending = note.requiresAction && note.actionStatus === "pending";
+                  const isApproved = note.actionStatus === "approved";
+                  const isDeclined = note.actionStatus === "declined";
+
+                  return (
+                    <div
+                      key={note._id}
+                      onClick={() => handleCardClick(note)}
+                      className={`group relative p-4 hover:bg-secondary/40 transition-colors flex items-start gap-3.5 cursor-pointer ${
+                        !note.isRead ? "bg-ocean/[0.02]" : ""
+                      }`}
+                    >
+                      {/* Unread Left Dot */}
+                      {!note.isRead && (
+                        <span className="absolute left-1.5 top-5 size-1.5 rounded-full bg-ocean" />
+                      )}
+
+                      {/* Icon Avatar */}
+                      <div className="size-9 rounded-full bg-secondary border border-border/60 flex items-center justify-center shrink-0 mt-0.5">
+                        {getIcon(note.actionType)}
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        {/* Header Row */}
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            {getPriorityDot(note.priority)}
+                            <h4
+                              className={`text-xs ${
+                                !note.isRead ? "font-semibold text-foreground" : "font-medium text-foreground/90"
+                              } truncate`}
+                            >
+                              {note.title}
+                            </h4>
+                          </div>
+
+                          <span className="text-[11px] text-muted-foreground whitespace-nowrap shrink-0">
+                            {getProperDateTime(note.createdAt)}
+                          </span>
+                        </div>
+
+                        {/* Metadata Tag Row */}
+                        <div className="flex items-center gap-2 mb-1.5 text-[11px] text-muted-foreground">
+                          {note.vessel && (
+                            <span className="flex items-center gap-1">
+                              <Ship className="size-3 text-ocean" />
+                              {note.vessel}
+                            </span>
+                          )}
+                          {note.vessel && note.actionType && <span>•</span>}
+                          {note.actionType && <span>{note.actionType}</span>}
+                        </div>
+
+                        {/* Description Text */}
+                        <p className="text-xs text-muted-foreground leading-normal mb-2">
+                          {note.message}
+                        </p>
+
+                        {/* Action Buttons or Status */}
+                        {note.requiresAction && (
+                          <div className="pt-2 flex items-center justify-between gap-2">
+                            {isPending ? (
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={(e) => handleApprove(e, note)}
+                                  className="px-3.5 py-1 rounded-md bg-ocean hover:bg-ocean/90 text-white text-xs font-medium transition-colors shadow-xs"
+                                >
+                                  Approve
+                                </button>
+
+                                <button
+                                  onClick={(e) => handleDecline(e, note)}
+                                  className="px-3.5 py-1 rounded-md border border-border hover:bg-critical/10 text-critical text-xs font-medium transition-colors"
+                                >
+                                  Decline
+                                </button>
+                              </div>
+                            ) : isApproved ? (
+                              <div className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">
+                                <CheckCircle2 className="size-3.5" />
+                                Approved
+                              </div>
+                            ) : isDeclined ? (
+                              <div className="inline-flex items-center gap-1 text-xs font-medium text-rose-600 dark:text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-md border border-rose-500/20">
+                                <XCircle className="size-3.5" />
+                                Declined
+                              </div>
+                            ) : null}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
+
+

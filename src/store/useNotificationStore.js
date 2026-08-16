@@ -4,43 +4,93 @@ import { formatNotificationData } from "@/constant";
 const INITIAL_DEMO_NOTIFICATIONS = [
     {
         _id: "notif-1",
-        title: "Overdue Work Orders Alert",
-        message: "8 work orders are overdue on MV Atlantic Pioneer (Oldest 42 days · Main Engine).",
+        title: "Work Order Approval Required",
+        message: "C/E M. Haugen requested approval for WO-24196 Turbocharger Overhaul on MV Atlantic Pioneer.",
         category: "admin",
-        icon: "Bell",
+        icon: "Wrench",
         isRead: false,
+        requiresAction: true,
+        actionStatus: "pending",
+        actionType: "Work Order",
+        priority: "critical",
+        vessel: "MV Atlantic Pioneer",
         path: "/app/work-orders",
-        createdAt: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
     },
     {
         _id: "notif-2",
-        title: "Critical Equipment Defect",
-        message: "No.2 Aux Engine & Boiler feed pump reported critical failure on MV Atlantic Pioneer.",
-        category: "admin",
-        icon: "Shield",
+        title: "Purchase Requisition Approval",
+        message: "PR-2026-3391 for Main Engine Cylinder Liner & Spares ($18,450) awaits TSI sign-off.",
+        category: "jobs",
+        icon: "ShoppingCart",
         isRead: false,
-        path: "/app/equipment",
-        createdAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+        requiresAction: true,
+        actionStatus: "pending",
+        actionType: "Procurement",
+        priority: "high",
+        vessel: "MT Ocean Star",
+        path: "/app/requisitions",
+        createdAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
     },
     {
         _id: "notif-3",
-        title: "Statutory Certificate Expiring",
-        message: "3 certificates (IOPP, Load Line, Safety Equipment) expiring within 30 days on MT Ocean Star.",
+        title: "Bunkering Deviation Request",
+        message: "Capt. L. Moreau submitted DEV-1042 requesting emergency bunkering stop at Fujairah Anchorage.",
         category: "admin",
-        icon: "Calendar",
+        icon: "Shield",
         isRead: false,
-        path: "/app/certificates",
-        createdAt: new Date(Date.now() - 1000 * 60 * 300).toISOString(),
+        requiresAction: true,
+        actionStatus: "pending",
+        actionType: "Vessel Deviation",
+        priority: "high",
+        vessel: "MT Pacific Endeavour",
+        path: "/app/deviations",
+        createdAt: new Date(Date.now() - 1000 * 60 * 110).toISOString(),
     },
     {
         _id: "notif-4",
-        title: "Requisition Pending Approval",
-        message: "PR-2026-3391 for Main Engine Spares submitted for shore manager approval.",
-        category: "jobs",
-        icon: "Briefcase",
+        title: "Enclosed Space Permit Request",
+        message: "PTW-4409 Enclosed Space & Hot Work Entry permit submitted for C/O A. Silva on MV Nordic Dawn.",
+        category: "events",
+        icon: "Shield",
         isRead: false,
-        path: "/app/requisitions",
-        createdAt: new Date(Date.now() - 1000 * 60 * 600).toISOString(),
+        requiresAction: true,
+        actionStatus: "pending",
+        actionType: "Permit To Work",
+        priority: "high",
+        vessel: "MV Nordic Dawn",
+        path: "/app/permit-to-work",
+        createdAt: new Date(Date.now() - 1000 * 60 * 210).toISOString(),
+    },
+    {
+        _id: "notif-5",
+        title: "Statutory Certificate Expiring",
+        message: "IOPP Certificate for MT Ocean Star expires within 26 days. Class survey scheduling recommended.",
+        category: "admin",
+        icon: "Calendar",
+        isRead: false,
+        requiresAction: false,
+        actionStatus: null,
+        actionType: "Compliance",
+        priority: "medium",
+        vessel: "MT Ocean Star",
+        path: "/app/certificates",
+        createdAt: new Date(Date.now() - 1000 * 60 * 360).toISOString(),
+    },
+    {
+        _id: "notif-6",
+        title: "Defect Report Summary",
+        message: "6 pending defect reports received from shore technical inspection team across fleet.",
+        category: "discussions",
+        icon: "Bell",
+        isRead: true,
+        requiresAction: false,
+        actionStatus: null,
+        actionType: "Maintenance",
+        priority: "low",
+        vessel: "Fleet-wide",
+        path: "/app/qms",
+        createdAt: new Date(Date.now() - 1000 * 60 * 720).toISOString(),
     },
 ].map(formatNotificationData);
 
@@ -56,6 +106,87 @@ export const useNotificationStore = create((set, get) => ({
             notifications: formatted,
             unreadCount: unreadCount !== undefined ? unreadCount : formatted.filter((n) => !n.isRead).length,
             totalRecords: totalRecords !== undefined ? totalRecords : formatted.length,
+        });
+    },
+
+    // Approve a notification request
+    approveNotification: (notificationId) => {
+        const current = get().notifications;
+        const nowIso = new Date().toISOString();
+        let wasUnread = false;
+
+        const updated = current.map((n) => {
+            if (n._id === notificationId) {
+                if (!n.isRead) wasUnread = true;
+                return {
+                    ...n,
+                    requiresAction: true,
+                    actionStatus: "approved",
+                    approvedAt: nowIso,
+                    isRead: true,
+                };
+            }
+            return n;
+        });
+
+        const newUnreadCount = wasUnread ? Math.max(0, get().unreadCount - 1) : get().unreadCount;
+
+        set({
+            notifications: updated,
+            unreadCount: newUnreadCount,
+        });
+    },
+
+    // Decline a notification request
+    declineNotification: (notificationId) => {
+        const current = get().notifications;
+        const nowIso = new Date().toISOString();
+        let wasUnread = false;
+
+        const updated = current.map((n) => {
+            if (n._id === notificationId) {
+                if (!n.isRead) wasUnread = true;
+                return {
+                    ...n,
+                    requiresAction: true,
+                    actionStatus: "declined",
+                    declinedAt: nowIso,
+                    isRead: true,
+                };
+            }
+            return n;
+        });
+
+        const newUnreadCount = wasUnread ? Math.max(0, get().unreadCount - 1) : get().unreadCount;
+
+        set({
+            notifications: updated,
+            unreadCount: newUnreadCount,
+        });
+    },
+
+    // Approve all pending actionable notifications at once
+    approveAllPending: () => {
+        const current = get().notifications;
+        const nowIso = new Date().toISOString();
+        let unreadReduced = 0;
+
+        const updated = current.map((n) => {
+            if (n.requiresAction && n.actionStatus === "pending") {
+                if (!n.isRead) unreadReduced++;
+                return {
+                    ...n,
+                    actionStatus: "approved",
+                    approvedAt: nowIso,
+                    isRead: true,
+                };
+            }
+            return n;
+        });
+
+        set({
+            notifications: updated,
+            unreadCount: Math.max(0, get().unreadCount - unreadReduced),
         });
     },
 
@@ -91,10 +222,17 @@ export const useNotificationStore = create((set, get) => ({
         formattedNew.forEach((newNote) => {
             const existing = currentMap.get(newNote._id);
             if (existing) {
-                // If it already exists, update with latest values from the server
-                currentMap.set(newNote._id, { ...existing, ...newNote });
+                // Keep local actionStatus if present, otherwise merge server updates
+                currentMap.set(newNote._id, {
+                    ...existing,
+                    ...newNote,
+                    actionStatus: existing.actionStatus || newNote.actionStatus || (newNote.requiresAction ? "pending" : null),
+                });
             } else {
-                currentMap.set(newNote._id, newNote);
+                currentMap.set(newNote._id, {
+                    ...newNote,
+                    actionStatus: newNote.actionStatus || (newNote.requiresAction ? "pending" : null),
+                });
             }
         });
 
@@ -162,3 +300,4 @@ export const useNotificationStore = create((set, get) => ({
         });
     },
 }));
+
