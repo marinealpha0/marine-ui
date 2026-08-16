@@ -1,220 +1,264 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { ChevronDown, ChevronLeft, ChevronRight } from "@/assets/icons";
-import { getIcon } from "@/utils/iconMapper";
-import { useAuthStore, useSidebarStore } from "@/store";
+import { Link, useLocation } from "react-router-dom";
+import { ChevronDown, Search, Settings, Anchor as MarineIcon } from "lucide-react";
 import { CustomTooltip } from "@/components/ui/tooltip";
+import {
+  Sidebar as ShadcnSidebarPrimitive, SidebarHeader, SidebarContent, SidebarGroup,
+  SidebarGroupLabel, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton,
+  SidebarFooter, SidebarTrigger, SidebarInput, useSidebar
+} from "@/components/ui/sidebar";
+import { navGroups, searchIndex } from "@/config/nav";
+import { cn } from "@/lib/utils";
 
+export { navGroups, searchIndex };
 
-export const Sidebar = ({ onCollapseChange }) => {
-  const user = useAuthStore((state) => state.user);
-  const isCollapsed = useSidebarStore((state) => state.isCollapsed);
-  const storeToggleCollapse = useSidebarStore((state) => state.toggleCollapse);
-  const sidebar = useSidebarStore((state) => state.sidebar);
-  const [openParent, setOpenParent] = useState(null);
-  const [lastPath, setLastPath] = useState("");
-
+export function SidebarInner({ className, showSearch = false }) {
   const location = useLocation();
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const toggleCollapse = () => {
-    storeToggleCollapse();
-    if (!isCollapsed) {
-      setOpenParent(null);
-    }
-  };
-
-  useEffect(() => {
-    if (onCollapseChange) onCollapseChange(isCollapsed);
-  }, [isCollapsed, onCollapseChange]);
-
-  const handleParentClick = (itemName) => {
-    if (isCollapsed) return;
-    setOpenParent(openParent === itemName ? null : itemName);
-  };
-
-  const isActive = (path) => location.pathname === path;
-
-  const isParentActive = (item) => {
-    if (isActive(item.href)) return true;
-    if (item.children && item.children.length > 0) {
-      return item.children.some(child => isActive(child.href));
-    }
-    return false;
-  };
-
-  // Transform API sidebar data to component format
-  const sidebarData = React.useMemo(() => {
-    if (!sidebar || sidebar.length === 0) return [];
-
-    const mappedItems = sidebar.map(item => {
-      const ParentIcon = getIcon(item.icon);
-      
-      // Map and sort submenu items alphabetically
-      const sortedChildren = item.children ? item.children.map(child => {
-        const ChildIcon = child.icon ? getIcon(child.icon) : null;
-        return {
-          name: child.name,
-          href: child.path,
-          icon: ChildIcon ? <ChildIcon className="w-4 h-4 shrink-0" /> : null
-        };
-      }).sort((a, b) => a.name.localeCompare(b.name)) : [];
-
-      return {
-        name: item.name,
-        href: item.path === '#' ? '#' : item.path,
-        icon: <ParentIcon className="w-5 h-5 shrink-0" />,
-        children: sortedChildren
-      };
-    });
-
-    // Find Dashboard item (by name or path) to pin it to the top
-    const dashboardItem = mappedItems.find(item => 
-      item.name.toLowerCase() === 'dashboard' || 
-      item.href === '/dashboard' ||
-      item.href === '/admin/dashboard'
-    );
-    const otherItems = mappedItems.filter(item => 
-      item.name.toLowerCase() !== 'dashboard' && 
-      item.href !== '/dashboard' &&
-      item.href !== '/admin/dashboard'
-    );
-
-    // Sort other main menu items alphabetically
-    otherItems.sort((a, b) => a.name.localeCompare(b.name));
-
-    // Combine with Dashboard always first
-    return dashboardItem ? [dashboardItem, ...otherItems] : otherItems;
-  }, [sidebar]);
-
-  // Open the parent menu automatically if a child route is active
-  useEffect(() => {
-    if (!isCollapsed && sidebarData.length > 0 && location.pathname !== lastPath) {
-      setLastPath(location.pathname);
-      const activeParent = sidebarData.find(item =>
-        item.children && item.children.some(child => isActive(child.href))
-      );
-      if (activeParent) {
-        setOpenParent(activeParent.name);
+  // Open group accordions state
+  const [openGroups, setOpenGroups] = useState(() => {
+    const initial = new Set(["Operations"]);
+    navGroups.forEach((g) => {
+      if (g.items.some((item) => item.to === location.pathname)) {
+        initial.add(g.group);
       }
-    }
-  }, [location.pathname, isCollapsed, sidebarData, lastPath]);
+    });
+    return initial;
+  });
+
+  // Auto-expand group accordion on navigation
+  useEffect(() => {
+    navGroups.forEach((g) => {
+      if (g.items.some((item) => item.to === location.pathname)) {
+        setOpenGroups((prev) => new Set([...prev, g.group]));
+      }
+    });
+  }, [location.pathname]);
+
+  const toggleGroup = (groupName) => {
+    setOpenGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(groupName)) {
+        next.delete(groupName);
+      } else {
+        next.add(groupName);
+      }
+      return next;
+    });
+  };
+
+  const isActiveItem = (to) => {
+    if (to === "/" || to === "/app") return location.pathname === "/" || location.pathname === "/app" || location.pathname === "/overview";
+    return location.pathname === to;
+  };
+
+  const isGroupActive = (group) => {
+    return group.items.some((item) => isActiveItem(item.to));
+  };
 
   return (
-    <aside
-      className={`group fixed top-0 mt-[64.8px] left-0 z-40 h-screen transition-[width] duration-300 border-r border-gray-200 dark:border-gray-700 ${isCollapsed ? "w-0 md:w-16" : "w-72"
-        }`}
+    <ShadcnSidebarPrimitive className={cn("relative select-none border-sidebar-border bg-sidebar text-sidebar-foreground", className)}>
+      {/* Floating Center Collapse/Expand Button */}
+      <SidebarTrigger />
 
-      aria-label="Sidebar"
-    >
-      {/* Collapse button */}
-      <button
-        type="button"
-        onClick={toggleCollapse}
-        title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-        className="absolute -right-4 top-5 flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white shadow-md text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 transition-colors"
-      >
-        {isCollapsed ? (
-          <ChevronRight className="w-4 h-4" />
-        ) : (
-          <ChevronLeft className="w-4 h-4" />
+      {/* Header with App Brand */}
+      <SidebarHeader className="p-3">
+        <div className="flex items-center justify-between gap-2 min-h-10">
+          {!isCollapsed ? (
+            <div className="flex items-center gap-2.5 min-w-0 pl-1">
+              <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-navy text-cyan font-semibold shadow-sm">
+                <MarineIcon className="size-4" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-sm font-bold tracking-tight text-sidebar-foreground truncate">
+                  MeridianOPS
+                </h2>
+                <p className="text-[11px] text-sidebar-foreground/70 truncate">Fleet Command</p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid size-8 mx-auto place-items-center rounded-lg bg-navy text-cyan shadow-sm">
+              <MarineIcon className="size-4" />
+            </div>
+          )}
+        </div>
+
+        {!isCollapsed && showSearch && (
+          <div className="relative mt-2">
+            <Search className="absolute left-2.5 top-2.5 size-3.5 text-sidebar-foreground/60" />
+            <SidebarInput
+              type="text"
+              placeholder="Search nav options..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-8"
+            />
+          </div>
         )}
-      </button>
+      </SidebarHeader>
 
-      <div
-        className={`h-full ${isCollapsed ? "md:px-2 px-0" : "px-3"
-          } py-4 overflow-y-auto bg-white dark:bg-gray-900 overflow-x-hidden`}
-      >
-        <ul className="space-y-1 text-medium">
-          {sidebarData.map((item) => (
-            <li key={item.name}>
-              {item.children.length === 0 ? (
-                <CustomTooltip
-                  content={item.name}
-                  position="right"
-                  disabled={!isCollapsed}
-                >
-                  <Link
-                    to={item.href}
-                    className={`flex items-center p-2 rounded-lg group transition-all duration-200 ${isActive(item.href)
-                      ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light"
-                      : "text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
-                      } ${isCollapsed ? "justify-center" : ""}`}
-                  >
-                    {item.icon}
-                    {!isCollapsed && (
-                      <>
-                        <span className="flex-1 ms-3 whitespace-nowrap overflow-hidden text-ellipsis">
-                          {item.name}
+      {/* Main Navigation Scroll Content */}
+      <SidebarContent className="p-2 space-y-1">
+        {/* COLLAPSED MODE: Icon-only flattened list with tooltips */}
+        {isCollapsed ? (
+          <SidebarGroup className="p-0 space-y-1">
+            {navGroups.map((group) => (
+              <div key={group.group} className="space-y-1 pb-2 mb-1 border-b border-sidebar-border/40 last:border-b-0">
+                {group.items.map((item) => {
+                  const active = isActiveItem(item.to);
+                  const Icon = item.icon;
+                  const tooltipContent = (
+                    <div className="space-y-0.5 text-left">
+                      <div className="font-semibold text-xs text-white">{item.label}</div>
+                      <div className="text-[10px] text-gray-300 font-normal">{group.group}</div>
+                      {item.badge !== undefined && (
+                        <span className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-medium bg-ocean/30 text-cyan rounded">
+                          {item.badge}
                         </span>
-                        {/* Pro/Badge logic can be re-added if API sends it, currently using basic structure */}
-                      </>
-                    )}
-                  </Link>
-                </CustomTooltip>
-              ) : (
-                <>
-                  {/* Parent Item with Submenu */}
-                  <CustomTooltip
-                    content={item.name}
-                    position="right"
-                    disabled={!isCollapsed}
-                  >
+                      )}
+                    </div>
+                  );
+
+                  return (
+                    <CustomTooltip
+                      key={item.label}
+                      content={tooltipContent}
+                      position="right"
+                      delayDuration={150}
+                    >
+                      <Link
+                        to={item.to}
+                        className={cn(
+                          "relative grid size-9 mx-auto place-items-center rounded-md text-sidebar-foreground transition-all duration-200 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group",
+                          active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium border border-sidebar-border"
+                        )}
+                      >
+                        <Icon className={cn("size-4 transition-transform group-hover:scale-110", active && "text-cyan")} />
+                        {active && (
+                          <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-cyan" />
+                        )}
+                      </Link>
+                    </CustomTooltip>
+                  );
+                })}
+              </div>
+            ))}
+          </SidebarGroup>
+        ) : (
+          /* EXPANDED MODE: Group Accordions with Sub-items */
+          <div className="space-y-2">
+            {navGroups
+              .filter((group) =>
+                searchTerm
+                  ? group.group.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    group.items.some((i) => i.label.toLowerCase().includes(searchTerm.toLowerCase()))
+                  : true
+              )
+              .map((group) => {
+                const isOpen = openGroups.has(group.group) || Boolean(searchTerm);
+                const isGroupAct = isGroupActive(group);
+
+                return (
+                  <SidebarGroup key={group.group} className="p-0 space-y-1">
+                    {/* Group Accordion Header */}
                     <button
                       type="button"
-                      onClick={() => handleParentClick(item.name)}
-                      className={`text-left flex items-center w-full p-2 rounded-lg group transition-all duration-200 ${
-                        isActive(item.href)
-                          ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light"
-                          : isParentActive(item)
-                          ? "bg-primary/5 text-primary-light dark:bg-primary/10 dark:text-primary-light"
-                          : "text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
-                      } ${isCollapsed ? "justify-center" : ""}`}
-                    >
-                      {item.icon}
-                      {!isCollapsed && (
-                        <>
-                          <span className="flex-1 ms-3 whitespace-nowrap overflow-hidden text-ellipsis">{item.name}</span>
-                          <ChevronDown
-                            className={`ml-auto w-4 h-4 transform transition-transform ${openParent === item.name ? "rotate-180" : ""
-                              }`}
-                          />
-                        </>
+                      onClick={() => toggleGroup(group.group)}
+                      className={cn(
+                        "w-full flex items-center justify-between px-2 py-1.5 text-xs font-semibold rounded-md transition-colors text-left",
+                        isGroupAct
+                          ? "bg-sidebar-accent/70 text-sidebar-accent-foreground"
+                          : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                       )}
-                    </button>
-                  </CustomTooltip>
-
-                  {/* Submenu */}
-                  {!isCollapsed && (
-                    <ul
-                      className={`pl-8 mt-1 space-y-1 overflow-hidden transition-all duration-300 ${openParent === item.name
-                        ? "max-h-[500px] opacity-100"
-                        : "max-h-0 opacity-0"
-                        }`}
                     >
-                      {item.children.map((child) => (
-                        <li key={child.name}>
-                          <Link
-                            to={child.href}
-                            className={`flex items-center p-2 rounded-lg text-sm transition-all duration-200 ${isActive(child.href)
-                              ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light"
-                              : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-                              }`}
-                          >
-                            {child.icon && (
-                              <span className="mr-2">{child.icon}</span>
-                            )}
-                            <span className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis">{child.name}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </aside >
+                      <span className="truncate uppercase tracking-wider text-[11px] font-bold">
+                        {group.group}
+                      </span>
+                      <ChevronDown
+                        className={cn(
+                          "size-3.5 text-sidebar-foreground/60 transition-transform duration-200",
+                          isOpen && "rotate-180"
+                        )}
+                      />
+                    </button>
+
+                    {/* Group Items Submenu */}
+                    {isOpen && (
+                      <SidebarMenuSub className="ml-3 my-0.5 space-y-0.5 border-sidebar-border">
+                        {group.items
+                          .filter((item) =>
+                            searchTerm ? item.label.toLowerCase().includes(searchTerm.toLowerCase()) : true
+                          )
+                          .map((item) => {
+                            const active = isActiveItem(item.to);
+                            const Icon = item.icon;
+
+                            return (
+                              <SidebarMenuSubItem key={item.label}>
+                                <SidebarMenuSubButton
+                                  asChild
+                                  isActive={active}
+                                  size="md"
+                                >
+                                  <Link
+                                    to={item.to}
+                                    className="flex items-center justify-between w-full"
+                                  >
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <Icon className={cn("size-3.5 shrink-0", active ? "text-cyan" : "text-sidebar-foreground/70")} />
+                                      <span className="truncate text-xs">{item.label}</span>
+                                    </div>
+                                    {item.badge !== undefined && (
+                                      <span className="px-1.5 py-0.2 text-[9px] font-semibold rounded bg-sidebar-accent text-sidebar-accent-foreground shrink-0">
+                                        {item.badge}
+                                      </span>
+                                    )}
+                                  </Link>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            );
+                          })}
+                      </SidebarMenuSub>
+                    )}
+                  </SidebarGroup>
+                );
+              })}
+          </div>
+        )}
+      </SidebarContent>
+
+      {/* Footer User Info */}
+      <SidebarFooter className="p-3">
+        {!isCollapsed ? (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="grid size-7 place-items-center rounded-full bg-ocean text-white text-xs font-bold">
+                AM
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-sidebar-foreground truncate">Alex Mercer</p>
+                <p className="text-[10px] text-sidebar-foreground/70 truncate">Fleet Manager</p>
+              </div>
+            </div>
+            <Link to="/settings" className="text-sidebar-foreground/70 hover:text-sidebar-foreground p-1">
+              <Settings className="size-4" />
+            </Link>
+          </div>
+        ) : (
+          <CustomTooltip content="Alex Mercer (Fleet Manager)" position="right">
+            <div className="grid size-8 mx-auto place-items-center rounded-full bg-ocean text-white text-xs font-bold shadow-sm">
+              AM
+            </div>
+          </CustomTooltip>
+        )}
+      </SidebarFooter>
+    </ShadcnSidebarPrimitive>
   );
-};
+}
+
+export function Sidebar(props) {
+  return <SidebarInner {...props} />;
+}

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Settings, LogOut } from "@/assets/icons";
-import { NotificationPanel } from "@/components/notifications/NotificationPanel";
-import { DummyAvatar } from "@/components/ui/dummyAvatar";
+import {
+  Bell, ChevronDown, Globe, Search, Ship, Building2, User, Settings, LogOut
+} from "lucide-react";
 import { useAuthStore } from "@/store";
 
 export const Header = () => {
@@ -11,11 +11,8 @@ export const Header = () => {
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
 
-  // Handle user data from context with fallbacks
-  const displayName = user?.adminName || user?.name || "Admin";
-  const profileImg = user?.profileImg;
-
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const displayName = user?.adminName || user?.name || "Alex Mercer";
+  const roleName = user?.roleName || "Fleet Manager";
 
   const handleLogout = (e) => {
     e?.preventDefault();
@@ -23,96 +20,101 @@ export const Header = () => {
     navigate("/login");
   };
 
-  const handleChangeNavigation = (path) => {
-    navigate(path);
-    setIsDropdownOpen(false);
-  };
-
   return (
-    <header className="sticky top-0 z-50 w-full bg-white flex items-center justify-end md:justify-between whitespace-nowrap border-b border-solid border-border px-10 py-3">
-      {/* Left side: Logo and Title */}
-      <div className="flex items-center gap-4 text-foreground hidden md:block">
-        <img
-          src="/logo.png"
-          alt="Udyog Vriksh"
-          className="h-10 w-auto"
-          loading="lazy"
-          decoding="sync"
-        />
+    <header className="sticky top-0 z-30 w-full bg-surface border-b border-border px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 select-none">
+      
+      {/* Left side: Filter Selector Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-0.5">
+        {/* Organization Selector */}
+        <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-background hover:bg-secondary text-xs font-medium text-foreground transition-colors shrink-0">
+          <Building2 className="size-3.5 text-ocean" />
+          <span>Oceanic Marine Group</span>
+          <ChevronDown className="size-3 text-muted-foreground ml-0.5" />
+        </button>
+
+        {/* Vessel Fleet Selector */}
+        <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-background hover:bg-secondary text-xs font-medium text-foreground transition-colors shrink-0">
+          <Ship className="size-3.5 text-ocean" />
+          <span>All Vessels</span>
+          <ChevronDown className="size-3 text-muted-foreground ml-0.5" />
+        </button>
+
+        {/* Region Selector */}
+        <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-background hover:bg-secondary text-xs font-medium text-foreground transition-colors shrink-0 hidden sm:flex">
+          <Globe className="size-3.5 text-ocean" />
+          <span>All Regions</span>
+          <ChevronDown className="size-3 text-muted-foreground ml-0.5" />
+        </button>
       </div>
 
-      {/* Right side: Icons and User Menu */}
-      <div className="flex items-center gap-5">
-        {/* Notification Panel */}
-        <NotificationPanel
-          trigger={
-            <div className="relative cursor-pointer mt-2">
-              <button className="focus:outline-none">
-                <svg
-                  className="w-6 h-6 text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-          }
-        />
+      {/* Right side: Search, Notifications & Profile */}
+      <div className="flex items-center gap-3 shrink-0">
+        
+        {/* Global Search Input */}
+        <div className="relative hidden md:flex items-center">
+          <Search className="absolute left-3 size-3.5 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search vessels, work orders, spares..."
+            className="h-8 w-64 lg:w-80 pl-9 pr-12 text-xs rounded-lg border border-border bg-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ocean"
+          />
+          <kbd className="absolute right-2.5 text-[10px] font-mono text-muted-foreground bg-secondary px-1.5 py-0.5 rounded border border-border">
+            ⌘K
+          </kbd>
+        </div>
 
-        {/* User Avatar and Dropdown */}
-        <div className="relative cursor-pointer">
+        {/* Notification Bell */}
+        <button className="relative grid size-8 place-items-center rounded-lg border border-border bg-background hover:bg-secondary text-foreground transition-colors">
+          <Bell className="size-4" />
+          <span className="absolute -top-1 -right-1 grid size-4 place-items-center rounded-full bg-critical text-white text-[9px] font-bold">
+            4
+          </span>
+        </button>
+
+        {/* User Profile Pill */}
+        <div className="relative">
           <button
-            onClick={toggleDropdown}
-            className="flex items-center gap-3 focus:outline-none"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-2.5 p-1 pr-2.5 rounded-lg border border-border bg-background hover:bg-secondary transition-colors"
           >
-            {profileImg && profileImg !== "undefined" ? (
-              <div
-                className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-                style={{ backgroundImage: `url(${profileImg})` }}
-              />
-            ) : (
-              <DummyAvatar name={displayName} />
-            )}
-            <span className="text-sm text-medium text-foreground hidden md:block">
-              {displayName}
-            </span>
+            <div className="grid size-7 place-items-center rounded-full bg-ocean text-white font-bold text-xs shadow-sm">
+              AM
+            </div>
+            <div className="text-left hidden sm:block">
+              <span className="block text-xs font-semibold leading-none text-foreground">{displayName}</span>
+              <span className="block text-[10px] text-muted-foreground leading-tight mt-0.5">{roleName}</span>
+            </div>
+            <ChevronDown className="size-3 text-muted-foreground" />
           </button>
+
+          {/* Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute top-full right-0 mt-2 bg-white rounded-md shadow-lg border border-border w-48 z-10">
-              <ul className="py-1">
-                <li onClick={() => handleChangeNavigation("/profile")}>
-                  <a className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-muted cursor-pointer transition-colors duration-150">
-                    <User className="w-4 h-4 mr-2.5 text-gray-500 dark:text-gray-400" />
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li onClick={() => handleChangeNavigation("/settings")}>
-                  <a className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-muted cursor-pointer transition-colors duration-150">
-                    <Settings className="w-4 h-4 mr-2.5 text-gray-500 dark:text-gray-400" />
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li onClick={handleLogout}>
-                  <a
-                    className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30 dark:hover:text-red-400 transition-colors duration-150 cursor-pointer group"
-                  >
-                    <LogOut className="w-4 h-4 mr-2.5 text-gray-500 dark:text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors" />
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
+            <div className="absolute right-0 mt-2 w-48 rounded-xl border border-border bg-surface shadow-lg py-1 z-50 text-xs">
+              <button
+                onClick={() => { navigate("/app/profile"); setIsDropdownOpen(false); }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-foreground hover:bg-secondary text-left"
+              >
+                <User className="size-3.5 text-ocean" /> Profile Settings
+              </button>
+              <button
+                onClick={() => { navigate("/app/settings"); setIsDropdownOpen(false); }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-foreground hover:bg-secondary text-left"
+              >
+                <Settings className="size-3.5 text-ocean" /> System Settings
+              </button>
+              <div className="my-1 border-t border-border" />
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-2 px-3 py-2 text-critical hover:bg-critical-soft text-left font-medium"
+              >
+                <LogOut className="size-3.5" /> Sign Out
+              </button>
             </div>
           )}
         </div>
+
       </div>
+
     </header>
   );
 };
