@@ -26,6 +26,7 @@ import { ReferredUserTableConfig } from "./configurations/ReferredUserTableConfi
 import { LeadTableConfig } from "./configurations/LeadTableConfig";
 import { WorkshopTableConfig } from "./configurations/WorkshopTableConfig";
 import { RegistrationTableConfig } from "./configurations/RegistrationTableConfig";
+import { DrillsTableConfig } from "./configurations/DrillsTableConfig";
 import { KeyboardArrowDownIcon as KeyboardArrowDown } from "@/assets/icons";
 import { getRowIdentifier } from "./TableUtils";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ArrowUp, ArrowDown, ArrowUpDown } from "@/assets/icons";
@@ -161,6 +162,7 @@ const tableConfigurations = {
   lead: LeadTableConfig,
   workshops: WorkshopTableConfig,
   registrations: RegistrationTableConfig,
+  drills: DrillsTableConfig,
 };
 
 const SortableHeader = ({ label, sortKey, currentSort, onSort, className, sortable = true, truncateLabel = false }) => {

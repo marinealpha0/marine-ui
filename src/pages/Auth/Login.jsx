@@ -71,7 +71,11 @@ const AdminLogin = () => {
       },
       {
         onSuccess: (response) => {
-          login(response.jwtToken || response.accessToken, response.user || response);
+          login(
+            response.jwtToken || response.accessToken || response.access_token,
+            response.user || response,
+            response.refreshToken || response.refresh_token
+          );
           setTimeout(() => navigate("/"), 1000);
         },
         onError: (error) => {

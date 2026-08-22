@@ -7,6 +7,7 @@ const Dashboard = lazy(() => import("@/pages/Dashboard/Dashboard"));
 const Settings = lazy(() => import("@/pages/General/Settings/Settings"));
 const Profile = lazy(() => import("@/pages/General/Profile/Profile"));
 const NotFound = lazy(() => import("@/pages/General/NotFound/NotFound"));
+const DrillsPage = lazy(() => import("@/pages/Drills/DrillsPage"));
 
 export const ProtectedRoutes = (
   <Route element={<ProtectedRoute />}>
@@ -14,6 +15,10 @@ export const ProtectedRoutes = (
     <Route path="/" element={<Dashboard />} />
     <Route path="app" element={<Dashboard />} />
     <Route path="overview" element={<Dashboard />} />
+
+    {/* Compliance & QHSE */}
+    <Route path="drills" element={<DrillsPage />} />
+    <Route path="app/drills" element={<DrillsPage />} />
 
     {/* General settings & profile */}
     <Route path="settings" element={<Settings />} />

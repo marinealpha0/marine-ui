@@ -1,6 +1,6 @@
 // Simple API client for making HTTP requests using axios
 import axios from 'axios';
-import { getAccessToken, setAccessToken } from "@/store/useAuthStore";
+import { getAccessToken, setAccessToken, getRefreshToken, setRefreshToken } from "@/store/useAuthStore";
 import ENDPOINTS from "@/constant/Endpoints";
 
 // Get the base URL from environment variables or use default
@@ -74,17 +74,22 @@ axiosInstance.interceptors.response.use(
 
       try {
         // Use a clean axios instance for refresh to avoid interceptors
+        const currentRefreshToken = getRefreshToken();
         const response = await axios.post(
           `${API_BASE_URL}${ENDPOINTS.auth.refresh}`,
-          {},
+          currentRefreshToken ? { refreshToken: currentRefreshToken } : {},
           { withCredentials: true }
         );
 
-        const { access_token, accessToken, jwtToken } = response.data;
+        const { access_token, accessToken, jwtToken, refreshToken: newRefreshToken, refresh_token } = response.data || {};
         const newToken = access_token || accessToken || jwtToken;
+        const rToken = newRefreshToken || refresh_token;
 
         if (newToken) {
           setAccessToken(newToken);
+          if (rToken) {
+            setRefreshToken(rToken);
+          }
           axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + newToken;
           originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
           processQueue(null, newToken);

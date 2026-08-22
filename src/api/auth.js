@@ -1,5 +1,6 @@
 import { fetchApi } from "@/config/apiClient";
 import ENDPOINTS from "@/constant/Endpoints";
+import { getRefreshToken } from "@/store/useAuthStore";
 
 // Admin login API call
 export const adminLogin = async (userDetails) => {
@@ -25,8 +26,9 @@ export const logoutApi = async () => {
 };
 
 // Manual Refresh Token API call (usually handled automatically by apiClient interceptor)
-export const refreshApi = async () => {
-  return fetchApi(ENDPOINTS.auth.refresh, "POST");
+export const refreshApi = async (refreshToken) => {
+  const token = refreshToken || getRefreshToken();
+  return fetchApi(ENDPOINTS.auth.refresh, "POST", token ? { refreshToken: token } : {});
 };
 
 // Request password reset link (Forgot Password)

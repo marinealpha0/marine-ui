@@ -23,13 +23,23 @@ export const useAuthStore = create((set, get) => ({
   user: null,
   isAuthenticated: false,
   token: null,
+  refreshToken: localStorage.getItem('refreshToken') || null,
 
   setUser: (user) => set((state) => ({ user: cleanUserData(user, state.token) })),
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 
-  login: (token, userData) => {
+  login: (token, userData, refreshTokenParam = null) => {
     const formattedUser = cleanUserData(userData, token);
-    set({ isAuthenticated: true, user: formattedUser, token });
+    const rToken = refreshTokenParam || userData?.refreshToken || userData?.refresh_token || null;
+    if (rToken) {
+      localStorage.setItem('refreshToken', rToken);
+    }
+    set({
+      isAuthenticated: true,
+      user: formattedUser,
+      token,
+      refreshToken: rToken || get().refreshToken,
+    });
 
     if (userData?.actions) {
       usePermissionStore.getState().setPermissions(userData.actions);
@@ -51,8 +61,9 @@ export const useAuthStore = create((set, get) => ({
 
     clearAdminData();
     localStorage.removeItem('uv_last_activity');
+    localStorage.removeItem('refreshToken');
 
-    set({ isAuthenticated: false, user: null, token: null });
+    set({ isAuthenticated: false, user: null, token: null, refreshToken: null });
     usePermissionStore.getState().clearPermissions();
     useSidebarStore.getState().clearSidebar();
     useNotificationStore.getState().clearNotifications();
@@ -62,4 +73,13 @@ export const useAuthStore = create((set, get) => ({
 // Export helper functions to query/mutate the Zustand token state outside React
 export const getAccessToken = () => useAuthStore.getState().token;
 export const setAccessToken = (token) => useAuthStore.setState({ token });
+export const getRefreshToken = () => useAuthStore.getState().refreshToken || localStorage.getItem('refreshToken');
+export const setRefreshToken = (refreshToken) => {
+  if (refreshToken) {
+    localStorage.setItem('refreshToken', refreshToken);
+  } else {
+    localStorage.removeItem('refreshToken');
+  }
+  useAuthStore.setState({ refreshToken });
+};
 export const clearAccessToken = () => useAuthStore.setState({ token: null });
