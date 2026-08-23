@@ -6,16 +6,39 @@ import { useNotificationStore } from "./useNotificationStore";
 
 const cleanUserData = (userData, currentToken) => {
   if (!userData) return null;
-  const role = userData.adminRole || userData.role || "";
+  const target = userData?.user || userData?.data?.user || userData;
+  const role = (typeof target.role === 'string' ? target.role : target.role?.roleName) || target.adminRole || target.roleName || "";
+  const firstName = target.firstName || "";
+  const lastName = target.lastName || "";
+  let name = target.adminName || target.name || "";
+  if (!name && (firstName || lastName)) {
+    name = `${firstName} ${lastName}`.trim();
+  }
+
   return {
-    adminId: userData.adminId || userData._id || userData.id || null,
-    adminName: userData.adminName || userData.name || "",
+    ...target,
+    id: target.id || target._id || target.adminId || null,
+    adminId: target.adminId || target._id || target.id || null,
+    adminName: name,
+    name: name,
+    firstName: firstName,
+    lastName: lastName,
+    email: target.email || target.adminEmail || "",
+    adminEmail: target.adminEmail || target.email || "",
+    role: target.role || role,
     adminRole: role,
-    jwtToken: userData.jwtToken || userData.token || currentToken || null,
-    profileImg: userData.profileImg || null,
-    sessionId: userData.sessionId || null,
-    success: userData.success ?? true,
-    isSystemUser: typeof role === 'string' && role.toLowerCase() === 'super admin',
+    roleName: role,
+    organisation: target.organisation || null,
+    fleet: target.fleet || null,
+    jwtToken: target.jwtToken || target.token || currentToken || null,
+    profileImg: target.profileImg || null,
+    sessionId: target.sessionId || null,
+    success: target.success ?? true,
+    isSystemUser: typeof role === 'string' && (
+      role.toLowerCase().includes('super admin') ||
+      role.toLowerCase().includes('organisation_admin') ||
+      role.toLowerCase().includes('organization_admin')
+    ),
   };
 };
 
@@ -29,15 +52,16 @@ export const useAuthStore = create((set, get) => ({
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 
   login: (token, userData, refreshTokenParam = null) => {
-    const formattedUser = cleanUserData(userData, token);
-    const rToken = refreshTokenParam || userData?.refreshToken || userData?.refresh_token || null;
+    const actualToken = typeof token === 'string' ? token : (token?.accessToken || token?.jwtToken || token?.access_token || token?.data?.accessToken);
+    const formattedUser = cleanUserData(userData, actualToken);
+    const rToken = refreshTokenParam || userData?.refreshToken || userData?.refresh_token || userData?.data?.refreshToken || userData?.data?.refresh_token || null;
     if (rToken) {
       localStorage.setItem('refreshToken', rToken);
     }
     set({
       isAuthenticated: true,
       user: formattedUser,
-      token,
+      token: actualToken,
       refreshToken: rToken || get().refreshToken,
     });
 

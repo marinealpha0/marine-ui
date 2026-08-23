@@ -69,7 +69,7 @@ const InfoRow = ({ icon, label, value, tooltip }) => {
 
 const AdminProfileCard = ({ user }) => {
   const fullName = user
-    ? `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim()
+    ? (user.adminName || user.name || `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim())
     : "";
 
   const initials = fullName
@@ -102,7 +102,7 @@ const AdminProfileCard = ({ user }) => {
 
         {/* Role badge top-right */}
         <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white backdrop-blur-sm border border-white/25">
-          {user?.role?.roleName || "Admin"}
+          {typeof user?.role === 'string' ? user.role : (user?.role?.roleName || user?.adminRole || "Admin")}
         </span>
       </div>
 
@@ -157,7 +157,7 @@ const AdminProfileCard = ({ user }) => {
             </svg>
           }
           label="Email"
-          value={user?.adminEmail}
+          value={user?.adminEmail || user?.email}
         />
         <InfoRow
           icon={

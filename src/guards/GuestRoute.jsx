@@ -17,7 +17,7 @@ const GuestRoute = () => {
   if (loading) return null;
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/app" replace />;
   }
 
   return <Outlet />;

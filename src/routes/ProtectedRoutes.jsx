@@ -14,7 +14,9 @@ export const ProtectedRoutes = (
     {/* Dashboard / Home Overview */}
     <Route path="/" element={<Dashboard />} />
     <Route path="app" element={<Dashboard />} />
+    <Route path="dashboard" element={<Dashboard />} />
     <Route path="overview" element={<Dashboard />} />
+    <Route path="app/dashboard" element={<Dashboard />} />
 
     {/* Compliance & QHSE */}
     <Route path="drills" element={<DrillsPage />} />
@@ -22,7 +24,9 @@ export const ProtectedRoutes = (
 
     {/* General settings & profile */}
     <Route path="settings" element={<Settings />} />
+    <Route path="app/settings" element={<Settings />} />
     <Route path="profile" element={<Profile />} />
+    <Route path="app/profile" element={<Profile />} />
 
     {/* 404 fallback */}
     <Route path="*" element={<NotFound />} />

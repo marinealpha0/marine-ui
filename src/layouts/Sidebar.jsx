@@ -10,6 +10,8 @@ import {
 import { navGroups, searchIndex } from "@/config/nav";
 import { cn } from "@/lib/utils";
 
+import { useAuthStore } from "@/store";
+
 export { navGroups, searchIndex };
 
 export function SidebarInner({ className, showSearch = false }) {
@@ -17,6 +19,19 @@ export function SidebarInner({ className, showSearch = false }) {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
   const [searchTerm, setSearchTerm] = useState("");
+
+  const user = useAuthStore((state) => state.user);
+  const displayName = user?.adminName || user?.name || (user?.firstName ? `${user.firstName} ${user.lastName || ""}`.trim() : "") || "Alex Mercer";
+  const roleName = (typeof user?.role === 'string' ? user.role : user?.role?.roleName) || user?.adminRole || user?.roleName || "Fleet Manager";
+
+  const getInitials = (name) => {
+    if (!name) return "AM";
+    const parts = name.trim().split(" ");
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
 
   // Open group accordions state
   const [openGroups, setOpenGroups] = useState(() => {
@@ -236,11 +251,11 @@ export function SidebarInner({ className, showSearch = false }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 min-w-0">
               <div className="grid size-7 place-items-center rounded-full bg-ocean text-white text-xs font-bold">
-                AM
+                {getInitials(displayName)}
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-sidebar-foreground truncate">Alex Mercer</p>
-                <p className="text-[10px] text-sidebar-foreground/70 truncate">Fleet Manager</p>
+                <p className="text-xs font-semibold text-sidebar-foreground truncate">{displayName}</p>
+                <p className="text-[10px] text-sidebar-foreground/70 truncate">{roleName}</p>
               </div>
             </div>
             <Link to="/settings" className="text-sidebar-foreground/70 hover:text-sidebar-foreground p-1">
@@ -248,9 +263,9 @@ export function SidebarInner({ className, showSearch = false }) {
             </Link>
           </div>
         ) : (
-          <CustomTooltip content="Alex Mercer (Fleet Manager)" position="right">
+          <CustomTooltip content={`${displayName} (${roleName})`} position="right">
             <div className="grid size-8 mx-auto place-items-center rounded-full bg-ocean text-white text-xs font-bold shadow-sm">
-              AM
+              {getInitials(displayName)}
             </div>
           </CustomTooltip>
         )}

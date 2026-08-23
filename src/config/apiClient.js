@@ -81,7 +81,8 @@ axiosInstance.interceptors.response.use(
           { withCredentials: true }
         );
 
-        const { access_token, accessToken, jwtToken, refreshToken: newRefreshToken, refresh_token } = response.data || {};
+        const payload = response.data?.data || response.data || {};
+        const { access_token, accessToken, jwtToken, refreshToken: newRefreshToken, refresh_token } = payload;
         const newToken = access_token || accessToken || jwtToken;
         const rToken = newRefreshToken || refresh_token;
 

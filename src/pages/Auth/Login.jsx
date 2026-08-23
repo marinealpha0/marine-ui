@@ -67,16 +67,22 @@ const AdminLogin = () => {
       {
         email: data.email,
         password: data.password,
-        fcmToken,
+        // fcmToken,
       },
       {
         onSuccess: (response) => {
+          const resData = response?.data || response;
+          const accessToken = resData?.accessToken || resData?.jwtToken || resData?.access_token || response?.accessToken || response?.jwtToken || response?.access_token;
+          const refreshToken = resData?.refreshToken || resData?.refresh_token || response?.refreshToken || response?.refresh_token;
+          const userObj = resData?.user || response?.user || resData;
+
           login(
-            response.jwtToken || response.accessToken || response.access_token,
-            response.user || response,
-            response.refreshToken || response.refresh_token
+            accessToken,
+            userObj,
+            refreshToken
           );
-          setTimeout(() => navigate("/"), 1000);
+          toast.success("Login successful");
+          navigate("/app")
         },
         onError: (error) => {
           toast.error(error.message || MESSAGES.TOAST.AUTH.LOGIN.ERROR.LOGIN_FAILED);

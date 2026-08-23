@@ -12,8 +12,19 @@ export const Header = () => {
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
 
-  const displayName = user?.adminName || user?.name || "Alex Mercer";
-  const roleName = user?.roleName || "Fleet Manager";
+  const displayName = user?.adminName || user?.name || (user?.firstName ? `${user.firstName} ${user.lastName || ""}`.trim() : "") || "Alex Mercer";
+  const roleName = (typeof user?.role === 'string' ? user.role : user?.role?.roleName) || user?.adminRole || user?.roleName || "Fleet Manager";
+  const orgName = user?.organisation?.name || "Oceanic Marine Group";
+  const fleetName = user?.fleet?.name || "All Vessels";
+
+  const getInitials = (name) => {
+    if (!name) return "AM";
+    const parts = name.trim().split(" ");
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
 
   const handleLogout = (e) => {
     e?.preventDefault();
@@ -29,14 +40,14 @@ export const Header = () => {
         {/* Organization Selector */}
         <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-background hover:bg-secondary text-xs font-medium text-foreground transition-colors shrink-0">
           <Building2 className="size-3.5 text-ocean" />
-          <span>Oceanic Marine Group</span>
+          <span>{orgName}</span>
           <ChevronDown className="size-3 text-muted-foreground ml-0.5" />
         </button>
 
         {/* Vessel Fleet Selector */}
         <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-background hover:bg-secondary text-xs font-medium text-foreground transition-colors shrink-0">
           <Ship className="size-3.5 text-ocean" />
-          <span>All Vessels</span>
+          <span>{fleetName}</span>
           <ChevronDown className="size-3 text-muted-foreground ml-0.5" />
         </button>
 
@@ -80,7 +91,7 @@ export const Header = () => {
             className="flex items-center gap-2.5 p-1 pr-2.5 rounded-lg border border-border bg-background hover:bg-secondary transition-colors"
           >
             <div className="grid size-7 place-items-center rounded-full bg-ocean text-white font-bold text-xs shadow-sm">
-              AM
+              {getInitials(displayName)}
             </div>
             <div className="text-left hidden sm:block">
               <span className="block text-xs font-semibold leading-none text-foreground">{displayName}</span>
