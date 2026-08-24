@@ -3,53 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { riskFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const riskRegisterCatalog = [
-  {
-    id: "RA-118",
-    hazard: "Enclosed space entry — cargo hold inspection",
-    vessel: "MV Atlantic Pioneer",
-    l: 3,
-    s: 5,
-    owner: "C/O M. Bakker",
-    mitigation: "Permit + gas testing",
-    due: "2026-08-21",
-    status: "Open",
-  },
-  {
-    id: "RA-121",
-    hazard: "Hot work adjacent to fuel tank",
-    vessel: "MT Gulf Navigator",
-    l: 2,
-    s: 5,
-    owner: "C/E P. Dsouza",
-    mitigation: "Isolation & fire watch",
-    due: "2026-08-18",
-    status: "Mitigated",
-  },
-  {
-    id: "RA-124",
-    hazard: "Working aloft — radar mast servicing",
-    vessel: "MT Ocean Star",
-    l: 3,
-    s: 4,
-    owner: "2/O A. Ivanov",
-    mitigation: "Fall arrest, toolbox talk",
-    due: "2026-08-27",
-    status: "Open",
-  },
-  {
-    id: "RA-127",
-    hazard: "Main switchboard live testing",
-    vessel: "MV Pacific Endeavour",
-    l: 2,
-    s: 4,
-    owner: "ETO J. Rivera",
-    mitigation: "LOTO procedure",
-    due: "2026-09-04",
-    status: "Under Review",
-  },
-];
+export const riskRegisterCatalog = tablesData.riskCatalog;
 
 export default function RiskPage() {
   const [showFilter, setShowFilter] = useState(false);

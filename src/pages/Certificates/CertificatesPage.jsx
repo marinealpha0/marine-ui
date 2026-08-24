@@ -3,65 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { certificateFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const certificatesCatalog = [
-  {
-    name: "Safety Management Certificate",
-    vessel: "MT Ocean Star",
-    issuer: "DNV",
-    expiry: "2027-04-10",
-    status: "Valid",
-  },
-  {
-    name: "International Oil Pollution Prevention",
-    vessel: "MV Pacific Endeavour",
-    issuer: "Lloyd's Register",
-    expiry: "2026-09-01",
-    status: "Expiring",
-  },
-  {
-    name: "Cargo Ship Safety Equipment",
-    vessel: "MT Gulf Navigator",
-    issuer: "ABS",
-    expiry: "2026-06-13",
-    status: "Expired",
-  },
-  {
-    name: "Ballast Water Management Certificate",
-    vessel: "MV Atlantic Pioneer",
-    issuer: "Bureau Veritas",
-    expiry: "2028-02-19",
-    status: "Valid",
-  },
-  {
-    name: "ISPS Ship Security Certificate",
-    vessel: "MV Baltic Carrier",
-    issuer: "DNV",
-    expiry: "2026-08-29",
-    status: "Expiring",
-  },
-  {
-    name: "Load Line Certificate",
-    vessel: "MV Coral Trader",
-    issuer: "ClassNK",
-    expiry: "2027-01-17",
-    status: "Valid",
-  },
-  {
-    name: "MLC 2006 Maritime Labour Certificate",
-    vessel: "OSV Arctic Guardian",
-    issuer: "DNV",
-    expiry: "2029-03-04",
-    status: "Valid",
-  },
-  {
-    name: "Air Pollution Prevention (IAPP)",
-    vessel: "MT Nordic Spirit",
-    issuer: "Lloyd's Register",
-    expiry: "2030-07-21",
-    status: "Pending Approval",
-  },
-];
+export const certificatesCatalog = tablesData.certificatesCatalog;
 
 export default function CertificatesPage() {
   const [showFilter, setShowFilter] = useState(false);

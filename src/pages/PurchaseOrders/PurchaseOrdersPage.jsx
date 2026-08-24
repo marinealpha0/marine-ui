@@ -3,63 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { purchaseOrderFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const purchaseOrdersData = [
-  {
-    po: "PO-2026-1184",
-    supplier: "Wärtsilä Services",
-    vessel: "MT Ocean Star",
-    amount: "84,200",
-    currency: "USD",
-    expected: "2026-08-19",
-    status: "Ordered",
-  },
-  {
-    po: "PO-2026-1190",
-    supplier: "Alfa Laval Marine",
-    vessel: "MT Nordic Spirit",
-    amount: "21,750",
-    currency: "EUR",
-    expected: "2026-08-14",
-    status: "Partially Received",
-  },
-  {
-    po: "PO-2026-1201",
-    supplier: "MAN Energy Solutions",
-    vessel: "MV Pacific Endeavour",
-    amount: "156,900",
-    currency: "USD",
-    expected: "2026-09-02",
-    status: "Pending Approval",
-  },
-  {
-    po: "PO-2026-1207",
-    supplier: "Kongsberg Maritime",
-    vessel: "OSV Arctic Guardian",
-    amount: "43,100",
-    currency: "NOK",
-    expected: "2026-08-22",
-    status: "Approved",
-  },
-  {
-    po: "PO-2026-1211",
-    supplier: "Survitec Group",
-    vessel: "MV Baltic Carrier",
-    amount: "9,820",
-    currency: "USD",
-    expected: "2026-08-12",
-    status: "Received",
-  },
-  {
-    po: "PO-2026-1215",
-    supplier: "Jotun Marine Coatings",
-    vessel: "MV Coral Trader",
-    amount: "67,400",
-    currency: "USD",
-    expected: "2026-08-30",
-    status: "Overdue",
-  },
-];
+export const purchaseOrdersData = tablesData.purchaseOrdersCatalog;
 
 const poWorkflowSteps = [
   { num: 1, label: "Pending", state: "done" },

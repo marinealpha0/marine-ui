@@ -3,57 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { requisitionFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const openRequisitionsData = [
-  {
-    id: "REQ-8842",
-    description: "Engine room consumables — Q3",
-    vessel: "MT Nordic Spirit",
-    requester: "2/E J. Fernandes",
-    value: "USD 8,420",
-    status: "Approved",
-  },
-  {
-    id: "REQ-8851",
-    description: "ME cylinder head spares",
-    vessel: "MT Ocean Star",
-    requester: "C/E S. Okafor",
-    value: "USD 41,300",
-    status: "Under Review",
-  },
-  {
-    id: "REQ-8858",
-    description: "Deck paint & coatings",
-    vessel: "MV Coral Trader",
-    requester: "C/O M. Bakker",
-    value: "USD 12,780",
-    status: "Draft",
-  },
-  {
-    id: "REQ-8860",
-    description: "BWTS UV lamps (set of 4)",
-    vessel: "MV Baltic Carrier",
-    requester: "2/E L. Chen",
-    value: "USD 5,800",
-    status: "Ordered",
-  },
-  {
-    id: "REQ-8863",
-    description: "Safety equipment renewal",
-    vessel: "MV Atlantic Pioneer",
-    requester: "Safety Officer",
-    value: "USD 9,140",
-    status: "Partially Received",
-  },
-  {
-    id: "REQ-8865",
-    description: "Turbocharger cartridge exchange",
-    vessel: "MT Gulf Navigator",
-    requester: "C/E P. Dsouza",
-    value: "USD 74,000",
-    status: "Submitted",
-  },
-];
+export const openRequisitionsData = tablesData.requisitionsCatalog;
 
 const workflowSteps = [
   { num: 1, label: "Draft", state: "done" },

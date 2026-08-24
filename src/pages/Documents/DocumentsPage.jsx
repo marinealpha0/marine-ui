@@ -3,49 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { documentFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const documentsCatalog = [
-  {
-    name: "SMS Manual Rev. 14",
-    type: "Procedure",
-    scope: "Fleet-wide",
-    owner: "QHSE",
-    updated: "2026-07-18",
-    status: "Approved",
-  },
-  {
-    name: "ME Maker Manual 6S60ME-C",
-    type: "Technical",
-    scope: "MT Ocean Star",
-    owner: "Technical",
-    updated: "2026-05-02",
-    status: "Approved",
-  },
-  {
-    name: "Ballast Water Management Plan",
-    type: "Plan",
-    scope: "MV Baltic Carrier",
-    owner: "Marine",
-    updated: "2026-06-11",
-    status: "Pending Approval",
-  },
-  {
-    name: "Garbage Management Plan",
-    type: "Plan",
-    scope: "MV Coral Trader",
-    owner: "Marine",
-    updated: "2026-03-27",
-    status: "Approved",
-  },
-  {
-    name: "PSC Inspection Report — Busan",
-    type: "Report",
-    scope: "MV Pacific Endeavour",
-    owner: "Master",
-    updated: "2026-08-01",
-    status: "Under Review",
-  },
-];
+export const documentsCatalog = tablesData.documentsCatalog;
 
 export default function DocumentsPage() {
   const [showFilter, setShowFilter] = useState(false);

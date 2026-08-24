@@ -3,45 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { safetyMeetingFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const safetyMeetingsCatalog = [
-  {
-    id: "SM-0912",
-    meeting: "Monthly Safety Committee Meeting",
-    vessel: "MT Ocean Star",
-    date: "2026-08-14",
-    chair: "Master",
-    actions: 3,
-    status: "To Submit",
-  },
-  {
-    id: "SM-0908",
-    meeting: "Shipboard Management Review",
-    vessel: "MV Atlantic Pioneer",
-    date: "2026-08-07",
-    chair: "Master",
-    actions: 5,
-    status: "Ship Review",
-  },
-  {
-    id: "SM-0901",
-    meeting: "Toolbox Talk — Hot Work",
-    vessel: "MT Nordic Spirit",
-    date: "2026-08-02",
-    chair: "C/E",
-    actions: 0,
-    status: "Completed",
-  },
-  {
-    id: "SM-0898",
-    meeting: "Monthly Safety Committee Meeting",
-    vessel: "MV Pacific Endeavour",
-    date: "2026-07-28",
-    chair: "Master",
-    actions: 2,
-    status: "Pending Review",
-  },
-];
+export const safetyMeetingsCatalog = tablesData.safetyMeetingsCatalog;
 
 export default function SafetyMeetingsPage() {
   const [showFilter, setShowFilter] = useState(false);

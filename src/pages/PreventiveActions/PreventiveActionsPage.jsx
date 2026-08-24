@@ -3,41 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { capaFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const preventiveActionsCatalog = [
-  {
-    id: "PA-1142",
-    action: "Introduce weekly ER lighting inspection",
-    scope: "Fleet-wide",
-    owner: "QHSE D. Petrov",
-    due: "2026-08-30",
-    status: "Open",
-  },
-  {
-    id: "PA-1139",
-    action: "Revise purifier overhaul checklist",
-    scope: "MT Nordic Spirit",
-    owner: "C/E A. Nowak",
-    due: "2026-09-06",
-    status: "In Progress",
-  },
-  {
-    id: "PA-1134",
-    action: "Crew briefing on enclosed space entry",
-    scope: "MV Atlantic Pioneer",
-    owner: "Master L. Hansen",
-    due: "2026-08-05",
-    status: "Overdue",
-  },
-  {
-    id: "PA-1130",
-    action: "Add vibration trending to ME turbocharger",
-    scope: "MT Gulf Navigator",
-    owner: "Supt. R. Grant",
-    due: "2026-09-15",
-    status: "To Be Verified",
-  },
-];
+export const preventiveActionsCatalog = tablesData.preventiveActionsCatalog;
 
 export default function PreventiveActionsPage() {
   const [showFilter, setShowFilter] = useState(false);

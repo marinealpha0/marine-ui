@@ -4,49 +4,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, ProgressBar, 
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { voyageFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const handoverRegisterData = [
-  {
-    id: "HO-1188",
-    rank: "Chief Engineer",
-    vessel: "MT Ocean Star",
-    outgoing: "S. Okafor",
-    incoming: "P. Dsouza",
-    date: "2026-08-19",
-    progress: 75,
-    status: "Ready For Ship Review",
-  },
-  {
-    id: "HO-1184",
-    rank: "Second Engineer",
-    vessel: "MV Atlantic Pioneer",
-    outgoing: "J. Fernandes",
-    incoming: "L. Chen",
-    date: "2026-08-14",
-    progress: 50,
-    status: "PIC Pending Tasks",
-  },
-  {
-    id: "HO-1179",
-    rank: "Master",
-    vessel: "OSV Arctic Guardian",
-    outgoing: "L. Hansen",
-    incoming: "M. Haugen",
-    date: "2026-08-06",
-    progress: 30,
-    status: "PIC Overdue",
-  },
-  {
-    id: "HO-1170",
-    rank: "Chief Officer",
-    vessel: "MV Baltic Carrier",
-    outgoing: "M. Bakker",
-    incoming: "A. Reyes",
-    date: "2026-07-30",
-    progress: 100,
-    status: "Completed",
-  },
-];
+export const handoverRegisterData = tablesData.voyagesCatalog;
 
 const summaryCards = [
   {

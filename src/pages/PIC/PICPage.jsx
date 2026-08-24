@@ -3,41 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { picFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const picTasksCatalog = [
-  {
-    id: "PIC-3320",
-    task: "Verify fire main pressure test records",
-    vessel: "MT Ocean Star",
-    pic: "2/E R. Malhotra",
-    due: "2026-08-12",
-    status: "Assigned",
-  },
-  {
-    id: "PIC-3316",
-    task: "Close out inspection findings from PSC",
-    vessel: "MV Pacific Endeavour",
-    pic: "C/E K. Tan",
-    due: "2026-08-09",
-    status: "Overdue",
-  },
-  {
-    id: "PIC-3311",
-    task: "Update SMS chapter 7 acknowledgement",
-    vessel: "MV Baltic Carrier",
-    pic: "Master",
-    due: "2026-08-20",
-    status: "Pending",
-  },
-  {
-    id: "PIC-3305",
-    task: "Confirm spare parts stocktake",
-    vessel: "MV Coral Trader",
-    pic: "2/E L. Chen",
-    due: "2026-08-04",
-    status: "Completed",
-  },
-];
+export const picTasksCatalog = tablesData.picTasksCatalog;
 
 export default function PICPage() {
   const [showFilter, setShowFilter] = useState(false);

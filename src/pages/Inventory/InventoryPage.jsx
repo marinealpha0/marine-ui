@@ -3,63 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, SummaryCard }
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { inventoryFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const inventoryStockCatalog = [
-  {
-    part: "SP-ME-1043",
-    name: "Cylinder head assembly 6S60",
-    vessel: "MT Ocean Star",
-    qty: 1,
-    min: 2,
-    category: "Main Engine",
-    supplier: "MAN Energy Solutions",
-  },
-  {
-    part: "SP-PU-0221",
-    name: "Purifier bowl disc set",
-    vessel: "MT Nordic Spirit",
-    qty: 4,
-    min: 2,
-    category: "Purifiers",
-    supplier: "Alfa Laval",
-  },
-  {
-    part: "SP-AE-0788",
-    name: "Fuel injector nozzle AE",
-    vessel: "MV Pacific Endeavour",
-    qty: 0,
-    min: 6,
-    category: "Aux Engine",
-    supplier: "YanMar",
-  },
-  {
-    part: "SP-BW-0112",
-    name: "UV lamp cartridge BWTS",
-    vessel: "MV Baltic Carrier",
-    qty: 2,
-    min: 4,
-    category: "BWTS",
-    supplier: "Alfa Laval PureBallast",
-  },
-  {
-    part: "SP-SG-0056",
-    name: "Steering gear seal kit",
-    vessel: "OSV Arctic Guardian",
-    qty: 3,
-    min: 1,
-    category: "Steering",
-    supplier: "Rolls-Royce Marine",
-  },
-  {
-    part: "SP-TC-0304",
-    name: "Turbocharger cartridge TCA66",
-    vessel: "MT Gulf Navigator",
-    qty: 0,
-    min: 1,
-    category: "Turbocharger",
-    supplier: "ABB Turbocharging",
-  },
-];
+export const inventoryStockCatalog = tablesData.inventoryStockCatalog;
 
 export default function InventoryPage() {
   const [showFilter, setShowFilter] = useState(false);

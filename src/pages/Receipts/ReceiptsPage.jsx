@@ -3,54 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { receiptFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const receiptsData = [
-  {
-    grn: "GRN-5521",
-    po: "PO-2026-1190",
-    vessel: "MT Nordic Spirit",
-    lines: "18 of 24 lines",
-    port: "Gothenburg",
-    date: "2026-08-08",
-    status: "Partially Received",
-  },
-  {
-    grn: "GRN-5518",
-    po: "PO-2026-1211",
-    vessel: "MV Baltic Carrier",
-    lines: "12 of 12 lines",
-    port: "Gdańsk",
-    date: "2026-08-06",
-    status: "Received",
-  },
-  {
-    grn: "GRN-5510",
-    po: "PO-2026-1174",
-    vessel: "MT Ocean Star",
-    lines: "2 lines",
-    port: "Singapore",
-    date: "2026-08-03",
-    status: "Returned",
-  },
-  {
-    grn: "GRN-5507",
-    po: "PO-2026-1169",
-    vessel: "MV Pacific Endeavour",
-    lines: "1 line",
-    port: "Busan",
-    date: "2026-08-01",
-    status: "Damaged",
-  },
-  {
-    grn: "GRN-5502",
-    po: "PO-2026-1160",
-    vessel: "OSV Arctic Guardian",
-    lines: "7 lines",
-    port: "Stavanger",
-    date: "2026-07-29",
-    status: "Pending Inspection",
-  },
-];
+export const receiptsData = tablesData.receiptsCatalog;
 
 export default function ReceiptsPage() {
   const [showFilter, setShowFilter] = useState(false);

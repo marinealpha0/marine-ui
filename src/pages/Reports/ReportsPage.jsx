@@ -3,44 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, SummaryCard }
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { reportFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const reportsActivityCatalog = [
-  {
-    timestamp: "2026-08-10 14:22",
-    actor: "a.costa@oceanicmarine.com",
-    action: "Approved purchase order PO-2026-1207",
-    scope: "Oceanic Marine / Offshore",
-    source: "203.0.113.24",
-  },
-  {
-    timestamp: "2026-08-10 12:05",
-    actor: "s.okafor@oceanicmarine.com",
-    action: "Changed WO-24215 status to Awaiting Approval",
-    scope: "MV Atlantic Pioneer",
-    source: "198.51.100.9",
-  },
-  {
-    timestamp: "2026-08-10 09:41",
-    actor: "d.petrov@oceanicmarine.com",
-    action: "Updated risk assessment RA-121 mitigation",
-    scope: "MT Gulf Navigator",
-    source: "203.0.113.77",
-  },
-  {
-    timestamp: "2026-08-09 21:14",
-    actor: "system",
-    action: "Certificate expiry job flagged 4 certificates",
-    scope: "Fleet-wide",
-    source: "internal",
-  },
-  {
-    timestamp: "2026-08-09 16:58",
-    actor: "alex.v@oceanicmarine.com",
-    action: "Invited user l.hansen@oceanicmarine.com (Master)",
-    scope: "Oceanic Marine",
-    source: "203.0.113.11",
-  },
-];
+export const reportsActivityCatalog = tablesData.reportsCatalog;
 
 export default function ReportsPage() {
   const [showFilter, setShowFilter] = useState(false);

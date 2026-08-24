@@ -3,45 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { picFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const handoverCatalog = [
-  {
-    id: "HO-1188",
-    rank: "Chief Engineer",
-    vessel: "MT Ocean Star",
-    outgoing: "S. Okafor",
-    incoming: "P. Dsouza",
-    date: "2026-08-19",
-    status: "Ready For Ship Review",
-  },
-  {
-    id: "HO-1184",
-    rank: "Second Engineer",
-    vessel: "MV Atlantic Pioneer",
-    outgoing: "J. Fernandes",
-    incoming: "L. Chen",
-    date: "2026-08-14",
-    status: "PIC Pending Tasks",
-  },
-  {
-    id: "HO-1179",
-    rank: "Master",
-    vessel: "OSV Arctic Guardian",
-    outgoing: "L. Hansen",
-    incoming: "M. Haugen",
-    date: "2026-08-06",
-    status: "PIC Overdue",
-  },
-  {
-    id: "HO-1170",
-    rank: "Chief Officer",
-    vessel: "MV Baltic Carrier",
-    outgoing: "M. Bakker",
-    incoming: "A. Reyes",
-    date: "2026-07-30",
-    status: "Completed",
-  },
-];
+export const handoverCatalog = tablesData.handoverCatalog;
 
 const handoverWorkflowSteps = [
   { num: 1, label: "Initiated", state: "done" },

@@ -3,49 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { capaFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const correctiveActionsCatalog = [
-  {
-    id: "CA-2291",
-    finding: "Oil mist detector alarm not tested per SMS",
-    vessel: "MV Pacific Endeavour",
-    owner: "C/E K. Tan",
-    due: "2026-08-18",
-    status: "In Progress",
-  },
-  {
-    id: "CA-2288",
-    finding: "Missing entry in garbage record book",
-    vessel: "MV Coral Trader",
-    owner: "C/O A. Reyes",
-    due: "2026-08-12",
-    status: "Open",
-  },
-  {
-    id: "CA-2280",
-    finding: "Inadequate lighting in steering flat",
-    vessel: "MT Gulf Navigator",
-    owner: "ETO J. Rivera",
-    due: "2026-07-31",
-    status: "Overdue",
-  },
-  {
-    id: "CA-2275",
-    finding: "PMS job closed without running hours",
-    vessel: "MT Ocean Star",
-    owner: "2/E R. Malhotra",
-    due: "2026-08-22",
-    status: "Open",
-  },
-  {
-    id: "CA-2268",
-    finding: "Lifeboat release gear maintenance record gap",
-    vessel: "MV Atlantic Pioneer",
-    owner: "3/O T. Nakamura",
-    due: "2026-08-09",
-    status: "Extension",
-  },
-];
+export const correctiveActionsCatalog = tablesData.correctiveActionsCatalog;
 
 const caWorkflowSteps = [
   { num: 1, label: "Raised", state: "done" },

@@ -3,41 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { mocFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const mocCatalog = [
-  {
-    id: "MOC-0421",
-    change: "Replace ME lube oil grade to alternative supplier",
-    vessel: "MT Ocean Star",
-    initiator: "C/E S. Okafor",
-    stage: "Approval",
-    status: "Ready Ship Review",
-  },
-  {
-    id: "MOC-0418",
-    change: "Modify ballast line valve arrangement",
-    vessel: "MV Atlantic Pioneer",
-    initiator: "Supt. R. Grant",
-    stage: "Review",
-    status: "Vessel MOC Task",
-  },
-  {
-    id: "MOC-0412",
-    change: "PMS interval change for FW generator",
-    vessel: "MT Nordic Spirit",
-    initiator: "2/E J. Fernandes",
-    stage: "Implementation",
-    status: "Approved",
-  },
-  {
-    id: "MOC-0405",
-    change: "Temporary bypass of bilge alarm sensor",
-    vessel: "MT Gulf Navigator",
-    initiator: "C/E P. Dsouza",
-    stage: "Verification",
-    status: "Returned",
-  },
-];
+export const mocCatalog = tablesData.mocCatalog;
 
 const mocWorkflowSteps = [
   { num: 1, label: "Draft", state: "done" },

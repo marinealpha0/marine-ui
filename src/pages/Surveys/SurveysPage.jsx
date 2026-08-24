@@ -3,49 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { surveyFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const surveyScheduleCatalog = [
-  {
-    id: "SUR-1180",
-    survey: "Intermediate Hull Survey",
-    vessel: "MV Atlantic Pioneer",
-    provider: "Bureau Veritas",
-    window: "2026-09-01 → 2026-12-01",
-    status: "Scheduled",
-  },
-  {
-    id: "SUR-1176",
-    survey: "Annual Machinery Survey",
-    vessel: "MT Ocean Star",
-    provider: "DNV",
-    window: "2026-08-15 → 2026-10-15",
-    status: "Open",
-  },
-  {
-    id: "SUR-1171",
-    survey: "Cargo Gear Load Test",
-    vessel: "MV Coral Trader",
-    provider: "ClassNK",
-    window: "2026-07-10 → 2026-08-05",
-    status: "Overdue",
-  },
-  {
-    id: "SUR-1168",
-    survey: "Docking Survey",
-    vessel: "MT Gulf Navigator",
-    provider: "ABS",
-    window: "2026-10-01 → 2027-01-01",
-    status: "Pending Approval",
-  },
-  {
-    id: "SUR-1160",
-    survey: "Safety Equipment Survey",
-    vessel: "MT Nordic Spirit",
-    provider: "Lloyd's Register",
-    window: "2026-06-01 → 2026-07-30",
-    status: "Completed",
-  },
-];
+export const surveyScheduleCatalog = tablesData.surveysCatalog;
 
 export default function SurveysPage() {
   const [showFilter, setShowFilter] = useState(false);

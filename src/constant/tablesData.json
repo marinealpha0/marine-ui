@@ -1,0 +1,753 @@
+{
+  "mocCatalog": [
+    {
+      "id": "MOC-2026-089",
+      "change": "Main engine fuel pump timing modification",
+      "vessel": "MT Ocean Star",
+      "initiator": "C/E R. Vance",
+      "stage": "Approval",
+      "status": "Ready Ship Review"
+    },
+    {
+      "id": "MOC-2026-084",
+      "change": "ECDIS software upgrade v4.2 to v5.0",
+      "vessel": "MV Atlantic Pioneer",
+      "initiator": "2/O S. Chen",
+      "stage": "Implementation",
+      "status": "PIC Pending Tasks"
+    },
+    {
+      "id": "MOC-2026-079",
+      "change": "Aux Engine #2 turbocharger replacement type",
+      "vessel": "MV Coral Trader",
+      "initiator": "1/AE M. Santos",
+      "stage": "Review",
+      "status": "PIC Overdue"
+    },
+    {
+      "id": "MOC-2026-071",
+      "change": "Bunkering procedure update for low-sulfur fuel",
+      "vessel": "MT Gulf Navigator",
+      "initiator": "C/E P. Dsouza",
+      "stage": "Verification",
+      "status": "Returned"
+    }
+  ],
+  "picTasksCatalog": [
+    {
+      "id": "PIC-9012",
+      "task": "Calibrate OWS oil content meter before IOPP survey",
+      "vessel": "MT Ocean Star",
+      "pic": "C/E R. Vance",
+      "due": "2026-08-15",
+      "status": "Assigned"
+    },
+    {
+      "id": "PIC-9008",
+      "task": "Complete enclosed space entry permit verification",
+      "vessel": "MV Atlantic Pioneer",
+      "pic": "C/O M. Kumar",
+      "due": "2026-08-12",
+      "status": "Pending"
+    },
+    {
+      "id": "PIC-8995",
+      "task": "Inspect lifeboat fall wire certificates & renewal log",
+      "vessel": "MV Coral Trader",
+      "pic": "2/O S. Chen",
+      "due": "2026-08-01",
+      "status": "Overdue"
+    },
+    {
+      "id": "PIC-8980",
+      "task": "Submit Q3 environmental discharge audit report",
+      "vessel": "MT Gulf Navigator",
+      "pic": "2/E K. Patel",
+      "due": "2026-08-10",
+      "status": "Completed"
+    }
+  ],
+  "handoverCatalog": [
+    {
+      "id": "HO-2026-041",
+      "rank": "Chief Engineer",
+      "vessel": "MT Ocean Star",
+      "outgoing": "C/E R. Vance",
+      "incoming": "C/E H. Lindqvist",
+      "date": "2026-08-14",
+      "status": "Ready Ship Review"
+    },
+    {
+      "id": "HO-2026-038",
+      "rank": "Chief Officer",
+      "vessel": "MV Atlantic Pioneer",
+      "outgoing": "C/O M. Kumar",
+      "incoming": "C/O J. Delgado",
+      "date": "2026-08-10",
+      "status": "PIC Pending Tasks"
+    },
+    {
+      "id": "HO-2026-031",
+      "rank": "Second Engineer",
+      "vessel": "MV Coral Trader",
+      "outgoing": "2/E K. Patel",
+      "incoming": "2/E A. Rossi",
+      "date": "2026-08-02",
+      "status": "PIC Overdue"
+    },
+    {
+      "id": "HO-2026-024",
+      "rank": "Master",
+      "vessel": "MT Gulf Navigator",
+      "outgoing": "Capt. P. Dsouza",
+      "incoming": "Capt. N. Thorne",
+      "date": "2026-07-28",
+      "status": "Completed"
+    }
+  ],
+  "correctiveActionsCatalog": [
+    {
+      "id": "CA-2291",
+      "finding": "Oil mist detector alarm not tested per SMS",
+      "vessel": "MV Pacific Endeavour",
+      "owner": "C/E K. Tan",
+      "due": "2026-08-18",
+      "status": "In Progress"
+    },
+    {
+      "id": "CA-2288",
+      "finding": "Missing entry in garbage record book",
+      "vessel": "MV Coral Trader",
+      "owner": "C/O A. Reyes",
+      "due": "2026-08-12",
+      "status": "Open"
+    },
+    {
+      "id": "CA-2280",
+      "finding": "Inadequate lighting in steering flat",
+      "vessel": "MT Gulf Navigator",
+      "owner": "ETO J. Rivera",
+      "due": "2026-07-31",
+      "status": "Overdue"
+    },
+    {
+      "id": "CA-2275",
+      "finding": "PMS job closed without running hours",
+      "vessel": "MT Ocean Star",
+      "owner": "2/E R. Malhotra",
+      "due": "2026-08-22",
+      "status": "Open"
+    },
+    {
+      "id": "CA-2268",
+      "finding": "Lifeboat release gear maintenance record gap",
+      "vessel": "MV Atlantic Pioneer",
+      "owner": "3/O T. Nakamura",
+      "due": "2026-08-09",
+      "status": "Extension"
+    }
+  ],
+  "preventiveActionsCatalog": [
+    {
+      "id": "PA-4102",
+      "action": "Implement pre-bunkering fuel sampling checklist",
+      "scope": "Fleet-wide",
+      "owner": "QHSE Manager",
+      "due": "2026-08-30",
+      "status": "Open"
+    },
+    {
+      "id": "PA-4098",
+      "action": "Upgrade steering flat bilges high-level float switches",
+      "scope": "MT Ocean Star",
+      "owner": "C/E R. Vance",
+      "due": "2026-08-25",
+      "status": "In Progress"
+    },
+    {
+      "id": "PA-4084",
+      "action": "Conduct additional enclosed space entry refresher drill",
+      "scope": "MV Atlantic Pioneer",
+      "owner": "C/O M. Kumar",
+      "due": "2026-08-14",
+      "status": "Verification"
+    },
+    {
+      "id": "PA-4071",
+      "action": "Replace sea water cooling pipe spool with CuNi alloy",
+      "scope": "MV Coral Trader",
+      "owner": "Technical Supt.",
+      "due": "2026-08-05",
+      "status": "Closed"
+    }
+  ],
+  "ptwCatalog": [
+    {
+      "id": "PTW-2026-312",
+      "type": "Enclosed Space Entry",
+      "vessel": "MT Ocean Star",
+      "location": "Cargo Tank 3P",
+      "risk": "High",
+      "requester": "C/O M. Kumar",
+      "approver": "Capt. P. Dsouza",
+      "expiry": "2026-08-14 18:00",
+      "status": "Active"
+    },
+    {
+      "id": "PTW-2026-308",
+      "type": "Hot Work",
+      "vessel": "MV Atlantic Pioneer",
+      "location": "Main Deck Starboard",
+      "risk": "Critical",
+      "requester": "2/E K. Patel",
+      "approver": "C/E R. Vance",
+      "expiry": "2026-08-14 16:30",
+      "status": "To Approve"
+    },
+    {
+      "id": "PTW-2026-301",
+      "type": "Working at Height",
+      "vessel": "MV Coral Trader",
+      "location": "Main Mast Radar Platform",
+      "risk": "Medium",
+      "requester": "ETO J. Rivera",
+      "approver": "C/O A. Reyes",
+      "expiry": "2026-08-13 12:00",
+      "status": "Pending Closure"
+    },
+    {
+      "id": "PTW-2026-295",
+      "type": "Electrical Isolation",
+      "vessel": "MT Gulf Navigator",
+      "location": "Main Switchboard Bay 2",
+      "risk": "High",
+      "requester": "ETO J. Rivera",
+      "approver": "C/E K. Tan",
+      "expiry": "2026-08-11 17:00",
+      "status": "Expired Without Closure"
+    }
+  ],
+  "purchaseOrdersCatalog": [
+    {
+      "po": "PO-2026-1204",
+      "supplier": "MAN Energy Solutions",
+      "vessel": "MT Ocean Star",
+      "amount": "42,800",
+      "currency": "USD",
+      "expected": "2026-08-28",
+      "status": "Ordered > 90 days"
+    },
+    {
+      "po": "PO-2026-1198",
+      "supplier": "Alfa Laval Marine",
+      "vessel": "MV Atlantic Pioneer",
+      "amount": "18,450",
+      "currency": "USD",
+      "expected": "2026-08-20",
+      "status": "Open POs"
+    },
+    {
+      "po": "PO-2026-1185",
+      "supplier": "Wärtsilä Services",
+      "vessel": "MV Coral Trader",
+      "amount": "89,200",
+      "currency": "USD",
+      "expected": "2026-08-10",
+      "status": "Overdue Delivery"
+    },
+    {
+      "po": "PO-2026-1172",
+      "supplier": "Jotun Paints AS",
+      "vessel": "MT Gulf Navigator",
+      "amount": "12,300",
+      "currency": "USD",
+      "expected": "2026-08-05",
+      "status": "Committed Spend"
+    }
+  ],
+  "requisitionsCatalog": [
+    {
+      "id": "PR-2026-891",
+      "description": "Main engine fuel injector spares kit",
+      "vessel": "MT Ocean Star",
+      "requester": "C/E R. Vance",
+      "value": "$24,500",
+      "status": "Awaiting Review"
+    },
+    {
+      "id": "PR-2026-884",
+      "description": "Purifier disc stack replacement set",
+      "vessel": "MV Atlantic Pioneer",
+      "requester": "2/E K. Patel",
+      "value": "$8,120",
+      "status": "PR Not Processed > 100 Days"
+    },
+    {
+      "id": "PR-2026-879",
+      "description": "Bridge ECDIS backup monitor & cabling",
+      "vessel": "MV Coral Trader",
+      "requester": "2/O S. Chen",
+      "value": "$3,400",
+      "status": "Item Drafts > 7 Days"
+    },
+    {
+      "id": "PR-2026-865",
+      "description": "Deck stores & safety equipment replenishment",
+      "vessel": "MT Gulf Navigator",
+      "requester": "C/O M. Kumar",
+      "value": "$14,900",
+      "status": "Approved This Month"
+    }
+  ],
+  "reportsCatalog": [
+    {
+      "timestamp": "2026-08-14 14:32:05",
+      "actor": "c.vance@oceanic.com",
+      "action": "Generated Maintenance Cost Summary Report Q2",
+      "scope": "Fleet-wide",
+      "source": "192.168.1.104"
+    },
+    {
+      "timestamp": "2026-08-14 12:15:40",
+      "actor": "m.kumar@oceanic.com",
+      "action": "Exported Enclosed Space PTW Register CSV",
+      "scope": "MV Atlantic Pioneer",
+      "source": "192.168.1.118"
+    },
+    {
+      "timestamp": "2026-08-14 09:48:12",
+      "actor": "sys.admin@oceanic.com",
+      "action": "Updated User Role Permissions: Supt -> Technical Lead",
+      "scope": "User: k.patel",
+      "source": "10.0.4.22"
+    },
+    {
+      "timestamp": "2026-08-13 22:04:19",
+      "actor": "j.rivera@oceanic.com",
+      "action": "Failed Sign-in Attempt (Invalid OTP)",
+      "scope": "Portal Auth",
+      "source": "178.62.19.45"
+    },
+    {
+      "timestamp": "2026-08-13 18:30:00",
+      "actor": "automated.cron",
+      "action": "Daily Class Certificate Expiry Scan Completed",
+      "scope": "All Vessels (24)",
+      "source": "localhost"
+    }
+  ],
+  "documentsCatalog": [
+    {
+      "name": "SMS-MAN-001 Safety Management Manual Rev 14",
+      "type": "Manual",
+      "scope": "Fleet-wide",
+      "owner": "DPA / Safety Office",
+      "updated": "2026-08-01",
+      "status": "Active"
+    },
+    {
+      "name": "SOPEP-OPT-2026 Shipboard Oil Pollution Plan",
+      "type": "Plan",
+      "scope": "MT Ocean Star",
+      "owner": "Capt. P. Dsouza",
+      "updated": "2026-07-20",
+      "status": "Pending Approval"
+    },
+    {
+      "name": "ENG-PROC-402 Bunkering & Transfer Procedure",
+      "type": "Procedure",
+      "scope": "Tanker Fleet",
+      "owner": "C/E R. Vance",
+      "updated": "2026-08-10",
+      "status": "Revised This Month"
+    },
+    {
+      "name": "ISPS-SSP-004 Ship Security Plan Confidential",
+      "type": "Plan",
+      "scope": "MV Coral Trader",
+      "owner": "CSO Office",
+      "updated": "2026-05-15",
+      "status": "Active"
+    },
+    {
+      "name": "CIR-2025-09 MEPC.335(76) Carbon Intensity Regs",
+      "type": "Circular",
+      "scope": "Fleet-wide",
+      "owner": "Compliance Lead",
+      "updated": "2025-11-30",
+      "status": "Expired Reference"
+    }
+  ],
+  "certificatesCatalog": [
+    {
+      "name": "Safety Management Certificate (SMC)",
+      "vessel": "MT Ocean Star",
+      "issuer": "DNV",
+      "expiry": "2027-04-15",
+      "status": "Valid"
+    },
+    {
+      "name": "International Oil Pollution Prevention (IOPP)",
+      "vessel": "MV Atlantic Pioneer",
+      "issuer": "Lloyd's Register",
+      "expiry": "2026-11-20",
+      "status": "Valid"
+    },
+    {
+      "name": "Document of Compliance (DOC)",
+      "vessel": "Fleet-wide",
+      "issuer": "Flag Administration",
+      "expiry": "2028-01-10",
+      "status": "Valid"
+    },
+    {
+      "name": "International Load Line Certificate",
+      "vessel": "MV Coral Trader",
+      "issuer": "Bureau Veritas",
+      "expiry": "2026-09-30",
+      "status": "Expiring Soon"
+    },
+    {
+      "name": "Maritime Labour Convention (MLC)",
+      "vessel": "MT Gulf Navigator",
+      "issuer": "DNV",
+      "expiry": "2027-08-05",
+      "status": "Valid"
+    }
+  ],
+  "surveysCatalog": [
+    {
+      "id": "SURV-2026-04",
+      "survey": "Annual Class & Machinery Survey",
+      "vessel": "MT Ocean Star",
+      "provider": "DNV",
+      "window": "2026-08-01 – 2026-10-31",
+      "status": "Upcoming"
+    },
+    {
+      "id": "SURV-2026-02",
+      "survey": "Intermediate Hull & Docking Survey",
+      "vessel": "MV Coral Trader",
+      "provider": "Lloyd's Register",
+      "window": "2026-06-15 – 2026-08-15",
+      "status": "Overdue"
+    },
+    {
+      "id": "SURV-2026-07",
+      "survey": "Boiler Safety Valve Inspection",
+      "vessel": "MV Atlantic Pioneer",
+      "provider": "Bureau Veritas",
+      "window": "2026-09-01 – 2026-11-01",
+      "status": "Pending Approval"
+    },
+    {
+      "id": "SURV-2026-01",
+      "survey": "Radio Installation Survey",
+      "vessel": "MT Gulf Navigator",
+      "provider": "Furuno Service",
+      "window": "2026-07-01 – 2026-07-31",
+      "status": "Completed"
+    }
+  ],
+  "deviationsCatalog": [
+    {
+      "id": "DEV-2026-112",
+      "deviation": "Oily Water Separator 15ppm alarm fault",
+      "vessel": "MT Ocean Star",
+      "severity": "High",
+      "owner": "C/E R. Vance",
+      "age": 14,
+      "status": "Open"
+    },
+    {
+      "id": "DEV-2026-108",
+      "deviation": "Aux Engine #3 exhaust temp fluctuation",
+      "vessel": "MV Atlantic Pioneer",
+      "severity": "Medium",
+      "owner": "2/E K. Patel",
+      "age": 6,
+      "status": "Pending Approval"
+    },
+    {
+      "id": "DEV-2026-095",
+      "deviation": "Port Lifeboat engine starting failure during test",
+      "vessel": "MV Coral Trader",
+      "severity": "Critical",
+      "owner": "C/O A. Reyes",
+      "age": 42,
+      "status": "Overdue Duration"
+    },
+    {
+      "id": "DEV-2026-081",
+      "deviation": "ECDIS GPS feed intermittent drop",
+      "vessel": "MT Gulf Navigator",
+      "severity": "Low",
+      "owner": "ETO J. Rivera",
+      "age": 2,
+      "status": "Open"
+    }
+  ],
+  "riskCatalog": [
+    {
+      "id": "RA-2026-054",
+      "hazard": "Enclosed space entry tank cleaning Tank 4S",
+      "vessel": "MT Ocean Star",
+      "l": 3,
+      "s": 4,
+      "owner": "C/O M. Kumar",
+      "mitigation": "Gas free certificate & continuous monitoring",
+      "due": "2026-08-18",
+      "status": "High Risk"
+    },
+    {
+      "id": "RA-2026-049",
+      "hazard": "Heavy lift motor replacement in E/R",
+      "vessel": "MV Atlantic Pioneer",
+      "l": 2,
+      "s": 4,
+      "owner": "C/E R. Vance",
+      "mitigation": "Chain block certification & rigger tool check",
+      "due": "2026-08-22",
+      "status": "Awaiting RA Ship Review"
+    },
+    {
+      "id": "RA-2026-038",
+      "hazard": "Hot work welding on poop deck railing",
+      "vessel": "MV Coral Trader",
+      "l": 4,
+      "s": 3,
+      "owner": "C/O A. Reyes",
+      "mitigation": "Fire watch & boundary cooling established",
+      "due": "2026-08-12",
+      "status": "Critical Risk"
+    },
+    {
+      "id": "RA-2026-022",
+      "hazard": "Overside hull touch-up painting in port",
+      "vessel": "MT Gulf Navigator",
+      "l": 2,
+      "s": 2,
+      "owner": "2/O S. Chen",
+      "mitigation": "Safety harness & lifebuoy standby",
+      "due": "2026-08-10",
+      "status": "Mitigated"
+    }
+  ],
+  "safetyMeetingsCatalog": [
+    {
+      "id": "SM-2026-08",
+      "meeting": "Monthly Safety Committee Meeting August",
+      "vessel": "MT Ocean Star",
+      "date": "2026-08-05",
+      "chair": "Capt. P. Dsouza",
+      "actions": 4,
+      "status": "Pending Ship Review"
+    },
+    {
+      "id": "SM-2026-07",
+      "meeting": "Pre-drydock Safety & Risk Briefing",
+      "vessel": "MV Coral Trader",
+      "date": "2026-07-28",
+      "chair": "C/E K. Tan",
+      "actions": 8,
+      "status": "To Submit"
+    },
+    {
+      "id": "SM-2026-06",
+      "meeting": "Toolbox Talk: Enclosed Space Hazards",
+      "vessel": "MV Atlantic Pioneer",
+      "date": "2026-07-20",
+      "chair": "C/O M. Kumar",
+      "actions": 2,
+      "status": "Overdue"
+    },
+    {
+      "id": "SM-2026-05",
+      "meeting": "Quarterly Environmental & Marpol Review",
+      "vessel": "MT Gulf Navigator",
+      "date": "2026-07-15",
+      "chair": "Safety Officer",
+      "actions": 5,
+      "status": "Completed"
+    }
+  ],
+  "drillsCatalog": [
+    {
+      "id": "DRL-2026-44",
+      "type": "Fire & Abandon Ship Drill",
+      "vessel": "MT Ocean Star",
+      "scheduled": "2026-08-18",
+      "participants": 24,
+      "status": "Scheduled"
+    },
+    {
+      "id": "DRL-2026-41",
+      "type": "Oil Spill Response (SOPEP) Drill",
+      "vessel": "MV Atlantic Pioneer",
+      "scheduled": "2026-08-12",
+      "participants": 22,
+      "status": "Pending Review"
+    },
+    {
+      "id": "DRL-2026-38",
+      "type": "Enclosed Space Rescue Drill",
+      "vessel": "MV Coral Trader",
+      "scheduled": "2026-08-05",
+      "participants": 18,
+      "status": "Completed"
+    },
+    {
+      "id": "DRL-2026-32",
+      "type": "Steering Gear Emergency Drill",
+      "vessel": "MT Gulf Navigator",
+      "scheduled": "2026-07-30",
+      "participants": 20,
+      "status": "Completed"
+    }
+  ],
+  "inventoryStockCatalog": [
+    {
+      "part": "SP-ME-1043",
+      "name": "Cylinder head assembly 6S60",
+      "vessel": "MT Ocean Star",
+      "qty": 1,
+      "min": 2,
+      "category": "Main Engine",
+      "supplier": "MAN Energy Solutions"
+    },
+    {
+      "part": "SP-PU-0221",
+      "name": "Purifier bowl disc set",
+      "vessel": "MT Nordic Spirit",
+      "qty": 4,
+      "min": 2,
+      "category": "Purifiers",
+      "supplier": "Alfa Laval"
+    },
+    {
+      "part": "SP-AE-0788",
+      "name": "Fuel injector nozzle AE",
+      "vessel": "MV Pacific Endeavour",
+      "qty": 0,
+      "min": 6,
+      "category": "Aux Engine",
+      "supplier": "YanMar"
+    },
+    {
+      "part": "SP-BW-0112",
+      "name": "UV lamp cartridge BWTS",
+      "vessel": "MV Baltic Carrier",
+      "qty": 2,
+      "min": 4,
+      "category": "BWTS",
+      "supplier": "Alfa Laval PureBallast"
+    },
+    {
+      "part": "SP-SG-0056",
+      "name": "Steering gear seal kit",
+      "vessel": "OSV Arctic Guardian",
+      "qty": 3,
+      "min": 1,
+      "category": "Steering",
+      "supplier": "Rolls-Royce Marine"
+    },
+    {
+      "part": "SP-TC-0304",
+      "name": "Turbocharger cartridge TCA66",
+      "vessel": "MT Gulf Navigator",
+      "qty": 0,
+      "min": 1,
+      "category": "Turbocharger",
+      "supplier": "ABB Turbocharging"
+    }
+  ],
+  "receiptsCatalog": [
+    {
+      "grn": "GRN-5521",
+      "po": "PO-2026-1190",
+      "vessel": "MT Nordic Spirit",
+      "lines": "18 of 24 lines",
+      "port": "Gothenburg",
+      "date": "2026-08-08",
+      "status": "Partially Received"
+    },
+    {
+      "grn": "GRN-5518",
+      "po": "PO-2026-1211",
+      "vessel": "MV Baltic Carrier",
+      "lines": "12 of 12 lines",
+      "port": "Gdańsk",
+      "date": "2026-08-06",
+      "status": "Received"
+    },
+    {
+      "grn": "GRN-5510",
+      "po": "PO-2026-1174",
+      "vessel": "MT Ocean Star",
+      "lines": "2 lines",
+      "port": "Singapore",
+      "date": "2026-08-03",
+      "status": "Returned"
+    },
+    {
+      "grn": "GRN-5507",
+      "po": "PO-2026-1169",
+      "vessel": "MV Pacific Endeavour",
+      "lines": "1 line",
+      "port": "Busan",
+      "date": "2026-08-01",
+      "status": "Damaged"
+    },
+    {
+      "grn": "GRN-5502",
+      "po": "PO-2026-1160",
+      "vessel": "OSV Arctic Guardian",
+      "lines": "7 lines",
+      "port": "Stavanger",
+      "date": "2026-07-29",
+      "status": "Pending Inspection"
+    }
+  ],
+  "voyagesCatalog": [
+    {
+      "id": "HO-9901",
+      "rank": "Chief Engineer",
+      "vessel": "MT Ocean Star",
+      "outgoing": "R. Vance",
+      "incoming": "H. Lindqvist",
+      "date": "2026-08-14",
+      "progress": 80,
+      "status": "Ready For Ship Review"
+    },
+    {
+      "id": "HO-9894",
+      "rank": "Chief Officer",
+      "vessel": "MV Atlantic Pioneer",
+      "outgoing": "M. Kumar",
+      "incoming": "J. Delgado",
+      "date": "2026-08-10",
+      "progress": 40,
+      "status": "PIC Pending Tasks"
+    },
+    {
+      "id": "HO-9882",
+      "rank": "Second Engineer",
+      "vessel": "MV Coral Trader",
+      "outgoing": "K. Patel",
+      "incoming": "A. Rossi",
+      "date": "2026-08-02",
+      "progress": 60,
+      "status": "PIC Overdue"
+    },
+    {
+      "id": "HO-9871",
+      "rank": "Master",
+      "vessel": "MT Gulf Navigator",
+      "outgoing": "P. Dsouza",
+      "incoming": "N. Thorne",
+      "date": "2026-07-28",
+      "progress": 100,
+      "status": "Completed"
+    }
+  ]
+}

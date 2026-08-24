@@ -3,45 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { deviationFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const deviationsCatalog = [
-  {
-    id: "DEV-0451",
-    deviation: "Deviation from planned bunkering port",
-    vessel: "MV Atlantic Pioneer",
-    severity: "High",
-    owner: "S. Okafor",
-    age: 12,
-    status: "Open",
-  },
-  {
-    id: "DEV-0452",
-    deviation: "PMS job interval extension — AE2",
-    vessel: "MV Pacific Endeavour",
-    severity: "Medium",
-    owner: "K. Tan",
-    age: 5,
-    status: "Pending Approval",
-  },
-  {
-    id: "DEV-0448",
-    deviation: "Deferred hull inspection due to weather",
-    vessel: "MT Gulf Navigator",
-    severity: "Low",
-    owner: "P. Dsouza",
-    age: 27,
-    status: "Approved",
-  },
-  {
-    id: "DEV-0440",
-    deviation: "Alternate spare part specification used",
-    vessel: "MT Ocean Star",
-    severity: "Medium",
-    owner: "R. Malhotra",
-    age: 41,
-    status: "Overdue",
-  },
-];
+export const deviationsCatalog = tablesData.deviationsCatalog;
 
 export default function DeviationsPage() {
   const [showFilter, setShowFilter] = useState(false);

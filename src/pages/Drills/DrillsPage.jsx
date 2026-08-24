@@ -3,49 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { drillFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const drillsCatalog = [
-  {
-    id: "DR-2210",
-    type: "Fire",
-    vessel: "MT Ocean Star",
-    scheduled: "2026-08-14",
-    participants: 24,
-    status: "Scheduled",
-  },
-  {
-    id: "DR-2205",
-    type: "Abandon Ship",
-    vessel: "MV Atlantic Pioneer",
-    scheduled: "2026-08-04",
-    participants: 21,
-    status: "Completed",
-  },
-  {
-    id: "DR-2208",
-    type: "Enclosed Space Rescue",
-    vessel: "MT Nordic Spirit",
-    scheduled: "2026-08-08",
-    participants: 20,
-    status: "Pending Review",
-  },
-  {
-    id: "DR-2212",
-    type: "Oil Pollution",
-    vessel: "MV Pacific Endeavour",
-    scheduled: "2026-08-19",
-    participants: 23,
-    status: "Scheduled",
-  },
-  {
-    id: "DR-2201",
-    type: "Security (ISPS)",
-    vessel: "MV Baltic Carrier",
-    scheduled: "2026-07-29",
-    participants: 17,
-    status: "Completed",
-  },
-];
+export const drillsCatalog = tablesData.drillsCatalog;
 
 export default function DrillsPage() {
   const [showFilter, setShowFilter] = useState(false);

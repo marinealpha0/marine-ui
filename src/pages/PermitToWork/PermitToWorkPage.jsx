@@ -3,53 +3,9 @@ import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, S
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { permitFilterFields } from "@/constant/FilterFields";
+import tablesData from "@/constant/tablesData.json";
 
-export const permitsCatalog = [
-  {
-    id: "PTW-3391",
-    type: "Hot Work",
-    vessel: "MT Ocean Star",
-    location: "Engine Room — Purifier flat",
-    risk: "High",
-    requester: "2/E R. Malhotra",
-    approver: "C/E S. Okafor",
-    expiry: "2026-08-11 18:00",
-    status: "To Approve",
-  },
-  {
-    id: "PTW-3392",
-    type: "Enclosed Space Entry",
-    vessel: "MV Atlantic Pioneer",
-    location: "Cargo Hold No.3",
-    risk: "Critical",
-    requester: "C/O M. Bakker",
-    approver: "Master",
-    expiry: "2026-08-10 22:00",
-    status: "Ready Ship Review",
-  },
-  {
-    id: "PTW-3388",
-    type: "Aloft Work",
-    vessel: "MT Nordic Spirit",
-    location: "Radar Mast",
-    risk: "Medium",
-    requester: "2/O A. Ivanov",
-    approver: "Master",
-    expiry: "2026-08-12 16:00",
-    status: "Pending Closure",
-  },
-  {
-    id: "PTW-3385",
-    type: "Electrical Isolation",
-    vessel: "MV Baltic Carrier",
-    location: "Main Switchboard",
-    risk: "High",
-    requester: "ETO J. Rivera",
-    approver: "C/E",
-    expiry: "2026-08-09 12:00",
-    status: "Returned",
-  },
-];
+export const permitsCatalog = tablesData.ptwCatalog;
 
 const ptwWorkflowSteps = [
   { num: 1, label: "Requested", state: "done" },
