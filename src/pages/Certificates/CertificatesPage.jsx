@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { certificateFilterFields } from "@/constant/FilterFields";
@@ -108,10 +108,7 @@ export default function CertificatesPage() {
 
       {/* Top KPI Card */}
       <div className="w-full sm:w-64">
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Valid</div>
-          <div className="mt-3 text-3xl font-bold text-[#059669]">312</div>
-        </div>
+        <SummaryCard label="Valid" value="312" tone="healthy" />
       </div>
 
       <FilterSection

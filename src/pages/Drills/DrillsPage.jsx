@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { drillFilterFields } from "@/constant/FilterFields";
@@ -91,29 +91,10 @@ export default function DrillsPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Scheduled (30 days)</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">9</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Pending review</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">1</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Overdue drills</div>
-          <div className="mt-3 text-3xl font-bold text-[#059669]">0</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Completed YTD</div>
-          <div className="mt-3 text-3xl font-bold text-[#059669]">142</div>
-        </div>
+        <SummaryCard label="Scheduled (30 days)" value="9" tone="info" />
+        <SummaryCard label="Pending review" value="1" tone="warning" borderLeft="amber" />
+        <SummaryCard label="Overdue drills" value="0" tone="healthy" />
+        <SummaryCard label="Completed YTD" value="142" tone="healthy" />
       </div>
 
       <FilterSection

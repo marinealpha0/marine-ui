@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { reportFilterFields } from "@/constant/FilterFields";
@@ -84,29 +84,10 @@ export default function ReportsPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Events (24h)</div>
-          <div className="mt-3 text-3xl font-bold text-gray-900">1842</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Approvals</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">46</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Permission changes</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">3</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Failed sign-ins</div>
-          <div className="mt-3 text-3xl font-bold text-[#dc2626]">2</div>
-        </div>
+        <SummaryCard label="Events (24h)" value="1842" tone="dark" />
+        <SummaryCard label="Approvals" value="46" tone="info" />
+        <SummaryCard label="Permission changes" value="3" tone="warning" borderLeft="amber" />
+        <SummaryCard label="Failed sign-ins" value="2" tone="critical" borderLeft="red" />
       </div>
 
       <FilterSection

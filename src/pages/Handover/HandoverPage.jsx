@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, WorkflowStepper } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard, WorkflowStepper } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { picFilterFields } from "@/constant/FilterFields";
@@ -95,29 +95,10 @@ export default function HandoverPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Ready for ship review</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">1</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">PIC pending tasks</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">1</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">PIC overdue</div>
-          <div className="mt-3 text-3xl font-bold text-[#dc2626]">1</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Completed (90 days)</div>
-          <div className="mt-3 text-3xl font-bold text-[#059669]">18</div>
-        </div>
+        <SummaryCard label="Ready for ship review" value="1" tone="info" />
+        <SummaryCard label="PIC pending tasks" value="1" tone="warning" borderLeft="amber" />
+        <SummaryCard label="PIC overdue" value="1" tone="critical" borderLeft="red" />
+        <SummaryCard label="Completed (90 days)" value="18" tone="healthy" />
       </div>
 
       {/* Workflow Stepper Banner */}

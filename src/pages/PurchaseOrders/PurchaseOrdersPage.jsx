@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, WorkflowStepper } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard, WorkflowStepper } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { purchaseOrderFilterFields } from "@/constant/FilterFields";
@@ -114,30 +114,10 @@ export default function PurchaseOrdersPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Open POs</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">187</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Ordered &gt; 90 days</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">791</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Overdue delivery</div>
-          <div className="mt-3 text-3xl font-bold text-[#dc2626]">6</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Committed spend (USD)</div>
-          <div className="mt-3 text-3xl font-bold text-gray-900">1.42M</div>
-          <div className="mt-1 text-xs font-medium text-[#059669]">↗ +4% vs last month</div>
-        </div>
+        <SummaryCard label="Open POs" value="187" tone="info" />
+        <SummaryCard label="Ordered > 90 days" value="791" tone="warning" borderLeft="amber" />
+        <SummaryCard label="Overdue delivery" value="6" tone="critical" borderLeft="red" />
+        <SummaryCard label="Committed spend (USD)" value="1.42M" tone="dark" subtext="↗ +4% vs last month" />
       </div>
 
       {/* Workflow Stepper Banner */}

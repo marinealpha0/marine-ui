@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { picFilterFields } from "@/constant/FilterFields";
@@ -83,29 +83,10 @@ export default function PICPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Assigned</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">24</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Pending</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">9</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Overdue</div>
-          <div className="mt-3 text-3xl font-bold text-[#dc2626]">3</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Completed (30 days)</div>
-          <div className="mt-3 text-3xl font-bold text-[#059669]">61</div>
-        </div>
+        <SummaryCard label="Assigned" value="24" tone="info" />
+        <SummaryCard label="Pending" value="9" tone="warning" borderLeft="amber" />
+        <SummaryCard label="Overdue" value="3" tone="critical" borderLeft="red" />
+        <SummaryCard label="Completed (30 days)" value="61" tone="healthy" />
       </div>
 
       <FilterSection

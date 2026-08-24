@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { surveyFilterFields } from "@/constant/FilterFields";
@@ -91,29 +91,10 @@ export default function SurveysPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Upcoming (90 days)</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">11</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Overdue surveys</div>
-          <div className="mt-3 text-3xl font-bold text-[#dc2626]">1</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Pending approval</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">2</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Completed YTD</div>
-          <div className="mt-3 text-3xl font-bold text-[#059669]">48</div>
-        </div>
+        <SummaryCard label="Upcoming (90 days)" value="11" tone="info" />
+        <SummaryCard label="Overdue surveys" value="1" tone="critical" borderLeft="red" />
+        <SummaryCard label="Pending approval" value="2" tone="warning" borderLeft="amber" />
+        <SummaryCard label="Completed YTD" value="48" tone="healthy" />
       </div>
 
       <FilterSection

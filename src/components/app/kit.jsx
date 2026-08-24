@@ -474,4 +474,6 @@ export function DataTable({ columns, rows }) {
 }
 
 export { WorkflowStepper } from "./WorkflowStepper";
+export { SummaryCard } from "./SummaryCard";
+
 

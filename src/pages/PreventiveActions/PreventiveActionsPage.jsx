@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { capaFilterFields } from "@/constant/FilterFields";
@@ -82,29 +82,10 @@ export default function PreventiveActionsPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Open</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">5</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">To be verified</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">1</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Overdue</div>
-          <div className="mt-3 text-3xl font-bold text-[#dc2626]">1</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Effectiveness verified</div>
-          <div className="mt-3 text-3xl font-bold text-[#059669]">9</div>
-        </div>
+        <SummaryCard label="Open" value="5" tone="warning" borderLeft="amber" />
+        <SummaryCard label="To be verified" value="1" tone="info" />
+        <SummaryCard label="Overdue" value="1" tone="critical" borderLeft="red" />
+        <SummaryCard label="Effectiveness verified" value="9" tone="healthy" />
       </div>
 
       <FilterSection

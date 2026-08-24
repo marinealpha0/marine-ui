@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { riskFilterFields } from "@/constant/FilterFields";
@@ -95,29 +95,10 @@ export default function RiskPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Open risks</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">18</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">High / critical</div>
-          <div className="mt-3 text-3xl font-bold text-[#dc2626]">4</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Awaiting RA ship review</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">2</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Mitigated (30 days)</div>
-          <div className="mt-3 text-3xl font-bold text-[#059669]">12</div>
-        </div>
+        <SummaryCard label="Open risks" value="18" tone="warning" borderLeft="amber" />
+        <SummaryCard label="High / critical" value="4" tone="critical" borderLeft="red" />
+        <SummaryCard label="Awaiting RA ship review" value="2" tone="info" />
+        <SummaryCard label="Mitigated (30 days)" value="12" tone="healthy" />
       </div>
 
       <FilterSection
