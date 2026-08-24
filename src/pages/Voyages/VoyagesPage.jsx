@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Check } from "lucide-react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, ProgressBar, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, ProgressBar, StatusChip, WorkflowStepper } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { voyageFilterFields } from "@/constant/FilterFields";
@@ -150,50 +150,8 @@ export default function VoyagesPage() {
         ))}
       </div>
 
-      {/* Workflow Progress Banner (Matching reference UI) */}
-      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs space-y-4">
-        <div>
-          <h3 className="text-base font-bold text-gray-900">Workflow</h3>
-          <p className="text-xs text-gray-500 mt-0.5">Current stage highlighted</p>
-        </div>
-
-        {/* Horizontal Workflow Step Pills */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1">
-          {workflowSteps.map((step, index) => {
-            const isCompleted = step.id < activeStage;
-            const isCurrent = step.id === activeStage;
-
-            return (
-              <React.Fragment key={step.id}>
-                {/* Step Pill */}
-                <button
-                  type="button"
-                  onClick={() => setActiveStage(step.id)}
-                  className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-xs transition-all duration-200 cursor-pointer ${
-                    isCompleted
-                      ? "border border-[#86efac] bg-[#f0fdf4] text-[#166534] font-semibold"
-                      : isCurrent
-                      ? "border border-[#7dd3fc] bg-[#e0f2fe] text-[#0369a1] font-bold shadow-xs scale-[1.02]"
-                      : "border border-gray-200 bg-gray-50 text-gray-500 font-medium"
-                  }`}
-                >
-                  {isCompleted ? <Check className="size-3.5 text-[#166534] stroke-[3]" /> : null}
-                  <span>{step.label}</span>
-                </button>
-
-                {/* Line Separator */}
-                {index < workflowSteps.length - 1 && (
-                  <div
-                    className={`h-[1px] w-6 sm:w-10 transition-colors duration-300 ${
-                      step.id < activeStage ? "bg-emerald-400" : "bg-gray-300"
-                    }`}
-                  />
-                )}
-              </React.Fragment>
-            );
-          })}
-        </div>
-      </div>
+      {/* Workflow Progress Banner */}
+      <WorkflowStepper steps={workflowSteps} currentStep={activeStage} />
 
       <FilterSection
         filterFields={voyageFilterFields}

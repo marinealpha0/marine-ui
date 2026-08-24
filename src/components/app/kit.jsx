@@ -472,3 +472,6 @@ export function DataTable({ columns, rows }) {
     </div>
   );
 }
+
+export { WorkflowStepper } from "./WorkflowStepper";
+

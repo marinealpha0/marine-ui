@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, WorkflowStepper } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { capaFilterFields } from "@/constant/FilterFields";
@@ -117,33 +117,7 @@ export default function CAPAPage() {
       </div>
 
       {/* Workflow Stepper Banner */}
-      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs space-y-3">
-        <div>
-          <h3 className="text-base font-bold text-gray-900">Workflow</h3>
-          <p className="text-xs text-gray-500 mt-0.5">Current stage highlighted</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2 pt-1">
-          {caWorkflowSteps.map((step, idx) => (
-            <React.Fragment key={step.num}>
-              <div
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  step.state === "done"
-                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                    : step.state === "active"
-                    ? "bg-sky-50 text-sky-700 border border-sky-300 font-semibold"
-                    : "bg-gray-50 text-gray-400 border border-gray-200"
-                }`}
-              >
-                <span>{step.num}</span>
-                <span>{step.label}</span>
-              </div>
-              {idx < caWorkflowSteps.length - 1 && (
-                <div className="h-0.5 w-4 bg-gray-200 hidden sm:block" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
+      <WorkflowStepper steps={caWorkflowSteps} />
 
       <FilterSection
         filterFields={capaFilterFields}
