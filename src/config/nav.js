@@ -1,18 +1,19 @@
 import {
-  Anchor, Boxes, CalendarRange, ClipboardCheck, ClipboardList, FileText, Gauge,
-  GitBranch, HardHat, LayoutDashboard, LifeBuoy, ListChecks, Package, PackageCheck,
-  Route as RouteIcon, ScrollText, Settings, ShieldAlert, ShieldCheck, Ship,
-  ShoppingCart, SlidersHorizontal, Truck, UserCheck, Users, Wrench, Bell, BarChart3,
+  Activity, AlertTriangle, Anchor, BarChart3, Bell, Boxes, CalendarRange, ClipboardCheck, ClipboardList,
+  FileText, Flame, Gauge, GitBranch, Handshake, HardHat, LayoutDashboard, LifeBuoy, ListChecks,
+  Package, PackageCheck, Route as RouteIcon, ScrollText, Settings, ShieldAlert, ShieldCheck, Ship,
+  ShoppingCart, SlidersHorizontal, Target, Truck, UserCheck, Users, Wrench,
 } from "lucide-react";
 
 export const navGroups = [
   {
     group: "Operations",
     items: [
-      { label: "Command Center", to: "/", icon: LayoutDashboard },
+      { label: "Overview", to: "/app", icon: LayoutDashboard },
       { label: "Voyages", to: "/app/voyages", icon: RouteIcon },
       { label: "Work Orders", to: "/app/work-orders", icon: Wrench, badge: 118 },
       { label: "Maintenance / PMS", to: "/app/maintenance", icon: Gauge },
+      { label: "Work Planner", to: "/app/work-planner", icon: CalendarRange },
     ],
   },
   {
@@ -26,24 +27,28 @@ export const navGroups = [
   {
     group: "Supply & Procurement",
     items: [
-      { label: "Requisitions", to: "/app/requisitions", icon: ClipboardList, badge: 5 },
-      { label: "Purchase Orders", to: "/app/purchase-orders", icon: ShoppingCart },
+      { label: "Procurement", to: "/app/procurement", icon: ShoppingCart },
+      { label: "Requisitions", to: "/app/requisitions", icon: ClipboardCheck },
+      { label: "Purchase Orders", to: "/app/purchase-orders", icon: FileText, badge: 3 },
       { label: "Receipts & Returns", to: "/app/receipts", icon: Truck },
     ],
   },
   {
     group: "Compliance & QHSE",
     items: [
-      { label: "Certificates", to: "/app/certificates", icon: ShieldCheck, badge: 4 },
+      { label: "Certificates", to: "/app/certificates", icon: FileText, badge: 4 },
       { label: "Surveys & Services", to: "/app/surveys", icon: ClipboardCheck },
-      { label: "Deviations", to: "/app/deviations", icon: GitBranch, badge: 3 },
-      { label: "QMS", to: "/app/qms", icon: ScrollText },
-      { label: "Corrective & Preventive", to: "/app/capa", icon: PackageCheck },
+      { label: "QHSE Command", to: "/app/qms", icon: ShieldCheck },
+      { label: "Deviations", to: "/app/deviations", icon: AlertTriangle },
       { label: "Risk Management", to: "/app/risk", icon: ShieldAlert },
-      { label: "Safety Meetings", to: "/app/safety-meetings", icon: LifeBuoy },
-      { label: "Drills", to: "/app/drills", icon: Anchor },
-      { label: "Permit to Work", to: "/app/permit-to-work", icon: HardHat, badge: 4 },
-      { label: "Management of Change", to: "/app/moc", icon: SlidersHorizontal },
+      { label: "Corrective Actions", to: "/app/capa", icon: Activity },
+      { label: "Preventive Actions", to: "/app/preventive-actions", icon: Target },
+      { label: "Safety Meetings", to: "/app/safety-meetings", icon: Users },
+      { label: "Drills", to: "/app/drills", icon: Flame },
+      { label: "Permit To Work", to: "/app/permit-to-work", icon: ScrollText },
+      { label: "Management of Change", to: "/app/moc", icon: GitBranch },
+      { label: "Person In Charge", to: "/app/pic", icon: UserCheck },
+      { label: "Handover / Takeover", to: "/app/handover", icon: Handshake },
     ],
   },
   {
@@ -68,7 +73,7 @@ export const navGroups = [
     items: [
       { label: "Users & Roles", to: "/app/users", icon: Users },
       { label: "Audit Logs", to: "/app/audit", icon: ScrollText },
-      { label: "Settings", to: "/settings", icon: Settings },
+      { label: "Settings", to: "/app/settings", icon: Settings },
     ],
   },
 ];

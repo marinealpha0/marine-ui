@@ -1,0 +1,153 @@
+import React, { useMemo, useState } from "react";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { useTableFilters } from "@/Hooks/useTableFilters";
+import FilterSection from "@/layouts/FilterSection";
+import { documentFilterFields } from "@/constant/FilterFields";
+
+export const documentsCatalog = [
+  {
+    name: "SMS Manual Rev. 14",
+    type: "Procedure",
+    scope: "Fleet-wide",
+    owner: "QHSE",
+    updated: "2026-07-18",
+    status: "Approved",
+  },
+  {
+    name: "ME Maker Manual 6S60ME-C",
+    type: "Technical",
+    scope: "MT Ocean Star",
+    owner: "Technical",
+    updated: "2026-05-02",
+    status: "Approved",
+  },
+  {
+    name: "Ballast Water Management Plan",
+    type: "Plan",
+    scope: "MV Baltic Carrier",
+    owner: "Marine",
+    updated: "2026-06-11",
+    status: "Pending Approval",
+  },
+  {
+    name: "Garbage Management Plan",
+    type: "Plan",
+    scope: "MV Coral Trader",
+    owner: "Marine",
+    updated: "2026-03-27",
+    status: "Approved",
+  },
+  {
+    name: "PSC Inspection Report — Busan",
+    type: "Report",
+    scope: "MV Pacific Endeavour",
+    owner: "Master",
+    updated: "2026-08-01",
+    status: "Under Review",
+  },
+];
+
+export default function DocumentsPage() {
+  const [showFilter, setShowFilter] = useState(false);
+  const { filters, handleFilterChange } = useTableFilters({
+    searchVal: "",
+    vessel: "all",
+    type: "all",
+    owner: "",
+  });
+
+  const filteredData = useMemo(() => {
+    return documentsCatalog.filter((d) => {
+      if (filters.searchVal) {
+        const q = filters.searchVal.toLowerCase();
+        const match =
+          (d.name && d.name.toLowerCase().includes(q)) ||
+          (d.scope && d.scope.toLowerCase().includes(q)) ||
+          (d.owner && d.owner.toLowerCase().includes(q));
+        if (!match) return false;
+      }
+      if (filters.vessel && filters.vessel !== "all" && d.scope !== filters.vessel) return false;
+      if (filters.type && filters.type !== "all" && d.type !== filters.type) return false;
+      if (filters.owner && !d.owner?.toLowerCase().includes(filters.owner.toLowerCase())) return false;
+      return true;
+    });
+  }, [filters]);
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <div className="text-xs font-bold uppercase tracking-wider text-ocean mb-1">KNOWLEDGE</div>
+        <PageHeader
+          title="Document Management"
+          description="Controlled documents, manuals and plans with revision status and approval state."
+          actions={
+            <>
+              <FilterButton onClick={() => setShowFilter((prev) => !prev)} />
+              <ExportButton />
+            </>
+          }
+        />
+      </div>
+
+      {/* Top 4 KPI Summary Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Card 1 */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Controlled documents</div>
+          <div className="mt-3 text-3xl font-bold text-gray-900">1284</div>
+        </div>
+
+        {/* Card 2 */}
+        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Pending approval</div>
+          <div className="mt-3 text-3xl font-bold text-[#d97706]">6</div>
+        </div>
+
+        {/* Card 3 */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Revised this month</div>
+          <div className="mt-3 text-3xl font-bold text-[#0052cc]">23</div>
+        </div>
+
+        {/* Card 4 */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Expired references</div>
+          <div className="mt-3 text-3xl font-bold text-[#059669]">0</div>
+        </div>
+      </div>
+
+      <FilterSection
+        filterFields={documentFilterFields}
+        onFilterChange={handleFilterChange}
+        isOpen={showFilter}
+        onToggle={setShowFilter}
+      />
+
+      {/* Table Panel */}
+      <Panel
+        title={
+          <div>
+            <h3 className="text-base font-bold text-gray-900">Document library</h3>
+            <p className="text-xs font-normal text-gray-500 mt-0.5">
+              {filteredData.length} {filteredData.length === 1 ? "record" : "records"} in current context
+            </p>
+          </div>
+        }
+        padded={false}
+      >
+        <DataTable
+          columns={["DOCUMENT", "TYPE", "SCOPE", "OWNER", "UPDATED", "STATUS"]}
+          rows={filteredData.map((d) => [
+            <span key="a" className="font-bold text-gray-900">{d.name}</span>,
+            <span key="b" className="text-gray-700 font-medium">{d.type}</span>,
+            <span key="c" className="text-gray-600">{d.scope}</span>,
+            <span key="d" className="text-gray-600">{d.owner}</span>,
+            <span key="e" className="tabular-nums text-gray-600">{d.updated}</span>,
+            <StatusChip key="f" status={d.status} />,
+          ])}
+        />
+      </Panel>
+    </div>
+  );
+}
+

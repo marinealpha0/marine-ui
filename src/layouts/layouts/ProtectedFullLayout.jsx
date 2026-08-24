@@ -17,8 +17,10 @@ export function ProtectedFullLayout() {
           <Header />
 
           {/* Page Outlet */}
-          <main className="flex-1 overflow-y-auto min-w-0">
-            <Outlet />
+          <main className="flex-1 overflow-y-auto min-w-0 p-6 sm:p-8">
+            <div className="mx-auto max-w-[1600px] space-y-8 pb-10">
+              <Outlet />
+            </div>
           </main>
         </SidebarInset>
       </div>

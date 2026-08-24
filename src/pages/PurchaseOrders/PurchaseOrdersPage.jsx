@@ -1,0 +1,208 @@
+import React, { useMemo, useState } from "react";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { useTableFilters } from "@/Hooks/useTableFilters";
+import FilterSection from "@/layouts/FilterSection";
+import { purchaseOrderFilterFields } from "@/constant/FilterFields";
+
+export const purchaseOrdersData = [
+  {
+    po: "PO-2026-1184",
+    supplier: "Wärtsilä Services",
+    vessel: "MT Ocean Star",
+    amount: "84,200",
+    currency: "USD",
+    expected: "2026-08-19",
+    status: "Ordered",
+  },
+  {
+    po: "PO-2026-1190",
+    supplier: "Alfa Laval Marine",
+    vessel: "MT Nordic Spirit",
+    amount: "21,750",
+    currency: "EUR",
+    expected: "2026-08-14",
+    status: "Partially Received",
+  },
+  {
+    po: "PO-2026-1201",
+    supplier: "MAN Energy Solutions",
+    vessel: "MV Pacific Endeavour",
+    amount: "156,900",
+    currency: "USD",
+    expected: "2026-09-02",
+    status: "Pending Approval",
+  },
+  {
+    po: "PO-2026-1207",
+    supplier: "Kongsberg Maritime",
+    vessel: "OSV Arctic Guardian",
+    amount: "43,100",
+    currency: "NOK",
+    expected: "2026-08-22",
+    status: "Approved",
+  },
+  {
+    po: "PO-2026-1211",
+    supplier: "Survitec Group",
+    vessel: "MV Baltic Carrier",
+    amount: "9,820",
+    currency: "USD",
+    expected: "2026-08-12",
+    status: "Received",
+  },
+  {
+    po: "PO-2026-1215",
+    supplier: "Jotun Marine Coatings",
+    vessel: "MV Coral Trader",
+    amount: "67,400",
+    currency: "USD",
+    expected: "2026-08-30",
+    status: "Overdue",
+  },
+];
+
+const poWorkflowSteps = [
+  { num: 1, label: "Pending", state: "done" },
+  { num: 2, label: "Approved", state: "done" },
+  { num: 3, label: "Ordered", state: "active" },
+  { num: 4, label: "Partially Received", state: "upcoming" },
+  { num: 5, label: "Received", state: "upcoming" },
+  { num: 6, label: "Closed", state: "upcoming" },
+];
+
+export default function PurchaseOrdersPage() {
+  const [showFilter, setShowFilter] = useState(false);
+  const { filters, handleFilterChange } = useTableFilters({
+    searchVal: "",
+    vessel: "all",
+    status: "all",
+    supplier: "",
+  });
+
+  const filteredData = useMemo(() => {
+    return purchaseOrdersData.filter((p) => {
+      if (filters.searchVal) {
+        const q = filters.searchVal.toLowerCase();
+        const match =
+          (p.po && p.po.toLowerCase().includes(q)) ||
+          (p.supplier && p.supplier.toLowerCase().includes(q)) ||
+          (p.vessel && p.vessel.toLowerCase().includes(q));
+        if (!match) return false;
+      }
+      if (filters.vessel && filters.vessel !== "all" && p.vessel !== filters.vessel) return false;
+      if (filters.status && filters.status !== "all" && p.status !== filters.status) return false;
+      if (filters.supplier && !p.supplier?.toLowerCase().includes(filters.supplier.toLowerCase())) return false;
+      return true;
+    });
+  }, [filters]);
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <div className="text-xs font-bold uppercase tracking-wider text-ocean mb-1">SUPPLY &amp; PROCUREMENT</div>
+        <PageHeader
+          title="Purchase Orders"
+          description="Track supplier commitments, delivery windows and receipt status across the fleet."
+          actions={
+            <>
+              <FilterButton onClick={() => setShowFilter((prev) => !prev)} />
+              <ExportButton />
+            </>
+          }
+        />
+      </div>
+
+      {/* Top 4 KPI Summary Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Card 1 */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Open POs</div>
+          <div className="mt-3 text-3xl font-bold text-[#0052cc]">187</div>
+        </div>
+
+        {/* Card 2 */}
+        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Ordered &gt; 90 days</div>
+          <div className="mt-3 text-3xl font-bold text-[#d97706]">791</div>
+        </div>
+
+        {/* Card 3 */}
+        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Overdue delivery</div>
+          <div className="mt-3 text-3xl font-bold text-[#dc2626]">6</div>
+        </div>
+
+        {/* Card 4 */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Committed spend (USD)</div>
+          <div className="mt-3 text-3xl font-bold text-gray-900">1.42M</div>
+          <div className="mt-1 text-xs font-medium text-[#059669]">↗ +4% vs last month</div>
+        </div>
+      </div>
+
+      {/* Workflow Stepper Banner */}
+      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs space-y-3">
+        <div>
+          <h3 className="text-base font-bold text-gray-900">Workflow</h3>
+          <p className="text-xs text-gray-500 mt-0.5">Current stage highlighted</p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 pt-1">
+          {poWorkflowSteps.map((step, idx) => (
+            <React.Fragment key={step.num}>
+              <div
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  step.state === "done"
+                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                    : step.state === "active"
+                    ? "bg-sky-50 text-sky-700 border border-sky-300 font-semibold"
+                    : "bg-gray-50 text-gray-400 border border-gray-200"
+                }`}
+              >
+                <span>{step.num}</span>
+                <span>{step.label}</span>
+              </div>
+              {idx < poWorkflowSteps.length - 1 && (
+                <div className="h-0.5 w-4 bg-gray-200 hidden sm:block" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      <FilterSection
+        filterFields={purchaseOrderFilterFields}
+        onFilterChange={handleFilterChange}
+        isOpen={showFilter}
+        onToggle={setShowFilter}
+      />
+
+      {/* Table Panel */}
+      <Panel
+        title={
+          <div>
+            <h3 className="text-base font-bold text-gray-900">Recent purchase orders</h3>
+            <p className="text-xs font-normal text-gray-500 mt-0.5">
+              {filteredData.length} {filteredData.length === 1 ? "record" : "records"} in current context
+            </p>
+          </div>
+        }
+        padded={false}
+      >
+        <DataTable
+          columns={["PO NUMBER", "SUPPLIER", "VESSEL", "AMOUNT", "CURRENCY", "EXPECTED", "STATUS"]}
+          rows={filteredData.map((p) => [
+            <span key="a" className="font-bold text-gray-900">{p.po}</span>,
+            <span key="b" className="text-gray-700 font-medium">{p.supplier}</span>,
+            <span key="c" className="text-gray-600">{p.vessel}</span>,
+            <span key="d" className="tabular-nums font-semibold text-gray-800">{p.amount}</span>,
+            <span key="e" className="text-gray-600 font-medium">{p.currency}</span>,
+            <span key="f" className="tabular-nums text-gray-600">{p.expected}</span>,
+            <StatusChip key="g" status={p.status} />,
+          ])}
+        />
+      </Panel>
+    </div>
+  );
+}
+

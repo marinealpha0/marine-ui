@@ -1,0 +1,184 @@
+import React, { useMemo, useState } from "react";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { useTableFilters } from "@/Hooks/useTableFilters";
+import FilterSection from "@/layouts/FilterSection";
+import { capaFilterFields } from "@/constant/FilterFields";
+
+export const correctiveActionsCatalog = [
+  {
+    id: "CA-2291",
+    finding: "Oil mist detector alarm not tested per SMS",
+    vessel: "MV Pacific Endeavour",
+    owner: "C/E K. Tan",
+    due: "2026-08-18",
+    status: "In Progress",
+  },
+  {
+    id: "CA-2288",
+    finding: "Missing entry in garbage record book",
+    vessel: "MV Coral Trader",
+    owner: "C/O A. Reyes",
+    due: "2026-08-12",
+    status: "Open",
+  },
+  {
+    id: "CA-2280",
+    finding: "Inadequate lighting in steering flat",
+    vessel: "MT Gulf Navigator",
+    owner: "ETO J. Rivera",
+    due: "2026-07-31",
+    status: "Overdue",
+  },
+  {
+    id: "CA-2275",
+    finding: "PMS job closed without running hours",
+    vessel: "MT Ocean Star",
+    owner: "2/E R. Malhotra",
+    due: "2026-08-22",
+    status: "Open",
+  },
+  {
+    id: "CA-2268",
+    finding: "Lifeboat release gear maintenance record gap",
+    vessel: "MV Atlantic Pioneer",
+    owner: "3/O T. Nakamura",
+    due: "2026-08-09",
+    status: "Extension",
+  },
+];
+
+const caWorkflowSteps = [
+  { num: 1, label: "Raised", state: "done" },
+  { num: 2, label: "Assigned", state: "done" },
+  { num: 3, label: "In Progress", state: "active" },
+  { num: 4, label: "Verification", state: "upcoming" },
+  { num: 5, label: "Closed", state: "upcoming" },
+];
+
+export default function CAPAPage() {
+  const [showFilter, setShowFilter] = useState(false);
+  const { filters, handleFilterChange } = useTableFilters({
+    searchVal: "",
+    vessel: "all",
+    status: "all",
+  });
+
+  const filteredCorrective = useMemo(() => {
+    return correctiveActionsCatalog.filter((c) => {
+      if (filters.searchVal) {
+        const q = filters.searchVal.toLowerCase();
+        const match =
+          (c.id && c.id.toLowerCase().includes(q)) ||
+          (c.finding && c.finding.toLowerCase().includes(q)) ||
+          (c.vessel && c.vessel.toLowerCase().includes(q)) ||
+          (c.owner && c.owner.toLowerCase().includes(q));
+        if (!match) return false;
+      }
+      if (filters.vessel && filters.vessel !== "all" && c.vessel !== filters.vessel) return false;
+      if (filters.status && filters.status !== "all" && c.status !== filters.status) return false;
+      return true;
+    });
+  }, [filters]);
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <div className="text-xs font-bold uppercase tracking-wider text-ocean mb-1">COMPLIANCE &amp; QHSE</div>
+        <PageHeader
+          title="Corrective Actions"
+          description="Actions raised from non-conformities, inspections, audits and defect reports."
+          actions={
+            <>
+              <FilterButton onClick={() => setShowFilter((prev) => !prev)} />
+              <ExportButton />
+            </>
+          }
+        />
+      </div>
+
+      {/* Top 4 KPI Summary Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Open</div>
+          <div className="mt-3 text-3xl font-bold text-[#d97706]">5</div>
+        </div>
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">In progress</div>
+          <div className="mt-3 text-3xl font-bold text-[#0052cc]">3</div>
+        </div>
+        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Overdue</div>
+          <div className="mt-3 text-3xl font-bold text-[#dc2626]">1</div>
+        </div>
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
+          <div className="text-sm font-medium text-gray-700">Closed (30 days)</div>
+          <div className="mt-3 text-3xl font-bold text-[#059669]">14</div>
+        </div>
+      </div>
+
+      {/* Workflow Stepper Banner */}
+      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs space-y-3">
+        <div>
+          <h3 className="text-base font-bold text-gray-900">Workflow</h3>
+          <p className="text-xs text-gray-500 mt-0.5">Current stage highlighted</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2 pt-1">
+          {caWorkflowSteps.map((step, idx) => (
+            <React.Fragment key={step.num}>
+              <div
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  step.state === "done"
+                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                    : step.state === "active"
+                    ? "bg-sky-50 text-sky-700 border border-sky-300 font-semibold"
+                    : "bg-gray-50 text-gray-400 border border-gray-200"
+                }`}
+              >
+                <span>{step.num}</span>
+                <span>{step.label}</span>
+              </div>
+              {idx < caWorkflowSteps.length - 1 && (
+                <div className="h-0.5 w-4 bg-gray-200 hidden sm:block" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      <FilterSection
+        filterFields={capaFilterFields}
+        onFilterChange={handleFilterChange}
+        isOpen={showFilter}
+        onToggle={setShowFilter}
+      />
+
+      {/* Table Panel */}
+      <Panel
+        title={
+          <div>
+            <h3 className="text-base font-bold text-gray-900">Corrective action register</h3>
+            <p className="text-xs font-normal text-gray-500 mt-0.5">
+              {filteredCorrective.length} {filteredCorrective.length === 1 ? "record" : "records"} in current context
+            </p>
+          </div>
+        }
+        padded={false}
+      >
+        <DataTable
+          columns={["REF", "FINDING", "VESSEL", "OWNER", "DUE", "STATUS"]}
+          rows={filteredCorrective.map((c) => [
+            <span key="a" className="font-bold text-gray-900">{c.id}</span>,
+            <span key="b" className="text-gray-700 font-medium">{c.finding}</span>,
+            <span key="c" className="text-gray-600">{c.vessel}</span>,
+            <span key="d" className="text-gray-600">{c.owner}</span>,
+            <span key="e" className="tabular-nums text-gray-600">{c.due}</span>,
+            <StatusChip key="f" status={c.status} />,
+          ])}
+        />
+      </Panel>
+    </div>
+  );
+}
+
+
+

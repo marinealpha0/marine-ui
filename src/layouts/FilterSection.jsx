@@ -5,9 +5,18 @@ import { FormFieldWrapper } from '@/components/FormFieldWrapper';
 import { Form } from '@/components/ui/form';
 import { useSearchParams } from 'react-router-dom';
 
-const FilterSection = ({ onFilterChange, filterFields = [] }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const FilterSection = ({ onFilterChange, filterFields = [], isOpen, onToggle }) => {
+  const [internalExpanded, setInternalExpanded] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const isExpanded = isOpen !== undefined ? isOpen : internalExpanded;
+
+  // Sync external isOpen prop with internal state if provided
+  useEffect(() => {
+    if (isOpen !== undefined) {
+      setInternalExpanded(isOpen);
+    }
+  }, [isOpen]);
 
   // Helper to extract default/initial values from URL params or fallback
   const getValuesFromParams = useCallback(() => {
@@ -39,11 +48,20 @@ const FilterSection = ({ onFilterChange, filterFields = [] }) => {
       return val !== null && val !== 'all' && val !== '';
     });
     if (hasActiveFilters) {
-      setIsExpanded(true);
+      setInternalExpanded(true);
+      if (onToggle && !isExpanded) {
+        onToggle(true);
+      }
     }
   }, [filterFields, searchParams]);
 
-  const handleToggle = () => setIsExpanded(!isExpanded);
+  const handleToggle = () => {
+    const nextState = !isExpanded;
+    setInternalExpanded(nextState);
+    if (onToggle) {
+      onToggle(nextState);
+    }
+  };
 
   const onSubmit = (data) => {
     onFilterChange(data);
