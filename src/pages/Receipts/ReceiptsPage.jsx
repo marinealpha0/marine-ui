@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { receiptFilterFields } from "@/constant/FilterFields";
@@ -97,29 +97,10 @@ export default function ReceiptsPage() {
 
       {/* Top 4 KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Pending inspection</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">7</div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Partially received</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">34</div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#ef4444] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Damaged on arrival</div>
-          <div className="mt-3 text-3xl font-bold text-[#dc2626]">2</div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Returns in transit</div>
-          <div className="mt-3 text-3xl font-bold text-[#0052cc]">3</div>
-        </div>
+        <SummaryCard label="Pending inspection" value="7" tone="warning" borderLeft="amber" />
+        <SummaryCard label="Partially received" value="34" tone="info" />
+        <SummaryCard label="Damaged on arrival" value="2" tone="critical" borderLeft="red" />
+        <SummaryCard label="Returns in transit" value="3" tone="info" />
       </div>
 
       <FilterSection
@@ -130,17 +111,7 @@ export default function ReceiptsPage() {
       />
 
       {/* Table Panel */}
-      <Panel
-        title={
-          <div>
-            <h3 className="text-base font-bold text-gray-900">Latest receipts</h3>
-            <p className="text-xs font-normal text-gray-500 mt-0.5">
-              {filteredData.length} {filteredData.length === 1 ? "record" : "records"} in current context
-            </p>
-          </div>
-        }
-        padded={false}
-      >
+      <Panel padded={false}>
         <DataTable
           columns={["GRN", "PO", "VESSEL", "LINES", "PORT", "DATE", "STATUS"]}
           rows={filteredData.map((r) => [

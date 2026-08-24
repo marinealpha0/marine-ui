@@ -124,17 +124,7 @@ export default function PermitToWorkPage() {
       />
 
       {/* Table Panel */}
-      <Panel
-        title={
-          <div>
-            <h3 className="text-base font-bold text-gray-900">Active permits</h3>
-            <p className="text-xs font-normal text-gray-500 mt-0.5">
-              {filteredData.length} {filteredData.length === 1 ? "record" : "records"} in current context
-            </p>
-          </div>
-        }
-        padded={false}
-      >
+      <Panel padded={false}>
         <DataTable
           columns={["PERMIT", "TYPE", "VESSEL", "LOCATION", "RISK", "REQUESTER", "APPROVER", "EXPIRY", "STATUS"]}
           rows={filteredData.map((p) => [

@@ -101,17 +101,7 @@ export default function SafetyMeetingsPage() {
       />
 
       {/* Table Panel */}
-      <Panel
-        title={
-          <div>
-            <h3 className="text-base font-bold text-gray-900">Meeting log</h3>
-            <p className="text-xs font-normal text-gray-500 mt-0.5">
-              {filteredData.length} {filteredData.length === 1 ? "record" : "records"} in current context
-            </p>
-          </div>
-        }
-        padded={false}
-      >
+      <Panel padded={false}>
         <DataTable
           columns={["REF", "MEETING", "VESSEL", "DATE", "CHAIR", "ACTIONS", "STATUS"]}
           rows={filteredData.map((m) => [

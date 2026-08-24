@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel } from "@/components/app/kit";
+import { DataTable, ExportButton, FilterButton, PageHeader, Panel, SummaryCard } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { inventoryFilterFields } from "@/constant/FilterFields";
@@ -94,7 +94,7 @@ export default function InventoryPage() {
         <div className="text-xs font-bold uppercase tracking-wider text-ocean mb-1">ASSETS</div>
         <PageHeader
           title="Inventory"
-          description="Spare part stock levels."
+          description="Spare part stock levels across vessels."
           actions={
             <>
               <FilterButton onClick={() => setShowFilter((prev) => !prev)} />
@@ -106,10 +106,7 @@ export default function InventoryPage() {
 
       {/* Top KPI Card */}
       <div className="w-full sm:w-64">
-        <div className="rounded-xl border border-gray-200 border-l-[4px] border-l-[#f59e0b] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm">
-          <div className="text-sm font-medium text-gray-700">Below minimum</div>
-          <div className="mt-3 text-3xl font-bold text-[#d97706]">8</div>
-        </div>
+        <SummaryCard label="Below minimum" value="8" tone="warning" borderLeft="amber" />
       </div>
 
       <FilterSection
@@ -120,17 +117,7 @@ export default function InventoryPage() {
       />
 
       {/* Stock Table Panel */}
-      <Panel
-        title={
-          <div>
-            <h3 className="text-base font-bold text-gray-900">Stock</h3>
-            <p className="text-xs font-normal text-gray-500 mt-0.5">
-              {filteredData.length} {filteredData.length === 1 ? "record" : "records"} in current context
-            </p>
-          </div>
-        }
-        padded={false}
-      >
+      <Panel padded={false}>
         <DataTable
           columns={["PART", "DESCRIPTION", "VESSEL", "QTY", "MIN"]}
           rows={filteredData.map((p) => [
