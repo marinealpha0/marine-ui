@@ -35,6 +35,8 @@ const AnalyticsPage = lazy(() => import("@/pages/Analytics/AnalyticsPage"));
 const DocumentsPage = lazy(() => import("@/pages/Documents/DocumentsPage"));
 const NotificationsPage = lazy(() => import("@/pages/Notifications/NotificationsPage"));
 const UsersPage = lazy(() => import("@/pages/Users/UsersPage"));
+const RolesPermissionsPage = lazy(() => import("@/pages/Users/RolesPermissionsPage"));
+const CreateEditRolePage = lazy(() => import("@/pages/Users/CreateEditRolePage"));
 const AuditPage = lazy(() => import("@/pages/Audit/AuditPage"));
 const Settings = lazy(() => import("@/pages/General/Settings/Settings"));
 const Profile = lazy(() => import("@/pages/General/Profile/Profile"));
@@ -109,6 +111,11 @@ export const ProtectedRoutes = (
 
     {/* Administration & User Management */}
     <Route path="app/users" element={<UsersPage />} />
+    <Route path="app/roles" element={<RolesPermissionsPage />} />
+    <Route path="app/roles/create" element={<CreateEditRolePage />} />
+    <Route path="app/roles/edit/:roleId" element={<CreateEditRolePage />} />
+    <Route path="app/roles-permissions" element={<RolesPermissionsPage />} />
+    <Route path="roles" element={<RolesPermissionsPage />} />
     <Route path="app/audit" element={<AuditPage />} />
     <Route path="settings" element={<Settings />} />
     <Route path="app/settings" element={<Settings />} />

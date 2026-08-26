@@ -71,7 +71,8 @@ export const navGroups = [
   {
     group: "Administration",
     items: [
-      { label: "Users & Roles", to: "/app/users", icon: Users },
+      { label: "Users & Access", to: "/app/users", icon: Users },
+      { label: "Roles & Permissions", to: "/app/roles", icon: ShieldCheck },
       { label: "Audit Logs", to: "/app/audit", icon: ScrollText },
       { label: "Settings", to: "/app/settings", icon: Settings },
     ],
@@ -84,5 +85,5 @@ export const searchIndex = [
   { group: "Certificates", items: ["IOPP — MT Ocean Star", "Load Line — MV Atlantic Pioneer", "ISM SMC — MV Nordic Dawn"], to: "/app/certificates" },
   { group: "Procurement", items: ["REQ-8841 ME spares", "PO-2026-3391 MAN Energy Solutions", "GRN-7712 Rotterdam"], to: "/app/purchase-orders" },
   { group: "QHSE", items: ["DEV-1042 Bunkering port deviation", "RA-2231 Enclosed space entry", "PTW-4409 Enclosed space"], to: "/app/qms" },
-  { group: "People", items: ["Alex Mercer — Fleet Manager", "Marit Haugen — Chief Engineer", "Keiko Tanaka — Procurement"], to: "/app/users" },
+  { group: "People & Security", items: ["Alex Mercer — Fleet Manager", "Marit Haugen — Chief Engineer", "Roles & Permissions Governance"], to: "/app/roles" },
 ];

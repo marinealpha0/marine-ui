@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
+import { Link } from "react-router-dom";
+import { ShieldCheck, Plus } from "lucide-react";
+import { ActionButton, DataTable, ExportButton, FilterButton, PageHeader, Panel, StatusChip } from "@/components/app/kit";
 import { useTableFilters } from "@/Hooks/useTableFilters";
 import FilterSection from "@/layouts/FilterSection";
 import { userFilterFields } from "@/constant/FilterFields";
@@ -34,12 +36,20 @@ export default function UsersPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="User & Access Management"
-        description="Shore officers, vessel crew, roles, scopes and permissions"
+        title="User & Access Directory"
+        description="Provision shore officers, vessel crew accounts, departments, and active vessel access scopes."
         actions={
           <>
             <FilterButton onClick={() => setShowFilter((prev) => !prev)} />
             <ExportButton />
+            <Link to="/app/roles">
+              <ActionButton
+                variant="navy"
+                icon={<ShieldCheck className="size-4" />}
+              >
+                Roles & Permissions
+              </ActionButton>
+            </Link>
           </>
         }
       />
