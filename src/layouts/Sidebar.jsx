@@ -4,7 +4,6 @@ import { ChevronDown, Search, Settings, Anchor as MarineIcon } from "lucide-reac
 import { CustomTooltip } from "@/components/ui/tooltip";
 import {
   Sidebar as ShadcnSidebarPrimitive, SidebarHeader, SidebarContent, SidebarGroup,
-  SidebarGroupLabel, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton,
   SidebarFooter, SidebarTrigger, SidebarInput, useSidebar
 } from "@/components/ui/sidebar";
 import { navGroups, searchIndex } from "@/config/nav";
@@ -119,7 +118,7 @@ export function SidebarInner({ className, showSearch = false }) {
       <SidebarContent className="p-2 space-y-1">
         {/* COLLAPSED MODE: Icon-only flattened list with tooltips */}
         {isCollapsed ? (
-          <SidebarGroup className="p-0 space-y-1">
+          <div className="space-y-1">
             {navGroups.map((group) => (
               <div key={group.group} className="space-y-1 pb-2 mb-1 border-b border-sidebar-border/40 last:border-b-0">
                 {group.items.map((item) => {
@@ -161,7 +160,7 @@ export function SidebarInner({ className, showSearch = false }) {
                 })}
               </div>
             ))}
-          </SidebarGroup>
+          </div>
         ) : (
           /* EXPANDED MODE: Group Accordions with Sub-items */
           <div className="space-y-2">
@@ -177,13 +176,13 @@ export function SidebarInner({ className, showSearch = false }) {
                 const isGroupAct = isGroupActive(group);
 
                 return (
-                  <SidebarGroup key={group.group} className="p-0 space-y-1">
+                  <div key={group.group} className="space-y-1">
                     {/* Group Accordion Header */}
                     <button
                       type="button"
                       onClick={() => toggleGroup(group.group)}
                       className={cn(
-                        "w-full flex items-center justify-between px-2 py-1.5 text-xs font-semibold rounded-md transition-colors text-left",
+                        "w-full flex items-center justify-between px-2 py-1.5 text-xs font-semibold rounded-md transition-colors text-left cursor-pointer",
                         isGroupAct
                           ? "bg-sidebar-accent/70 text-sidebar-accent-foreground"
                           : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
@@ -202,7 +201,7 @@ export function SidebarInner({ className, showSearch = false }) {
 
                     {/* Group Items Submenu */}
                     {isOpen && (
-                      <SidebarMenuSub className="ml-3 my-0.5 space-y-0.5 border-sidebar-border">
+                      <div className="ml-3 my-0.5 space-y-0.5 border-l border-sidebar-border/70 pl-2">
                         {group.items
                           .filter((item) =>
                             searchTerm ? item.label.toLowerCase().includes(searchTerm.toLowerCase()) : true
@@ -212,33 +211,31 @@ export function SidebarInner({ className, showSearch = false }) {
                             const Icon = item.icon;
 
                             return (
-                              <SidebarMenuSubItem key={item.label}>
-                                <SidebarMenuSubButton
-                                  asChild
-                                  isActive={active}
-                                  size="md"
-                                >
-                                  <Link
-                                    to={item.to}
-                                    className="flex items-center justify-between w-full"
-                                  >
-                                    <div className="flex items-center gap-2 min-w-0">
-                                      <Icon className={cn("size-3.5 shrink-0", active ? "text-cyan" : "text-sidebar-foreground/70")} />
-                                      <span className="truncate text-xs">{item.label}</span>
-                                    </div>
-                                    {item.badge !== undefined && (
-                                      <span className="px-1.5 py-0.2 text-[9px] font-semibold rounded bg-sidebar-accent text-sidebar-accent-foreground shrink-0">
-                                        {item.badge}
-                                      </span>
-                                    )}
-                                  </Link>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
+                              <Link
+                                key={item.label}
+                                to={item.to}
+                                className={cn(
+                                  "flex items-center justify-between w-full px-2.5 py-1.5 rounded-md text-xs transition-colors cursor-pointer",
+                                  active
+                                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
+                                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
+                                )}
+                              >
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <Icon className={cn("size-3.5 shrink-0", active ? "text-cyan" : "text-sidebar-foreground/70")} />
+                                  <span className="truncate">{item.label}</span>
+                                </div>
+                                {item.badge !== undefined && (
+                                  <span className="px-1.5 py-0.2 text-[9px] font-semibold rounded bg-sidebar-accent text-sidebar-accent-foreground shrink-0">
+                                    {item.badge}
+                                  </span>
+                                )}
+                              </Link>
                             );
                           })}
-                      </SidebarMenuSub>
+                      </div>
                     )}
-                  </SidebarGroup>
+                  </div>
                 );
               })}
           </div>
@@ -258,13 +255,13 @@ export function SidebarInner({ className, showSearch = false }) {
                 <p className="text-[10px] text-sidebar-foreground/70 truncate">{roleName}</p>
               </div>
             </div>
-            <Link to="/settings" className="text-sidebar-foreground/70 hover:text-sidebar-foreground p-1">
+            <Link to="/app/settings" className="text-sidebar-foreground/70 hover:text-sidebar-foreground p-1 cursor-pointer">
               <Settings className="size-4" />
             </Link>
           </div>
         ) : (
           <CustomTooltip content={`${displayName} (${roleName})`} position="right">
-            <div className="grid size-8 mx-auto place-items-center rounded-full bg-ocean text-white text-xs font-bold shadow-sm">
+            <div className="grid size-8 mx-auto place-items-center rounded-full bg-ocean text-white text-xs font-bold shadow-sm cursor-pointer">
               {getInitials(displayName)}
             </div>
           </CustomTooltip>
